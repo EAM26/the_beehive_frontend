@@ -12,7 +12,7 @@ function Navbar() {
             <ul className="navbar-ul">
                 <li><a href="/">Personeel</a></li>
                 <li><a href="/">Roosters</a></li>
-                <li><Button type="button" text="Login" children="Login"/></li>
+                <li><Button type="button" text="Login" className="btn" children="Login"/></li>
             </ul>
         </nav>
     );
