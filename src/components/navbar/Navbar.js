@@ -1,8 +1,9 @@
 import React from 'react';
 import './Navbar.css';
+import Button from "../button/Button";
 import beehiveLogo from '../../assets/beehive.svg';
 
-function Navbar(props) {
+function Navbar() {
     return (
         <nav className="navbar-container">
             <div className="logo-container"><img className="nav-img" src={beehiveLogo} alt="beehive-logo"/>
@@ -11,7 +12,7 @@ function Navbar(props) {
             <ul className="navbar-ul">
                 <li><a href="/">Personeel</a></li>
                 <li><a href="/">Roosters</a></li>
-                <button type="button">Login</button>
+                <li><Button type="button" text="Login" children="Login"/></li>
             </ul>
         </nav>
     );
