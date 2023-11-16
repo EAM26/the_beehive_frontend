@@ -1,0 +1,36 @@
+.navbar-container {
+    display: flex;
+    flex: 0 0 100vw;
+    background-color: orange;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 20px;
+    font-family: Roboto, sans-serif;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-img {
+    width: 50px;
+    height: 60px;
+}
+
+.navbar-ul {
+    display: flex;
+    list-style-type: none;
+    gap: 10px;
+}
+
+.nav-bar-ul:hover {
+    font-style: italic;
+}
+
+.navbar-ul li:hover {
+    font-style: italic;
+}
+
