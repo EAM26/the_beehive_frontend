@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../App.css';
 import './Navbar.css';
 import Button from "../button/Button";
 import beehiveLogo from '../../assets/beehive.svg';

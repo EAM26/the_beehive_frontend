@@ -1,0 +1,14 @@
+/* FLEXBOX */
+.outer-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.inner-container {
+    display: flex;
+    flex-direction: column;
+    margin-inline: 1rem;
+    flex: 0 1 1200px;
+    align-items: center;
+}
