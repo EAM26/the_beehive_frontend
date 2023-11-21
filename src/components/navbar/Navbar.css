@@ -1,6 +1,6 @@
 .navbar-container {
     display: flex;
-    flex: 0 0 100vw;
+    flex: 0 1 100%;
     background-color: var(--color-yellow);
     justify-content: space-between;
     align-items: center;

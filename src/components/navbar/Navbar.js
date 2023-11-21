@@ -7,7 +7,6 @@ import {NavLink} from "react-router-dom";
 
 function Navbar() {
     return (
-        <>
             <nav className="navbar-container">
                 <div className="logo-container"><img className="nav-img" src={beehiveLogo} alt="beehive-logo"/>
                     <h2>Beehive</h2></div>
@@ -20,7 +19,6 @@ function Navbar() {
                     <li><Button type="button" text="Login" className="btn" children="Login"/></li>
                 </ul>
             </nav>
-        </>
     );
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
+import './Login.css';
 
 function Login() {
 
@@ -13,7 +14,7 @@ function Login() {
     return (
         <div className="outer-container">
             <div className="inner-container">
-                <form
+                <form className="form-outer-container"
                     onSubmit={handleSubmit(handleFormSubmit)}>
                     <label
                         htmlFor="username">
