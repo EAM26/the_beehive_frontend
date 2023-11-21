@@ -1,17 +1,31 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import './Login.css';
 import FormInputField from "../../components/FormInputField/FormInputField";
+import {AuthContext} from "../../context/AuthContext";
+import axios from "axios";
 
 
 function Login() {
 
     const {register, handleSubmit} = useForm()
+    const { login } = useContext(AuthContext);
+    const [ loginFailed, setLoginFailed ] = useState(false);
 
-    function handleFormSubmit(data) {
-
-        console.log("function handleForm activated: ", data)
+    async function handleFormSubmit(data) {
+        try {
+            const response = await axios.post(`http://localhost:8080/authenticate`, {
+                username: data.username,
+                password: data.password,
+            })
+            console.log("de response data is: ", response.data)
+            login(response.data.jwt, '/')
+        } catch(e) {
+            console.error("Login niet gelukt", e)
+            setLoginFailed(true)
+        }
+        // console.log("function handleForm activated: ", data)
     }
 
     return (
