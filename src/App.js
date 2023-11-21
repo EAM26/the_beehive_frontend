@@ -5,6 +5,7 @@ import Employees from "./pages/employees/Employees";
 import Login from "./pages/login/Login";
 import {useContext} from "react";
 import {AuthContext} from "./context/AuthContext";
+import TempHome from "./pages/tempPages/tempHome";
 
 function App() {
      const { isAuth } = useContext(AuthContext)
@@ -12,8 +13,9 @@ function App() {
         <>
             <Navbar/>
             <Routes>
-                <Route path="/employees" element={ isAuth ? <Employees/> : <Navigate to={'/login'} /> }/>
+                <Route path="/" element={<TempHome/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/employees" element={ isAuth ? <Employees/> : <Navigate to={'/login'} /> }/>
             </Routes>
         </>
     );
