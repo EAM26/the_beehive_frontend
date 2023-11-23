@@ -5,9 +5,3 @@
     justify-content: left;
 }
 
-.error-message {
-    color: red;
-    font-style: italic;
-    font-size: .75rem;
-    min-height: 20px;
-}

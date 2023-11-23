@@ -14,3 +14,9 @@
     align-items: center;
 }
 
+.form-error-message {
+    color: red;
+    font-style: italic;
+    font-size: .75rem;
+    min-height: 17px;
+}
