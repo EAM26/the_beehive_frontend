@@ -26,4 +26,9 @@ code {
     --color-yellow: #FFBB0C;
 }
 
+p{
+    font-size: 1rem;
+    color: blue;
+}
+
 
