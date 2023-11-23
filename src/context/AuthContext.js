@@ -1,6 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {jwtDecode} from 'jwt-decode';
 import axios from "axios";
 import checkTokenValidity from "../helpers/checkTokenValidity";
 
@@ -13,13 +12,11 @@ function AuthContextProvider({children}) {
         isAuth: false,
         user: null,
         status: 'pending'});
-
     const navigate  = useNavigate();
 
     useEffect(() => {
-        console.log("Run use effect authcontext")
         const storedToken = localStorage.getItem('token')
-        if(storedToken) {
+        if(storedToken && checkTokenValidity(storedToken)) {
             login(storedToken)
         } else {
             logout()
@@ -45,29 +42,18 @@ function AuthContextProvider({children}) {
                 status: "done",
 
             })
-            console.log("function fetchUserData activated: ", response.data)
+
             if(redirect) navigate(redirect)
         } catch (e) {
             console.error("Couldn't fetch userdata: ", e)
-            // setAuthState( {
-            //     ...authState,
-            //     isAuth: false,
-            //     user: null,
-            //     status: "done",
-            // })
-
         }
     }
     function login(jwt, redirect) {
-        console.log("login function activated")
-        const decodedToken = jwtDecode(jwt)
-        console.log("decodedToken: ", decodedToken)
         localStorage.setItem('token', jwt)
         fetchUserData(jwt, redirect)
     }
 
     function logout() {
-        console.log("logout function")
         localStorage.removeItem('token')
         setAuthState( {
             ...authState,
