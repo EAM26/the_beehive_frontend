@@ -2,6 +2,7 @@ import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {jwtDecode} from 'jwt-decode';
 import axios from "axios";
+import checkTokenValidity from "../helpers/checkTokenValidity";
 
 
 export const AuthContext = createContext({});
@@ -16,6 +17,7 @@ function AuthContextProvider({children}) {
     const navigate  = useNavigate();
 
     useEffect(() => {
+        console.log("Run use effect authcontext")
         const storedToken = localStorage.getItem('token')
         if(storedToken) {
             login(storedToken)
@@ -47,6 +49,13 @@ function AuthContextProvider({children}) {
             if(redirect) navigate(redirect)
         } catch (e) {
             console.error("Couldn't fetch userdata: ", e)
+            // setAuthState( {
+            //     ...authState,
+            //     isAuth: false,
+            //     user: null,
+            //     status: "done",
+            // })
+
         }
     }
     function login(jwt, redirect) {
