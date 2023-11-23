@@ -1,6 +1,7 @@
 import React from 'react';
 
-function FormInputField( {name, type, id, label, placeholder, register} ) {
+
+function FormInputField( {name, type, id, label, placeholder, register, errors, validation} ) {
     return (
         <div>
             <label htmlFor={id}>
@@ -9,9 +10,10 @@ function FormInputField( {name, type, id, label, placeholder, register} ) {
                     type={type}
                     id={id}
                     placeholder={placeholder}
-                    {...register(name)}
+                    {...register(name, validation)}
                 />
             </label>
+            <p className="form-error-message">{errors[name] && errors[name].message}</p>
         </div>
     );
 }

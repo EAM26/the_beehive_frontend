@@ -5,13 +5,15 @@ import './Login.css';
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {AuthContext} from "../../context/AuthContext";
 import axios from "axios";
+import {errorHandler} from "../../helpers/errorHandler";
 
 
 function Login() {
 
-    const {register, handleSubmit} = useForm()
-    const { login } = useContext(AuthContext);
-    const [ loginFailed, setLoginFailed ] = useState(false);
+    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
+    const {login} = useContext(AuthContext);
+    const [loginFailed, setLoginFailed] = useState(false);
+    const [errorMessage, setErrormessage] = useState("")
 
     async function handleFormSubmit(data) {
         try {
@@ -19,13 +21,12 @@ function Login() {
                 username: data.username,
                 password: data.password,
             })
-            console.log("de response data is: ", response.data)
             login(response.data.jwt, '/')
-        } catch(e) {
-            console.error("Login niet gelukt", e)
+        } catch (e) {
+            console.error("Login failed", e)
             setLoginFailed(true)
+            setErrormessage(errorHandler(e))
         }
-        // console.log("function handleForm activated: ", data)
     }
 
     return (
@@ -40,15 +41,32 @@ function Login() {
                         id="username"
                         placeholder="Typ hier je gebruikersnaam"
                         register={register}
+                        errors={errors}
+                        validation={{
+                            required: {
+                                value: true,
+                                message: "Gebruikersnaam is verplicht."
+                            }
+                        }}
+
+                            />
+                            <FormInputField
+                            label="Wachtwoord:"
+                            name="password"
+                            type="password"
+                            id="password"
+                            placeholder="Typ hier je wachtwoord"
+                            register={register}
+                            errors={errors}
+                            validation={{
+                                required: {
+                                    value: true,
+                                    message: "Wachtwoord is verplicht."
+                                }
+                            }}
                     />
-                    <FormInputField
-                        label="Wachtwoord:"
-                        name="password"
-                        type="password"
-                        id="password"
-                        placeholder="Typ hier je wachtwoord"
-                        register={register}
-                    />
+                    <p className="form-error-message">{loginFailed ? errorMessage : ""}</p>
+
                     <Button type="submit" children="Inloggen"/>
                 </form>
             </div>
