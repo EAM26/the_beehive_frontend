@@ -10,7 +10,7 @@ import {errorHandler} from "../../helpers/errorHandler";
 
 function Login() {
 
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
     const {login} = useContext(AuthContext);
     const [loginFailed, setLoginFailed] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
@@ -41,16 +41,31 @@ function Login() {
                         id="username"
                         placeholder="Typ hier je gebruikersnaam"
                         register={register}
+                        errors={errors}
+                        validation={{
+                            required: {
+                                value: true,
+                                message: "Gebruikersnaam is verplicht."
+                            }
+                        }}
+
+                            />
+                            <FormInputField
+                            label="Wachtwoord:"
+                            name="password"
+                            type="password"
+                            id="password"
+                            placeholder="Typ hier je wachtwoord"
+                            register={register}
+                            errors={errors}
+                            validation={{
+                                required: {
+                                    value: true,
+                                    message: "Wachtwoord is verplicht."
+                                }
+                            }}
                     />
-                    <FormInputField
-                        label="Wachtwoord:"
-                        name="password"
-                        type="password"
-                        id="password"
-                        placeholder="Typ hier je wachtwoord"
-                        register={register}
-                    />
-                    <p className="error-message">{loginFailed ? errorMessage : ""}</p>
+                    <p className="form-error-message">{loginFailed ? errorMessage : ""}</p>
 
                     <Button type="submit" children="Inloggen"/>
                 </form>
