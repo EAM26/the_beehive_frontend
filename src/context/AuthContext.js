@@ -8,6 +8,15 @@ export const AuthContext = createContext({});
 
 function AuthContextProvider({children}) {
 
+    function hasAdminOrManagerRole(userObject) {
+        return userObject.authorities.some(auth =>
+            auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
+        );
+    }
+
+
+    const [hasAuthLevel, setHasAuthLevel] = useState(false);
+
     const [authState, setAuthState] = useState({
         isAuth: false,
         user: null,
@@ -26,7 +35,7 @@ function AuthContextProvider({children}) {
 
     async function fetchUserData(jwt, redirect) {
         try {
-            const response = await axios.get('http://localhost:8080/authenticated', {
+            const {data: { principal, authorities } } = await axios.get('http://localhost:8080/authenticated', {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${jwt}`
@@ -36,11 +45,11 @@ function AuthContextProvider({children}) {
                 ...authState,
                 isAuth: true,
                 user: {
-                    username: response.data.username,
-                    authorities: response.data.authorities
+                    username: principal.username,
+                    authorities: authorities
+
                 },
                 status: "done",
-
             })
 
             if(redirect) navigate(redirect)
@@ -50,7 +59,8 @@ function AuthContextProvider({children}) {
     }
     function login(jwt, redirect) {
         localStorage.setItem('token', jwt)
-        fetchUserData(jwt, redirect)
+         void fetchUserData(jwt, redirect)
+
     }
 
     function logout() {
@@ -69,6 +79,10 @@ function AuthContextProvider({children}) {
         user: authState.user,
         login: login,
         logout: logout,
+        hasAdminOrManagerRole: hasAdminOrManagerRole,
+        hasAuthLevel: hasAuthLevel,
+        setHasAuthLevel: setHasAuthLevel,
+
     };
 
 

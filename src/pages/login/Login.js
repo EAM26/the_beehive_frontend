@@ -6,8 +6,6 @@ import FormInputField from "../../components/FormInputField/FormInputField";
 import {AuthContext} from "../../context/AuthContext";
 import axios from "axios";
 import {errorHandler} from "../../helpers/errorHandler";
-
-
 function Login() {
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
@@ -27,6 +25,7 @@ function Login() {
             setLoginFailed(true)
             setErrormessage(errorHandler(e))
         }
+
     }
 
     return (

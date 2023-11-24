@@ -1,12 +1,22 @@
 .navbar-container {
-    display: flex;
-    flex: 0 1 100%;
     background-color: var(--color-yellow);
-    justify-content: space-between;
-    align-items: center;
     height: 100px;
     padding: 20px;
     font-family: Roboto, sans-serif;
+}
+
+.single-item {
+    display: flex;
+    flex: 0 1 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.double-item {
+    display: flex;
+    flex: 0 1 100%;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo-container {
@@ -28,13 +38,17 @@
     align-items: center;
     font-size: 30px;
     font-weight: bold;
+    margin-left: 10px;
+
 }
 
-.nav-bar-ul:hover {
-    font-style: italic;
+.navbar-ul li, a {
+    text-decoration: none;
+    color: inherit;
+
 }
 
-.navbar-ul li:hover {
+.navbar-ul li:hover, h2:hover {
     font-style: italic;
 }
 
