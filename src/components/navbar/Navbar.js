@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import '../../App.css';
 import './Navbar.css';
 import Button from "../button/Button";
@@ -8,13 +8,32 @@ import {AuthContext} from "../../context/AuthContext";
 
 function Navbar() {
 
-    const {isAuth, logout} = useContext(AuthContext)
+    const {isAuth, user, logout} = useContext(AuthContext)
     const location = useLocation();
 
     const navItems = isAuth? 2: 1;
     const navClass = navItems === 1 ? "single-item" : "double-item";
+    const [hasAuthLevel, setAuthCheckLevel] = useState(false);
+
+
+
+    function hasAdminOrManagerRole(userObject) {
+        return userObject.authorities.some(auth =>
+                auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
+            );
+    }
+
+
+    useEffect(()=> {
+        if(user) {
+            setAuthCheckLevel(hasAdminOrManagerRole(user))
+            console.log(user)
+        }
+    }, [user])
+
 
     return (
+
         <nav className={`navbar-container ${navClass}`}>
             <NavLink to="/">
                 <div className="logo-container">
@@ -24,18 +43,18 @@ function Navbar() {
             </NavLink>
 
             {isAuth && <ul className="navbar-ul">
-                {location.pathname !== "/employees" &&
+                {hasAuthLevel && (location.pathname !== "/employees" &&
                     <li>
                         <NavLink to="/employees">
                             Personeel
                         </NavLink>
-                    </li>}
-                {location.pathname !== "/rosters" &&
+                    </li>)}
+                {hasAuthLevel && (location.pathname !== "/rosters" &&
                     <li>
                         <NavLink to="/rosters">
                             Roosters
                         </NavLink>
-                    </li>}
+                    </li>)}
                 {location.pathname !== "/profile" &&
                     <li>
                         <NavLink to="/profile">
@@ -45,6 +64,7 @@ function Navbar() {
                 <Button type="button" className="btn" children="Logout" onClick={logout}/>
             </ul>}
         </nav>
+
     );
 }
 

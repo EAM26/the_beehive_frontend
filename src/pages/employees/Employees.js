@@ -10,7 +10,6 @@ function Employees() {
             try {
                 const response = await axios.get('http://localhost:8080/employees')
                 setEmployees(response.data)
-                console.log(employees)
             } catch (e) {
                 console.error("Kon employees niet ophalen: ", e)
             }
