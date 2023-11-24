@@ -11,8 +11,11 @@ function Navbar() {
     const {isAuth, logout} = useContext(AuthContext)
     const location = useLocation();
 
+    const navItems = isAuth? 2: 1;
+    const navClass = navItems === 1 ? "single-item" : "double-item";
+
     return (
-        <nav className="navbar-container">
+        <nav className={`navbar-container ${navClass}`}>
             <NavLink to="/">
                 <div className="logo-container">
                     <img className="nav-img" src={beehiveLogo} alt="beehive-logo"/>
