@@ -3,12 +3,14 @@ import '../../App.css';
 import './Navbar.css';
 import Button from "../button/Button";
 import beehiveLogo from '../../assets/beehive.svg';
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 
 function Navbar() {
 
-    const {isAuth, login, logout} = useContext(AuthContext)
+    const {isAuth, logout} = useContext(AuthContext)
+    const location = useLocation();
+
     return (
         <nav className="navbar-container">
             <NavLink to="/">
@@ -19,19 +21,24 @@ function Navbar() {
             </NavLink>
 
             {isAuth && <ul className="navbar-ul">
-                <li>
-                    <NavLink to="/employees">
-                        Personeel
-                    </NavLink>
-                </li>
-                <li><NavLink to="/rosters">
-                    Roosters
-                </NavLink>
-                </li>
-                <li><NavLink to="/profile">
-                    Profiel
-                </NavLink>
-                </li>
+                {location.pathname !== "/employees" &&
+                    <li>
+                        <NavLink to="/employees">
+                            Personeel
+                        </NavLink>
+                    </li>}
+                {location.pathname !== "/rosters" &&
+                    <li>
+                        <NavLink to="/rosters">
+                            Roosters
+                        </NavLink>
+                    </li>}
+                {location.pathname !== "/profile" &&
+                    <li>
+                        <NavLink to="/profile">
+                            Profiel
+                        </NavLink>
+                    </li>}
                 <Button type="button" className="btn" children="Logout" onClick={logout}/>
             </ul>}
         </nav>
