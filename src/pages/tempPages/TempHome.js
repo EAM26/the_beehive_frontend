@@ -3,7 +3,7 @@ import React from 'react';
 function TempHome(props) {
     return (
         <div>
-            <h1>Temp Home page</h1>
+            <h1>TEMP HOME PAGE</h1>
         </div>
     );
 }
