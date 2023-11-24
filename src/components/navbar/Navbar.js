@@ -8,25 +8,25 @@ import {AuthContext} from "../../context/AuthContext";
 
 function Navbar() {
 
-    const {isAuth, user, logout} = useContext(AuthContext)
+    const {isAuth, user, logout, hasAdminOrManagerRole, hasAuthLevel, setHasAuthLevel} = useContext(AuthContext)
     const location = useLocation();
 
     const navItems = isAuth? 2: 1;
     const navClass = navItems === 1 ? "single-item" : "double-item";
-    const [hasAuthLevel, setAuthCheckLevel] = useState(false);
+    
 
 
 
-    function hasAdminOrManagerRole(userObject) {
-        return userObject.authorities.some(auth =>
-                auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
-            );
-    }
+    // function hasAdminOrManagerRole(userObject) {
+    //     return userObject.authorities.some(auth =>
+    //             auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
+    //         );
+    // }
 
 
     useEffect(()=> {
         if(user) {
-            setAuthCheckLevel(hasAdminOrManagerRole(user))
+            setHasAuthLevel(hasAdminOrManagerRole(user))
             console.log(user)
         }
     }, [user])

@@ -8,6 +8,15 @@ export const AuthContext = createContext({});
 
 function AuthContextProvider({children}) {
 
+    function hasAdminOrManagerRole(userObject) {
+        return userObject.authorities.some(auth =>
+            auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
+        );
+    }
+
+
+    const [hasAuthLevel, setHasAuthLevel] = useState(false);
+
     const [authState, setAuthState] = useState({
         isAuth: false,
         user: null,
@@ -70,6 +79,10 @@ function AuthContextProvider({children}) {
         user: authState.user,
         login: login,
         logout: logout,
+        hasAdminOrManagerRole: hasAdminOrManagerRole,
+        hasAuthLevel: hasAuthLevel,
+        setHasAuthLevel: setHasAuthLevel,
+
     };
 
 

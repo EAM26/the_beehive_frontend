@@ -10,16 +10,16 @@ import TempRosters from "./pages/tempPages/TempRosters";
 import TempProfile from "./pages/tempPages/TempProfile";
 
 function App() {
-     const { isAuth } = useContext(AuthContext)
+     const { isAuth, hasAuthLevel } = useContext(AuthContext)
     return (
         <>
             <Navbar/>
             <Routes>
                 <Route path="/" element={ isAuth ? <TempHome/> : <Navigate to={'/login'} /> }/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/employees" element={ isAuth ? <Employees/> : <Navigate to={'/login'} /> }/>
-                <Route path="/rosters" element={ isAuth ? <TempRosters/> : <Navigate to={'/login'} /> }/>
                 <Route path="/profile" element={ isAuth ? <TempProfile/> : <Navigate to={'/login'} /> }/>
+                <Route path="/employees" element={ isAuth && hasAuthLevel ? <Employees/> : <Navigate to={'/'} /> }/>
+                <Route path="/rosters" element={ isAuth && hasAuthLevel ? <TempRosters/> : <Navigate to={'/'} /> }/>
+                <Route path="/login" element={<Login/>}/>
             </Routes>
         </>
     );
