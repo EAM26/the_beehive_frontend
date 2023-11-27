@@ -10,11 +10,14 @@ function Login() {
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
     const {login} = useContext(AuthContext);
-    const [loginFailed, setLoginFailed] = useState(false);
+    const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
 
     async function handleFormSubmit(data) {
         try {
+            setError(false)
+            setErrormessage("")
+
             const response = await axios.post(`http://localhost:8080/authenticate`, {
                 username: data.username,
                 password: data.password,
@@ -22,7 +25,7 @@ function Login() {
             login(response.data.jwt, '/')
         } catch (e) {
             console.error("Login failed", e)
-            setLoginFailed(true)
+            setError(true)
             setErrormessage(errorHandler(e))
         }
 
@@ -64,7 +67,7 @@ function Login() {
                                 }
                             }}
                     />
-                    <p className="form-error-message">{loginFailed ? errorMessage : ""}</p>
+                    <p className="form-error-message">{error ? errorMessage : ""}</p>
 
                     <Button type="submit" children="Inloggen"/>
                 </form>

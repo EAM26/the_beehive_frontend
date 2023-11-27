@@ -16,10 +16,10 @@ function App() {
             <Navbar/>
             <Routes>
                 <Route path="/" element={ isAuth ? <TempHome/> : <Navigate to={'/login'} /> }/>
+                <Route path="/login" element={<Login/>}/>
                 <Route path="/profile" element={ isAuth ? <TempProfile/> : <Navigate to={'/login'} /> }/>
                 <Route path="/employees" element={ isAuth && hasAuthLevel ? <Employees/> : <Navigate to={'/'} /> }/>
                 <Route path="/rosters" element={ isAuth && hasAuthLevel ? <TempRosters/> : <Navigate to={'/'} /> }/>
-                <Route path="/login" element={<Login/>}/>
             </Routes>
         </>
     );
