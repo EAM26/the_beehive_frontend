@@ -1,27 +1,31 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import checkTokenValidity from "../helpers/checkTokenValidity";
+import { checkTokenValidity } from "../helpers/checkTokenValidity";
+import {getHighestRole} from "../helpers/getHighestRole";
+
 
 
 export const AuthContext = createContext({});
 
 function AuthContextProvider({children}) {
 
-    function hasAdminOrManagerRole(userObject) {
-        return userObject.authorities.some(auth =>
-            auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
-        );
-    }
+    // function hasAdminOrManagerRole(authorities) {
+    //     console.log("How authorities looks: ", authorities)
+    //     console.log(authorities[0])
+    //     return authorities.some(auth =>
+    //         auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
+    //     );
+    // }
 
-
-    const [hasAuthLevel, setHasAuthLevel] = useState(false);
-
+    const [authLevel, setAuthLevel] = useState('');
     const [authState, setAuthState] = useState({
         isAuth: false,
         user: null,
         status: 'pending'});
+
     const navigate  = useNavigate();
+
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token')
@@ -51,6 +55,8 @@ function AuthContextProvider({children}) {
                 },
                 status: "done",
             })
+            console.log("how authorities looks: ", authorities)
+            setAuthLevel(getHighestRole(authorities))
 
             if(redirect) navigate(redirect)
         } catch (e) {
@@ -79,10 +85,7 @@ function AuthContextProvider({children}) {
         user: authState.user,
         login: login,
         logout: logout,
-        hasAdminOrManagerRole: hasAdminOrManagerRole,
-        hasAuthLevel: hasAuthLevel,
-        setHasAuthLevel: setHasAuthLevel,
-
+        authLevel: authLevel,
     };
 
 
