@@ -24,7 +24,6 @@ function Login() {
             })
             login(response.data.jwt, '/')
         } catch (e) {
-            console.error("Login failed", e)
             setError(true)
             setErrormessage(errorHandler(e))
         }
@@ -68,7 +67,6 @@ function Login() {
                             }}
                     />
                     <p className="form-error-message">{error ? errorMessage : ""}</p>
-
                     <Button type="submit" children="Inloggen"/>
                 </form>
             </div>
