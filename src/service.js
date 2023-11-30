@@ -14,3 +14,11 @@ export const getEmployees = async (token, signal) => {
     return response.data
 
 }
+
+export const postLoginData = async(data) => {
+    const response = await axios.post(`http://localhost:8080/authenticate`, {
+        username: data.username,
+        password: data.password,
+    })
+    return response.data;
+}
