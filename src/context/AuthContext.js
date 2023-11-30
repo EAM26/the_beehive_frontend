@@ -1,6 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import {checkTokenValidity} from "../helpers/checkTokenValidity";
 import {getHighestRole} from "../helpers/getHighestRole";
 import {errorHandler} from "../helpers/errorHandler";

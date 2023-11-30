@@ -23,7 +23,6 @@ function Employees() {
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
-                console.error("Error fetching employees:", e);
             } finally {
                 setLoading(false);
             }
@@ -31,7 +30,6 @@ function Employees() {
         void fetchData();
 
         return function cleanup() {
-            console.log("cleanup ran")
             controller.abort();
         }
     }, []);
@@ -40,7 +38,7 @@ function Employees() {
         <div>
             <h2>Employees</h2>
             {loading && <p>Loading...</p>}
-            {error && <p>{errorMessage}</p>}
+            {error? <p>{errorMessage}</p> :
             <table>
                 <thead>
                 <tr>
@@ -66,7 +64,7 @@ function Employees() {
                     }
                 )}
                 </tbody>
-            </table>
+            </table>}
         </div>
     );
 }

@@ -11,7 +11,6 @@ export function errorHandler(e) {
                 return "Onbekende fout"
         }
     } catch (e) {
-        console.log("Onbekende fout: ", e.response)
         return "Onbekende fout"
     }
 

@@ -4,7 +4,6 @@ import Button from "../../components/button/Button";
 import './Login.css';
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {AuthContext} from "../../context/AuthContext";
-import axios from "axios";
 import {errorHandler} from "../../helpers/errorHandler";
 import {postLoginData} from "../../service";
 function Login() {
