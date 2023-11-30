@@ -1,27 +1,44 @@
 import React, {useEffect, useState} from 'react';
-import axios from "axios";
+import {errorHandler} from "../../helpers/errorHandler";
+import { getEmployees } from "../../service";
+
 
 function Employees() {
 
     const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false);
+    const [errorMessage,  setErrormessage] = useState("")
+
 
     useEffect(() => {
-        async function getEmployees() {
+        const controller = new AbortController();
+        const token = localStorage.getItem('token');
+
+        const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/employees')
-                setEmployees(response.data)
+                setLoading(true);
+                const employeesData = await getEmployees(token, controller.signal);
+                setEmployees(employeesData);
             } catch (e) {
-                console.error("Kon employees niet ophalen: ", e)
+                setError(true);
+                setErrormessage(errorHandler(e));
+            } finally {
+                setLoading(false);
             }
+        };
+        void fetchData();
 
+        return function cleanup() {
+            controller.abort();
         }
-
-        getEmployees();
-
     }, []);
+
     return (
         <div>
             <h2>Employees</h2>
+            {loading && <p>Loading...</p>}
+            {error? <p>{errorMessage}</p> :
             <table>
                 <thead>
                 <tr>
@@ -47,7 +64,7 @@ function Employees() {
                     }
                 )}
                 </tbody>
-            </table>
+            </table>}
         </div>
     );
 }

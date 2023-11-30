@@ -1,31 +1,27 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import './Login.css';
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {AuthContext} from "../../context/AuthContext";
-import axios from "axios";
 import {errorHandler} from "../../helpers/errorHandler";
+import {postLoginData} from "../../service";
 function Login() {
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
-    const {login} = useContext(AuthContext);
-    const [loginFailed, setLoginFailed] = useState(false);
-    const [errorMessage, setErrormessage] = useState("")
+    const {login, error, setError, errorMessage, setErrormessage} = useContext(AuthContext);
+
 
     async function handleFormSubmit(data) {
+        setError(false)
+        setErrormessage("")
         try {
-            const response = await axios.post(`http://localhost:8080/authenticate`, {
-                username: data.username,
-                password: data.password,
-            })
-            login(response.data.jwt, '/')
+            const loginData = await postLoginData(data)
+            login(loginData.jwt, '/')
         } catch (e) {
-            console.error("Login failed", e)
-            setLoginFailed(true)
+            setError(true)
             setErrormessage(errorHandler(e))
         }
-
     }
 
     return (
@@ -64,8 +60,7 @@ function Login() {
                                 }
                             }}
                     />
-                    <p className="form-error-message">{loginFailed ? errorMessage : ""}</p>
-
+                    <p className="form-error-message">{error ? errorMessage : ""}</p>
                     <Button type="submit" children="Inloggen"/>
                 </form>
             </div>

@@ -48,7 +48,11 @@
 
 }
 
-.navbar-ul li:hover, h2:hover {
+.navbar-ul li:hover {
+    font-style: italic;
+}
+
+.navbar-container h2:hover {
     font-style: italic;
 }
 

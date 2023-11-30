@@ -1,31 +1,30 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
-import checkTokenValidity from "../helpers/checkTokenValidity";
+import {checkTokenValidity} from "../helpers/checkTokenValidity";
+import {getHighestRole} from "../helpers/getHighestRole";
+import {errorHandler} from "../helpers/errorHandler";
+import {getUserData} from "../service";
 
 
 export const AuthContext = createContext({});
 
 function AuthContextProvider({children}) {
 
-    function hasAdminOrManagerRole(userObject) {
-        return userObject.authorities.some(auth =>
-            auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
-        );
-    }
-
-
-    const [hasAuthLevel, setHasAuthLevel] = useState(false);
-
+    const [authLevel, setAuthLevel] = useState('');
     const [authState, setAuthState] = useState({
         isAuth: false,
         user: null,
-        status: 'pending'});
-    const navigate  = useNavigate();
+        status: 'pending'
+    });
+
+    const navigate = useNavigate();
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrormessage] = useState("")
+
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token')
-        if(storedToken && checkTokenValidity(storedToken)) {
+        if (storedToken && checkTokenValidity(storedToken)) {
             login(storedToken)
         } else {
             logout()
@@ -33,15 +32,11 @@ function AuthContextProvider({children}) {
 
     }, []);
 
-    async function fetchUserData(jwt, redirect) {
+    async function fetchData(jwt, redirect) {
         try {
-            const {data: { principal, authorities } } = await axios.get('http://localhost:8080/authenticated', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${jwt}`
-                }
-            })
-            setAuthState( {
+
+            const { principal, authorities} = await getUserData(jwt);
+            setAuthState({
                 ...authState,
                 isAuth: true,
                 user: {
@@ -49,23 +44,33 @@ function AuthContextProvider({children}) {
                     authorities: authorities
 
                 },
-                status: "done",
+                status: "done"
+            })
+            setAuthLevel(getHighestRole(authorities))
+
+        } catch (e) {
+            setError(true)
+            setErrormessage(errorHandler(e))
+            setAuthState({
+                ...authState,
+                status: 'done'
             })
 
-            if(redirect) navigate(redirect)
-        } catch (e) {
-            console.error("Couldn't fetch userdata: ", e)
         }
+        finally {
+            if (redirect) navigate(redirect)
+        }
+
     }
+
     function login(jwt, redirect) {
         localStorage.setItem('token', jwt)
-         void fetchUserData(jwt, redirect)
-
+        void fetchData(jwt, redirect)
     }
 
     function logout() {
         localStorage.removeItem('token')
-        setAuthState( {
+        setAuthState({
             ...authState,
             isAuth: false,
             user: null,
@@ -74,21 +79,22 @@ function AuthContextProvider({children}) {
         navigate('/login')
     }
 
-    const contextData = {
+    const authContextData = {
         isAuth: authState.isAuth,
         user: authState.user,
-        login: login,
-        logout: logout,
-        hasAdminOrManagerRole: hasAdminOrManagerRole,
-        hasAuthLevel: hasAuthLevel,
-        setHasAuthLevel: setHasAuthLevel,
-
+        login,
+        logout,
+        authLevel,
+        error,
+        setError,
+        errorMessage,
+        setErrormessage,
     };
 
 
     return (
-        <AuthContext.Provider value={contextData}>
-            { authState.status === "done" ? children : <p>Loading...</p>}
+        <AuthContext.Provider value={authContextData}>
+            {authState.status === "done" ? children : <p>Loading...</p>}
         </AuthContext.Provider>
     );
 }

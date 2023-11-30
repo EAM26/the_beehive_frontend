@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext,} from 'react';
 import '../../App.css';
 import './Navbar.css';
 import Button from "../button/Button";
@@ -8,29 +8,11 @@ import {AuthContext} from "../../context/AuthContext";
 
 function Navbar() {
 
-    const {isAuth, user, logout, hasAdminOrManagerRole, hasAuthLevel, setHasAuthLevel} = useContext(AuthContext)
+    const {isAuth, logout, authLevel,} = useContext(AuthContext)
     const location = useLocation();
 
     const navItems = isAuth? 2: 1;
     const navClass = navItems === 1 ? "single-item" : "double-item";
-    
-
-
-
-    // function hasAdminOrManagerRole(userObject) {
-    //     return userObject.authorities.some(auth =>
-    //             auth.authority === 'ROLE_ADMIN' || auth.authority === 'ROLE_MANAGER'
-    //         );
-    // }
-
-
-    useEffect(()=> {
-        if(user) {
-            setHasAuthLevel(hasAdminOrManagerRole(user))
-            console.log(user)
-        }
-    }, [user])
-
 
     return (
 
@@ -43,13 +25,13 @@ function Navbar() {
             </NavLink>
 
             {isAuth && <ul className="navbar-ul">
-                {hasAuthLevel && (location.pathname !== "/employees" &&
+                {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/employees" &&
                     <li>
                         <NavLink to="/employees">
                             Personeel
                         </NavLink>
                     </li>)}
-                {hasAuthLevel && (location.pathname !== "/rosters" &&
+                {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/rosters" &&
                     <li>
                         <NavLink to="/rosters">
                             Roosters

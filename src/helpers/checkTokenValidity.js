@@ -1,8 +1,7 @@
 import {jwtDecode} from "jwt-decode";
 
-function CheckTokenValidity(jwt) {
+export function checkTokenValidity(jwt) {
     const decodedToken = jwtDecode(jwt);
     return (Date.now()) < decodedToken.exp * 1000;
 }
 
-export default CheckTokenValidity;
