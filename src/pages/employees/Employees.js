@@ -1,34 +1,31 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {AuthContext} from "../../context/AuthContext";
+import {errorHandler} from "../../helpers/errorHandler";
+
+
 
 
 function Employees() {
 
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(false)
-    const {hasAuthLevel} = useContext(AuthContext)
+    const [error, setError] = useState(false);
+    const [errorMessage,  setErrormessage] = useState("")
+    const controller = new AbortController()
+
 
     useEffect(() => {
-        console.log("Authlevel from employees: ",hasAuthLevel)
-        async function getEmployees() {
-            setLoading(true)
-            try {
-                const response = await axios.get('http://localhost:8080/employees')
-                setEmployees(response.data)
-            } catch (e) {
-                console.error("Couldn't fetch employees: ", e)
-            }
-            setLoading(false)
-        }
-
         void getEmployees();
-
+        return function cleanup() {
+            controller.abort()
+        }
     }, []);
+
     return (
         <div>
             <h2>Employees</h2>
-            {/*{loading && <p>Loading...</p>}*/}
+            {loading && <p>Loading...</p>}
+            {error && <p>{errorMessage}</p>}
             <table>
                 <thead>
                 <tr>
@@ -57,6 +54,33 @@ function Employees() {
             </table>
         </div>
     );
+
+
+    async function getEmployees() {
+        setLoading(true)
+        setErrormessage('')
+        setError(false)
+
+        const token = localStorage.getItem('token')
+
+        try {
+            const response = await axios.get('http://localhost:8080/employees',
+                {headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    signal: controller.signal})
+
+            setEmployees(response.data)
+        } catch (e) {
+            setError(true)
+            setErrormessage(errorHandler(e))
+            console.error("Error: getEmployees", e)
+        }
+        setLoading(false)
+    }
 }
+
+
 
 export default Employees;

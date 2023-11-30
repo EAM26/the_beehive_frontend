@@ -1,7 +1,5 @@
 export function errorHandler(e) {
-    if(e.message === 'Network Error') {
-        return "Kan geen verbinding maken."
-    }
+
     const {status, data} = e.response
     switch (status) {
         case 401:
