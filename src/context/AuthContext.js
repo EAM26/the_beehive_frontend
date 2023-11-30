@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {checkTokenValidity} from "../helpers/checkTokenValidity";
 import {getHighestRole} from "../helpers/getHighestRole";
 import {errorHandler} from "../helpers/errorHandler";
-import {getUserData} from "../service";
+import {getAuthData} from "../service";
 
 
 export const AuthContext = createContext({});
@@ -35,7 +35,7 @@ function AuthContextProvider({children}) {
     async function fetchData(jwt, redirect) {
         try {
 
-            const { principal, authorities} = await getUserData(jwt);
+            const { principal, authorities} = await getAuthData(jwt);
             setAuthState({
                 ...authState,
                 isAuth: true,
@@ -47,6 +47,7 @@ function AuthContextProvider({children}) {
                 status: "done"
             })
             setAuthLevel(getHighestRole(authorities))
+            console.log("principal: ", principal)
 
         } catch (e) {
             setError(true)
