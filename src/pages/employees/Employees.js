@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import axios from "axios";
 import {errorHandler} from "../../helpers/errorHandler";
-
-
+import { getEmployees } from "../../service";
 
 
 function Employees() {
@@ -11,13 +9,30 @@ function Employees() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage,  setErrormessage] = useState("")
-    const controller = new AbortController()
 
 
     useEffect(() => {
-        void getEmployees();
+        const controller = new AbortController();
+        const token = localStorage.getItem('token');
+
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const employeesData = await getEmployees(token, controller.signal);
+                setEmployees(employeesData);
+            } catch (e) {
+                setError(true);
+                setErrormessage(errorHandler(e));
+                console.error("Error fetching employees:", e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        void fetchData();
+
         return function cleanup() {
-            controller.abort()
+            console.log("cleanup ran")
+            controller.abort();
         }
     }, []);
 
@@ -54,33 +69,6 @@ function Employees() {
             </table>
         </div>
     );
-
-
-    async function getEmployees() {
-        setLoading(true)
-        setErrormessage('')
-        setError(false)
-
-        const token = localStorage.getItem('token')
-
-        try {
-            const response = await axios.get('http://localhost:8080/employees',
-                {headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    },
-                    signal: controller.signal})
-
-            setEmployees(response.data)
-        } catch (e) {
-            setError(true)
-            setErrormessage(errorHandler(e))
-            console.error("Error: getEmployees", e)
-        }
-        setLoading(false)
-    }
 }
-
-
 
 export default Employees;
