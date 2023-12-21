@@ -4,12 +4,12 @@ import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useParams} from "react-router-dom";
+import {getHighestRole} from "../../helpers/getHighestRole";
 
 function Profile() {
     let { id } = useParams()
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
-    const [user, setUser] = useState(null)
     const [employee, setEmployee] = useState(null)
 
     function handleFormSubmit() {
@@ -18,50 +18,39 @@ function Profile() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+
         if(id) {
-            console.log("id found: ", id)
-            const fetchData = async () => {
+            const fetchEmployeeData = async () => {
                 try {
                     const employeeData = await getSingleEmployeeData(token, id)
-                    console.log("employeeDAta: " ,employeeData)
+
                     setEmployee(employeeData)
                 } catch (e) {
                     console.error(e)
                 }
             }
-            void fetchData()
+            void fetchEmployeeData()
 
         } else {
-            console.log("no id found")
-            const fetchData = async () => {
+
+            const fetchEmployeeData = async () => {
                 try {
                     const employeeData = await getProfileData(token)
-                    console.log("employeeDAta: " ,employeeData)
+
                     setEmployee(employeeData)
                 } catch (e) {
                     console.error(e)
                 }
             }
-            void fetchData()
-
+            void fetchEmployeeData()
         }
 
-        // const fetchData = async () => {
-        //     try {
-        //         const employeeData = await getProfileData(token)
-        //         console.log("employeeDAta: " ,employeeData)
-        //         setEmployee(employeeData)
-        //     } catch (e) {
-        //         console.error(e)
-        //     }
-        // }
-        // void fetchData()
     }, []);
 
     return (
         <form
             onSubmit={handleSubmit(handleFormSubmit)}>
-            {employee && <p>{employee.firstName}</p>}
+
             <h2>Gebruikersgegevens</h2>
             <FormInputField
                 label="Gebruikersnaam"
@@ -70,7 +59,7 @@ function Profile() {
                 id="username"
                 register={register}
                 errors={errors}
-                defaultValue={user ? user.username : ""}
+                defaultValue={employee ? employee.username : ""}
             />
             <FormInputField
                 label="Email"
@@ -79,7 +68,7 @@ function Profile() {
                 id="email"
                 register={register}
                 errors={errors}
-                defaultValue={user ? user.email : ""}
+                defaultValue={employee ? employee.email : ""}
             />
             <FormInputField
                 label="Wachtwoord"
@@ -89,19 +78,17 @@ function Profile() {
                 register={register}
                 errors={errors}
             />
-            {user && user.authorities.map((authObj, index) => {
-                const authority = authObj.authority.substring(5)
-                return <FormInputField
-                    key={index}
-                    label="Authority"
-                    name={`auth${index}`}
-                    type="text"
-                    id={`auth${index}`}
-                    register={register}
-                    errors={errors}
-                    defaultValue={authority}
-                />
-            })}
+            <FormInputField
+            label="Authority"
+            name="authority"
+            type="text"
+            id="authority"
+            register={register}
+            errors={errors}
+            defaultValue={employee ? getHighestRole(employee.authorities) : ""}
+            />
+
+
             <Button type="submit" children="Opslaan"/>
         </form>
     );
