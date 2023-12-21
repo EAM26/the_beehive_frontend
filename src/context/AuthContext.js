@@ -34,7 +34,6 @@ function AuthContextProvider({children}) {
 
     async function fetchData(jwt, redirect) {
         try {
-
             const { principal, authorities} = await getAuthData(jwt);
             setAuthState({
                 ...authState,
@@ -47,8 +46,6 @@ function AuthContextProvider({children}) {
                 status: "done"
             })
             setAuthLevel(getHighestRole(authorities))
-            console.log("principal: ", principal)
-
         } catch (e) {
             setError(true)
             setErrormessage(errorHandler(e))

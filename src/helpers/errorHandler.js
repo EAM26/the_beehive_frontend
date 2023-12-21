@@ -7,6 +7,8 @@ export function errorHandler(e) {
                     return "Ongeldige combinatie gebruikersnaam en wachtwoord."
                 }
                 break;
+                case 403:
+                    return "Onjuiste autorisatie."
             default:
                 return "Onbekende fout"
         }
