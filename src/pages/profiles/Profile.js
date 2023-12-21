@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {getSingleEmployeeData, getUserData} from "../../service";
+import {getProfileData, getSingleEmployeeData, getUserData} from "../../service";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import FormInputField from "../../components/FormInputField/FormInputField";
+import {useParams} from "react-router-dom";
 
 function Profile() {
-
+    let { id } = useParams()
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
     const [user, setUser] = useState(null)
@@ -17,21 +18,44 @@ function Profile() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const fetchData = async () => {
-            try {
-                const userData = await getUserData(token)
-                setUser(userData)
-                console.log(userData)
-                const employeeData = await getSingleEmployeeData(token, userData.employeeId)
-                setEmployee(employeeData)
-                console.log(employeeData)
-
-            } catch (e) {
-                console.error(e)
-
+        if(id) {
+            console.log("id found: ", id)
+            const fetchData = async () => {
+                try {
+                    const employeeData = await getSingleEmployeeData(token, id)
+                    console.log("employeeDAta: " ,employeeData)
+                    setEmployee(employeeData)
+                } catch (e) {
+                    console.error(e)
+                }
             }
+            void fetchData()
+
+        } else {
+            console.log("no id found")
+            const fetchData = async () => {
+                try {
+                    const employeeData = await getProfileData(token)
+                    console.log("employeeDAta: " ,employeeData)
+                    setEmployee(employeeData)
+                } catch (e) {
+                    console.error(e)
+                }
+            }
+            void fetchData()
+
         }
-        void fetchData()
+
+        // const fetchData = async () => {
+        //     try {
+        //         const employeeData = await getProfileData(token)
+        //         console.log("employeeDAta: " ,employeeData)
+        //         setEmployee(employeeData)
+        //     } catch (e) {
+        //         console.error(e)
+        //     }
+        // }
+        // void fetchData()
     }, []);
 
     return (

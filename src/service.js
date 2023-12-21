@@ -37,7 +37,7 @@ export const getAuthData = async (jwt) => {
 }
 
 export const getSingleEmployeeData = async (jwt, id) => {
-    const response = await axios.get(`http://localhost:8080/employees/${id}`, {
+    const response = await axios.get(`http://localhost:8080/employees/profile/${id}`, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`
@@ -50,6 +50,19 @@ export const getUserData = async (jwt)=> {
     const authData  = await getAuthData(jwt)
     console.log("name: ", authData.name)
     const response = await axios.get(`http://localhost:8080/users/${authData.name}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    return response.data
+}
+export const getProfileData = async (jwt)=> {
+    // const userData = getUserData(jwt)
+    // console.log("userData: ", userData)
+    // console.log(jwt)
+    console.log("running getProfileData")
+    const response = await axios.get('http://localhost:8080/employees/profile', {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`

@@ -17,6 +17,7 @@ function App() {
             <Routes>
                 <Route path="/" element={isAuth ? <TempHome/> : <Login/>}/>
                 <Route path="/login" element={!isAuth ? <Login/> : <TempHome/>}/>
+                <Route path="/profile/:id" element={isAuth ? <Profile/> : <Navigate to={'/login'}/>}/>
                 <Route path="/profile" element={isAuth ? <Profile/> : <Navigate to={'/login'}/>}/>
                 <Route path="/employees" element={isAuth && (authLevel !== 'user') ? <Employees/> : <Navigate to={'/'}/>}/>
                 <Route path="/rosters" element={isAuth && (authLevel !== 'user') ? <TempRosters/> : <Navigate to={'/'}/>}/>
