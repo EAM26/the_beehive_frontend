@@ -11,7 +11,7 @@ function Navbar() {
     const {isAuth, logout, authLevel,} = useContext(AuthContext)
     const location = useLocation();
 
-    const navItems = isAuth? 2: 1;
+    const navItems = isAuth ? 2 : 1;
     const navClass = navItems === 1 ? "single-item" : "double-item";
 
     return (
@@ -29,6 +29,12 @@ function Navbar() {
                     <li>
                         <NavLink to="/employees">
                             Personeel
+                        </NavLink>
+                    </li>)}
+                {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/users" &&
+                    <li>
+                        <NavLink to="/users">
+                            Users
                         </NavLink>
                     </li>)}
                 {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/rosters" &&

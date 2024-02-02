@@ -12,6 +12,22 @@ export const getEmployees = async (token, signal) => {
             },
             signal: signal
         })
+
+    return response.data
+
+}
+
+export const getUsers = async (token, signal) => {
+
+    const response = await axios.get('http://localhost:8080/users',
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            signal: signal
+        })
+    console.log(response.data)
     return response.data
 
 }
