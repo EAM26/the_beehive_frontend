@@ -36,39 +36,41 @@ function Employees() {
     }, []);
 
     return (
-        <div>
-            <h2>Users</h2>
-            {loading && <p>Loading...</p>}
-            {error ? <p>{errorMessage}</p> :
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Full Name</th>
-                        <th>Status</th>
-                        <th>Email</th>
-                        <th>Authority</th>
-                        <th>Emp. id</th>
+        <main>
+            <div>
+                <h2>Users</h2>
+                {loading && <p>Loading...</p>}
+                {error ? <p>{errorMessage}</p> :
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Full Name</th>
+                            <th>Status</th>
+                            <th>Email</th>
+                            <th>Authority</th>
+                            <th>Emp. id</th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {users.map((user) => {
-                        const authoritiesDisplay = user.authorities.map(auth => auth.authority.replace('ROLE_', '')).join(', ')
-                            return <tr key={user.id}>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {users.map((user) => {
+                                const authoritiesDisplay = user.authorities.map(auth => auth.authority.replace('ROLE_', '')).join(', ')
+                                return <tr key={user.id}>
 
-                                <td>{user.username}</td>
-                                <td>{user.employee?.firstName} {user.employee?.preposition} {user.employee?.lastName}</td>
-                                <td>{user.isDeleted? "Not Active": "Active"}</td>
-                                <td>{user.email} </td>
-                                <td>{authoritiesDisplay}</td>
-                                <td>{user.employee?.id}</td>
-                            </tr>
-                        }
-                    )}
-                    </tbody>
-                </table>}
-        </div>
+                                    <td>{user.username}</td>
+                                    <td>{user.employee?.firstName} {user.employee?.preposition} {user.employee?.lastName}</td>
+                                    <td>{user.isDeleted ? "Not Active" : "Active"}</td>
+                                    <td>{user.email} </td>
+                                    <td>{authoritiesDisplay}</td>
+                                    <td>{user.employee?.id}</td>
+                                </tr>
+                            }
+                        )}
+                        </tbody>
+                    </table>}
+            </div>
+        </main>
     );
 }
 
