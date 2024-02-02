@@ -34,7 +34,7 @@ export const getUsers = async (token, signal) => {
 }
 
 export const getSelf = async (token, signal) => {
-    console.log("Running getSelf")
+    console.log("Running getSelf:")
     const response = await axios.get('http://localhost:8080/users/self',
         {
             headers: {
@@ -43,7 +43,6 @@ export const getSelf = async (token, signal) => {
             },
             signal: signal
         })
-    console.log("getSelf")
     console.log(response.data)
     return response.data
 

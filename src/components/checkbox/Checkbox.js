@@ -1,21 +1,13 @@
-// In Checkbox.js
-import React from 'react';
-
-const Checkbox = React.forwardRef(({ label, name, defaultChecked, onChange }, ref) => {
-    return (
-        <div>
-            <label>
-                <input
-                    type="checkbox"
-                    name={name}
-                    defaultChecked={defaultChecked}
-                    onChange={onChange}
-                    ref={ref}
-                />
-                {label}
-            </label>
-        </div>
-    );
-});
+const Checkbox = ({ label, checked, onChange, name }) => (
+    <div><label>
+        {label}:
+        <input
+            type="checkbox"
+            name={name}
+            checked={checked}
+            onChange={onChange}
+        />
+    </label></div>
+);
 
 export default Checkbox;
