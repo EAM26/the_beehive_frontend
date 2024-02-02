@@ -12,6 +12,39 @@ export const getEmployees = async (token, signal) => {
             },
             signal: signal
         })
+
+    return response.data
+
+}
+
+// Request to get all Users data with employee data
+export const getUsers = async (token, signal) => {
+
+    const response = await axios.get('http://localhost:8080/users',
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            signal: signal
+        })
+    console.log(response.data)
+    return response.data
+
+}
+
+export const getSelf = async (token, signal) => {
+    console.log("Running getSelf")
+    const response = await axios.get('http://localhost:8080/users/self',
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            signal: signal
+        })
+    console.log("getSelf")
+    console.log(response.data)
     return response.data
 
 }
@@ -37,6 +70,7 @@ export const getAuthData = async (jwt) => {
 }
 
 export const getSingleEmployeeData = async (jwt, id) => {
+    console.log("getSingleEmployeeData running")
     const response = await axios.get(`http://localhost:8080/employees/profile/${id}`, {
         headers: {
             'Content-Type': 'application/json',
@@ -56,14 +90,19 @@ export const getUserData = async (jwt)=> {
     })
     return response.data
 }
-export const getProfileData = async (jwt)=> {
 
-    const response = await axios.get('http://localhost:8080/employees/profile', {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwt}`
-        }
-    })
-    return response.data
-}
+// Request to get own profile data
+// export const getProfileData = async (token)=> {
+//
+//     const response = await axios.get('localhost:8080/users/self', {
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: `Bearer ${jwt}`
+//         }
+//     })
+//     console.log(response.data)
+//     return response.data
+// }
+
+
 

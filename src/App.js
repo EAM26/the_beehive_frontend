@@ -8,6 +8,7 @@ import {AuthContext} from "./context/AuthContext";
 import TempHome from "./pages/tempPages/TempHome";
 import TempRosters from "./pages/tempPages/TempRosters";
 import Profile from "./pages/profiles/Profile";
+import Users from "./pages/users/Users";
 
 function App() {
     const {isAuth, authLevel } = useContext(AuthContext)
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/profile/:id" element={isAuth ? <Profile/> : <Navigate to={'/login'}/>}/>
                 <Route path="/profile" element={isAuth ? <Profile/> : <Navigate to={'/login'}/>}/>
                 <Route path="/employees" element={isAuth && (authLevel !== 'user') ? <Employees/> : <Navigate to={'/'}/>}/>
+                <Route path="/users" element={isAuth && (authLevel !== 'user') ? <Users/> : <Navigate to={'/'}/>}/>
                 <Route path="/rosters" element={isAuth && (authLevel !== 'user') ? <TempRosters/> : <Navigate to={'/'}/>}/>
             </Routes>
         </>
