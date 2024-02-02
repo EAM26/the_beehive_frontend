@@ -43,6 +43,7 @@ export const getSelf = async (token, signal) => {
             },
             signal: signal
         })
+    console.log("getSelf")
     console.log(response.data)
     return response.data
 

@@ -1,26 +1,44 @@
 import React, {useEffect, useState} from 'react';
 import {getSelf} from "../../service";
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {getHighestRole} from "../../helpers/getHighestRole";
 import {errorHandler} from "../../helpers/errorHandler";
 import Checkbox from "../../components/checkbox/Checkbox";
 
+// import { Controller } from "react-hook-form";
+
 function Profile() {
 
 
-    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
+    // const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
+    // const { register, handleSubmit, formState: { errors }, setValue } = useForm({mode: "onTouched"});
+    const { register, handleSubmit, formState: { errors }, setValue, watch, control } = useForm({ mode: "onTouched" });
+    // ...other states
+    // const {register, handleSubmit, formState: {errors}, setValue, watch} = useForm({mode: "onTouched"});
     const [self, setSelf] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
+    // const {control} = useForm(); // Get the control variable
 
-    function handleFormSubmitUser() {
-        console.log("handleFormSubmit from Profile")
-    }
-    function handleFormSubmitEmployee() {
-        console.log("handleFormSubmit from Profile")
+    const handleFormSubmitUser = (formData) => {
+        // Create a payload with the inverted isDeleted value
+        const payload = {
+            ...formData,
+        };
+        console.log("payload")
+        console.log(payload);
+        // Submit payload to the backend
+    };
+
+    function handleFormSubmitEmployee(formData) {
+        const payload = {
+            ...formData,
+        };
+        console.log("payload")
+        console.log(payload);
     }
 
     useEffect(() => {
@@ -42,11 +60,15 @@ function Profile() {
         void fetchSelfData(self)
 
 
-
-
     }, []);
 
+    useEffect(() => {
+        if (self) {
+            setValue('isDeleted', self.isDeleted);
+            setValue('isActive', self.employee.isActive)
 
+        }
+    }, [self, setValue]);
 
     if (!self) {
         return <div>Loading...</div>;
@@ -84,17 +106,62 @@ function Profile() {
                         register={register}
                         errors={errors}
                     />
+                    {/* Checkbox for isDeleted */}
+                    {/*<Checkbox*/}
+                    {/*    label="Status"*/}
+                    {/*    name="isDeleted"*/}
+                    {/*    ref={register}*/}
+                    {/*    defaultChecked={self.isDeleted}*/}
+                    {/*/>*/}
 
+                    {/*<Controller*/}
+                    {/*    control={control}*/}
+                    {/*    name="isDeleted"*/}
+                    {/*    defaultValue={self.isDeleted}*/}
+                    {/*    render={({ field }) => (*/}
+                    {/*        <label>*/}
+                    {/*            User deleted*/}
+                    {/*            <Checkbox*/}
+                    {/*                {...field}*/}
+                    {/*                defaultChecked={field.value}*/}
+                    {/*                onChange={(e) => {*/}
+                    {/*                    field.onChange(e.target.checked); // Update the field value*/}
+                    {/*                    // Additional code for handling the change if needed*/}
+                    {/*                }}*/}
+                    {/*            />*/}
 
-                    <FormInputField
-                        label="Status"
+                    {/*        </label>*/}
+                    {/*    )}*/}
+                    {/*/>*/}
+                    <Controller
+                        control={control}
                         name="isDeleted"
-                        type="text"
-                        id="isDeleted"
-                        register={register}
-                        errors={errors}
-                        defaultValue={self.isDeleted ? "Not Active" : "Active"}
+                        defaultValue={self.isDeleted}
+                        render={({ field: { onChange, value, ...field } }) => (
+                            <label>
+                                User deleted
+                                <Checkbox
+                                    {...field}
+                                    checked={value}
+                                    onChange={(e) => {
+                                        onChange(e.target.checked); // Update the field value
+                                        // Additional code for handling the change if needed
+                                    }}
+                                />
+                            </label>
+                        )}
                     />
+
+
+                    {/*<FormInputField*/}
+                    {/*    label="Status"*/}
+                    {/*    name="isDeleted"*/}
+                    {/*    type="text"*/}
+                    {/*    id="isDeleted"*/}
+                    {/*    register={register}*/}
+                    {/*    errors={errors}*/}
+                    {/*    defaultValue={self.isDeleted ? "Not Active" : "Active"}*/}
+                    {/*/>*/}
 
                     <FormInputField
                         label="Authority"
@@ -156,15 +223,26 @@ function Profile() {
                         errors={errors}
                         defaultValue={self ? self.employee.shortName : ""}
                     />
-                    <FormInputField
-                        label="Emp Status"
-                        name="empActive"
-                        type="text"
-                        id="empActive"
-                        register={register}
-                        errors={errors}
-                        defaultValue={self.employee.isActive ? "Active" : "Not Active"}
+
+                    <Controller
+                        control={control}
+                        name="isActive"
+                        defaultValue={self.employee.isActive}
+                        render={({ field: { onChange, value, ...field } }) => (
+                            <label>
+                                Employee Active
+                                <Checkbox
+                                    {...field}
+                                    checked={value}
+                                    onChange={(e) => {
+                                        onChange(e.target.checked); // Update the field value
+                                        // Additional code for handling the change if needed
+                                    }}
+                                />
+                            </label>
+                        )}
                     />
+
                     <FormInputField
                         label="Team"
                         name="team"
@@ -172,7 +250,7 @@ function Profile() {
                         id="team"
                         register={register}
                         errors={errors}
-                        defaultValue={self? self.team.teamName : ""}
+                        defaultValue={self ? self.team.teamName : ""}
                     />
 
                     <Button type="submit" children="Opslaan"/>
