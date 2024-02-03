@@ -1,5 +1,6 @@
 const Checkbox = ({ label, checked, onChange, name }) => (
-    <div><label>
+    <div>
+        <label>
         {label}:
         <input
             type="checkbox"
@@ -7,7 +8,8 @@ const Checkbox = ({ label, checked, onChange, name }) => (
             checked={checked}
             onChange={onChange}
         />
-    </label></div>
+    </label>
+    </div>
 );
 
 export default Checkbox;

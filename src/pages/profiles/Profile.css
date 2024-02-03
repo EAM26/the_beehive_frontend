@@ -1,0 +1,17 @@
+.shifts-container {
+    height: 75px;
+    width: 250px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.absences-container {
+    height: 75px;
+    width: 250px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    padding: 5px;
+}
