@@ -1,0 +1,8 @@
+.shifts-container {
+    height: 75px; /* Adjust the height as needed */
+    width: 200px;
+    overflow-y: scroll;
+    border: 1px solid #ccc; /* Optional: for visual styling */
+    margin-top: 10px;
+    padding: 5px;
+}
