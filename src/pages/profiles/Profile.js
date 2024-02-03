@@ -31,7 +31,9 @@ function Profile() {
     useEffect(() => {
         if (self) {
             setIsDeleted(self.isDeleted);
-            setIsActive(self.employee.isActive)
+            if (self.employee) {
+                setIsActive(self.employee.isActive)
+            }
         }
     }, [self]);
 
@@ -45,8 +47,7 @@ function Profile() {
 
     const handleFormSubmitUser = (formData) => {
         const dataToSubmit = {
-            ...formData,
-            isDeleted, // add isDeleted to the formData
+            ...formData, isDeleted, // add isDeleted to the formData
             isActive, // add isActive to the formData
         };
         console.log("Form Data:", dataToSubmit);
@@ -71,50 +72,116 @@ function Profile() {
     //     console.log(formData)
     // }
 
-    return (
-        <main>
-            {/*<p>User name: {self.username}</p>*/}
-            {/*<p>Email: {self.email}</p>*/}
-            {/*<p>Password: [protected]</p>*/}
-            {/*/!*<p>User deleted: {testBoolean ? "No" : "Yes"}</p>*!/*/}
+    return (<main>
+        {/*<p>User name: {self.username}</p>*/}
+        {/*<p>Email: {self.email}</p>*/}
+        {/*<p>Password: [protected]</p>*/}
+        {/*/!*<p>User deleted: {testBoolean ? "No" : "Yes"}</p>*!/*/}
 
-            <form
-                onSubmit={handleSubmit(handleFormSubmitUser)}>
-                <FormInputField
-                    label="User name"
-                    name="username"
-                    type="text"
-                    id="username"
-                    register={register}
-                    errors={errors}
-                    defaultValue={self ? self.username : ""}
-                />
-                <Checkbox
-                    label="User Not Deleted"
-                    name="isDeleted"
-                    checked={!isDeleted}
-                    onChange={handleIsDeletedChange}
-                />
-                <FormInputField
-                    label="Employee id"
-                    name="empId"
-                    type="text"
-                    id="empId"
-                    register={register}
-                    errors={errors}
-                    defaultValue={self ? self.employee.id : ""}
-                />
-                <Checkbox
-                    label="Employee Active"
-                    name="isActive"
-                    checked={isActive}
-                    onChange={handleIsActiveChange}
-                />
+        <form
+            onSubmit={handleSubmit(handleFormSubmitUser)}>
 
-                <Button type="submit" children="Opslaan"/>
-            </form>
-        </main>
-    );
+            {/*USER DATA*/}
+            <FormInputField
+                label="User name"
+                name="username"
+                type="text"
+                id="username"
+                register={register}
+                errors={errors}
+                defaultValue={self ? self.username : ""}
+            />
+            <FormInputField
+                label="Email"
+                name="email"
+                type="email"
+                id="email"
+                register={register}
+                errors={errors}
+                defaultValue={self ? self.email : ""}
+            />
+            <Checkbox
+                label="User Not Deleted"
+                name="isDeleted"
+                checked={!isDeleted}
+                onChange={handleIsDeletedChange}
+            />
+
+            {/*Employee Data*/}
+            <FormInputField
+                label="Employee id"
+                name="empId"
+                type="text"
+                id="empId"
+                register={register}
+                errors={errors}
+                defaultValue={self.employee ? self.employee.id : ""}
+            />
+            <Checkbox
+                label="Employee Active"
+                name="isActive"
+                checked={isActive}
+                onChange={handleIsActiveChange}
+            />
+            <FormInputField
+                label="Preposition"
+                name="preposition"
+                type="text"
+                id="preposition"
+                register={register}
+                errors={errors}
+                defaultValue={self.employee ? self.employee.preposition : ""}
+            />
+            <FormInputField
+                label="Last name"
+                name="lastName"
+                type="text"
+                id="lastName"
+                register={register}
+                errors={errors}
+                defaultValue={self.employee ? self.employee.lastName : ""}
+            />
+            <FormInputField
+                label="Short name"
+                name="shortName"
+                type="text"
+                id="shortName"
+                register={register}
+                errors={errors}
+                defaultValue={self.employee ? self.employee.shortName : ""}
+            />
+            <FormInputField
+                label="Date of Birth"
+                name="dob"
+                type="date"
+                id="dob"
+                register={register}
+                errors={errors}
+                defaultValue={self.employee ? self.employee.dob : ""}
+            />
+            <FormInputField
+                label="Phone number"
+                name="phoneNumber"
+                type="text"
+                id="phoneNumber"
+                register={register}
+                errors={errors}
+                defaultValue={self.employee ? self.employee.phoneNumber : ""}
+            />
+            <FormInputField
+                label="Employee id"
+                name="empId"
+                type="text"
+                id="empId"
+                register={register}
+                errors={errors}
+                defaultValue={self.employee ? self.employee.id : ""}
+            />
+
+
+            <Button type="submit" children="Opslaan"/>
+        </form>
+    </main>);
 }
 
 export default Profile;

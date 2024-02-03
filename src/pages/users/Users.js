@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
 import {getUsers} from "../../service";
+import Button from "../../components/button/Button";
 
 
 function Employees() {
@@ -64,6 +65,7 @@ function Employees() {
                                     <td>{user.email} </td>
                                     <td>{authoritiesDisplay}</td>
                                     <td>{user.employee?.id}</td>
+                                    <Button children="view"/>
                                 </tr>
                             }
                         )}
