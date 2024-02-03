@@ -197,7 +197,8 @@ function Profile() {
                         const userLocale = navigator.language;
 
                         // Format the dates and times
-                        const date = startShiftDate.toLocaleDateString(userLocale); // Local format for day-month-year
+                        const date = `${startShiftDate.getDate().toString().padStart(2, '0')}-${(startShiftDate.getMonth() + 1).toString().padStart(2, '0')}-${startShiftDate.getFullYear()}`;
+                        // const date = startShiftDate.toLocaleDateString(userLocale) // Local format for day-month-year
                         const startTime = startShiftDate.toLocaleTimeString(userLocale, {
                             hour: '2-digit',
                             minute: '2-digit'
@@ -208,8 +209,32 @@ function Profile() {
                         });
 
                         // Return the formatted string
-                        return <p key={shift.id}>{date} {startTime} - {endTime}</p>
+                        return <p key={shift.id}>{date}  {startTime}  {endTime}</p>
                     }) : "No Shifts Available"
+                    }
+                </div>
+            </div>
+            <div>
+                ABSENCES
+                <div className="absences-container">
+                    {self.absences ? self.absences.slice(0, 5).map((absence) => {
+                        // Create Date objects from the startShift and endShift strings
+                        const startAbsenceDate = new Date(absence.startDate);
+                        const endAbsenceDate = new Date(absence.endDate);
+
+                        // Get the user's locale from the browser
+                        const userLocale = navigator.language;
+
+
+                        const startDate = `${startAbsenceDate.getDate().toString().padStart(2, '0')}-${(startAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${startAbsenceDate.getFullYear()}`;
+                        const endDate = `${endAbsenceDate.getDate().toString().padStart(2, '0')}-${(endAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${endAbsenceDate.getFullYear()}`;
+
+
+
+
+
+                        return <p key={absence.id}>{startDate}  {endDate}</p>
+                    }) : "No Absences Available"
                     }
                 </div>
             </div>
