@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {getUserData, getSelf} from "../../service";
+import {createEmployee, createUser, getSelf, getUserData} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -19,10 +19,14 @@ function Profile() {
     const [isActive, setIsActive] = useState(false);
     const userLocale = useContext(LocaleContext)
     // const [profileData, setProfileData] = useState(null);
-    const { username } = useParams();
+    const {username} = useParams();
+    const [token, setToken] = useState("")
+
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+
+        const token = localStorage.getItem('token')
+        setToken(token)
 
         const fetchSelfData = async () => {
             setLoading(true);
@@ -57,26 +61,31 @@ function Profile() {
         setIsActive(event.target.checked);
     };
 
-    const handleFormSubmitUser = (formData) => {
-        const dataToSubmit = {
-            ...formData, isDeleted,
-            isActive,
-        };
-        console.log("Form Data:", dataToSubmit);
+    const handleFormSubmitUser =  async (formData) => {
+        try {
+            const response =  await createUser(token, formData.username, formData.password, formData.userRole,formData.email, isDeleted)
+        } catch (e) {
+            console.log(e)
+        }
+
+    };
+
+    const handleFormSubmitEmployee = async (formData) => {
+        const response = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
+
+
     };
 
     if (!profileData) {
         return <div>Loading...</div>;
     }
 
-
     return (
 
         <main>
             {error ? <p>{errorMessage}</p> :
                 <div>
-                    <form
-                        onSubmit={handleSubmit(handleFormSubmitUser)}>
+                    <form onSubmit={handleSubmit(handleFormSubmitUser)}>
 
                         {/*USER DATA*/}
                         <FormInputField
@@ -97,13 +106,32 @@ function Profile() {
                             errors={errors}
                             defaultValue={profileData ? profileData.email : ""}
                         />
+                        <FormInputField
+                            label="Password"
+                            name="password"
+                            type="password"
+                            id="password"
+                            register={register}
+                            errors={errors}
+                        />
+                        <FormInputField
+                            label="Authority"
+                            name="userRole"
+                            type="text"
+                            id="userRole"
+                            register={register}
+                            errors={errors}
+                            defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
+                        />
                         <Checkbox
                             label="User Not Deleted"
                             name="isDeleted"
                             checked={!isDeleted}
                             onChange={handleIsDeletedChange}
                         />
-
+                        <Button type="submit" children="Opslaan"/>
+                    </form>
+                    <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
                         {/*Employee Data*/}
                         <FormInputField
                             label="Employee id"
@@ -114,12 +142,7 @@ function Profile() {
                             errors={errors}
                             defaultValue={profileData.employee ? profileData.employee.id : ""}
                         />
-                        <Checkbox
-                            label="Employee Active"
-                            name="isActive"
-                            checked={isActive}
-                            onChange={handleIsActiveChange}
-                        />
+
                         <FormInputField
                             label="First Name"
                             name="firstName"
@@ -175,14 +198,21 @@ function Profile() {
                             defaultValue={profileData.employee ? profileData.employee.phoneNumber : ""}
                         />
                         <FormInputField
-                            label="Employee id"
-                            name="empId"
+                            label="Team"
+                            name="teamName"
                             type="text"
-                            id="empId"
+                            id="teamName"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.id : ""}
+                            defaultValue={profileData.employee ? profileData.team.teamName: ""}
                         />
+                        <Checkbox
+                            label="Employee Active"
+                            name="isActive"
+                            checked={isActive}
+                            onChange={handleIsActiveChange}
+                        />
+
                         <Button type="submit" children="Opslaan"/>
                     </form>
 
