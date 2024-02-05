@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {getSelf, getUserData} from "../../service";
+import {createUser, getSelf, getUserData} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -20,9 +20,13 @@ function Profile() {
     const userLocale = useContext(LocaleContext)
     // const [profileData, setProfileData] = useState(null);
     const {username} = useParams();
+    const [token, setToken] = useState("")
+
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+
+        const token = localStorage.getItem('token')
+        setToken(token)
 
         const fetchSelfData = async () => {
             setLoading(true);
@@ -57,16 +61,16 @@ function Profile() {
         setIsActive(event.target.checked);
     };
 
-    const handleFormSubmitUser = (formData) => {
-        const dataToSubmit = {
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-            isDeleted: isDeleted,
-        };
-        console.log("Form Data:", dataToSubmit);
-
-
+    const handleFormSubmitUser =  async (formData) => {
+        let response;
+        try {
+            response =  await createUser(token, formData.username, formData.password, formData.userRole,formData.email, isDeleted)
+        } catch (e) {
+            console.log(e)
+        }
+        finally {
+            console.log(response)
+        }
     };
 
     const handleFormSubmitEmployee = (formData) => {
@@ -120,6 +124,15 @@ function Profile() {
                             id="password"
                             register={register}
                             errors={errors}
+                        />
+                        <FormInputField
+                            label="Authority"
+                            name="userRole"
+                            type="text"
+                            id="userRole"
+                            register={register}
+                            errors={errors}
+                            defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
                         />
                         <Checkbox
                             label="User Not Deleted"
