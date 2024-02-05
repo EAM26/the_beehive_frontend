@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {createEmployee, createUser, getSelf, getUserData} from "../../service";
+import {createEmployee, createUser, getSelf, getUserData, updateUser} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -8,6 +8,7 @@ import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./Profile.css"
 import {useParams} from "react-router-dom";
+import {AuthContext} from "../../context/AuthContext";
 
 function Profile() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
@@ -20,13 +21,10 @@ function Profile() {
     const userLocale = useContext(LocaleContext)
     // const [profileData, setProfileData] = useState(null);
     const {username} = useParams();
-    const [token, setToken] = useState("")
-
+    // const [token, setToken] = useState("")
+    const { token } = useContext(AuthContext);
 
     useEffect(() => {
-
-        const token = localStorage.getItem('token')
-        setToken(token)
 
         const fetchSelfData = async () => {
             setLoading(true);
