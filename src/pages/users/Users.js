@@ -3,16 +3,30 @@ import {errorHandler} from "../../helpers/errorHandler";
 import {getUsers} from "../../service";
 import Button from "../../components/button/Button";
 import {useNavigate} from "react-router-dom";
+import UserCreationModal from "../../modals/UserCreationModal";
 
 
-function Employees() {
+function Users() {
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
 
+    const handleViewUser = (username) => {
+        navigate(`/profile/${username}`);
+    };
+
+    const handleNewClick = () => {
+        console.log("new click")
+        setShowModal(true); // Show the modal
+    };
+
+    const handleModalClose = () => {
+        setShowModal(false); // Hide the modal
+    };
 
     useEffect(() => {
         const controller = new AbortController();
@@ -38,14 +52,15 @@ function Employees() {
         }
     }, []);
 
-    const handleClick = (username) => {
-        navigate(`/profile/${username}`);
-    };
+
+
+
 
     return (
         <main>
             <div>
                 <h2>Users</h2>
+                <Button children="NEW" type="button" onClick={handleNewClick}/>
                 {loading && <p>Loading...</p>}
                 {error ? <p>{errorMessage}</p> :
                     <table>
@@ -71,7 +86,7 @@ function Employees() {
                                     <td>{user.email} </td>
                                     <td>{authoritiesDisplay}</td>
                                     <td>{user.employee?.id}</td>
-                                    <td>{ <Button children="view" onClick={() => handleClick(user.username)} />}</td>
+                                    <td>{ <Button children="view" onClick={() => handleViewUser(user.username)} />}</td>
                                 </tr>
 
                             }
@@ -79,8 +94,19 @@ function Employees() {
                         </tbody>
                     </table>}
             </div>
+            <UserCreationModal
+                isOpen={showModal}
+                onClose={handleModalClose}
+                onSubmit={formData => {
+                    console.log('Form submitted with data:', formData);
+                    // Here you would handle the form submission e.g., by calling an API
+                    // After submission, you would likely want to fetch the updated list of users
+                    // and then close the modal
+                    setShowModal(false);
+                }}
+            />
         </main>
     );
 }
 
-export default Employees;
+export default Users;
