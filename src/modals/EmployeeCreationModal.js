@@ -1,7 +1,7 @@
 import { useState } from "react";
 import './CreationModal.css';
 
-function EmployeeCreationModal({ isOpen, onClose, onSubmit }) {
+function EmployeeCreationModal({ isOpen, onClose, onSubmit,  }) {
     const [formData, setFormData] = useState({
         firstName: '',
         preposition: '',
@@ -11,6 +11,7 @@ function EmployeeCreationModal({ isOpen, onClose, onSubmit }) {
         phoneNumber: '',
         teamName: '',
         isActive: true,
+
     });
 
     const handleChange = (e) => {

@@ -1,10 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
-import {createUser, getUsers} from "../../service";
+import {createEmployee, createUser, getUserData, getUsers} from "../../service";
 import Button from "../../components/button/Button";
 import {useNavigate} from "react-router-dom";
 import UserCreationModal from "../../modals/UserCreationModal";
 import {AuthContext} from "../../context/AuthContext";
+import EmployeeCreationModal from "../../modals/EmployeeCreationModal";
 
 
 function Users() {
@@ -14,22 +15,33 @@ function Users() {
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
     const navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
-    const { token } = useContext(AuthContext);
+    const [showUserModal, setShowUserModal] = useState(false);
+    const {token} = useContext(AuthContext);
+    const [showEmployeeModal, setShowEmployeeModal] = useState(false);
+    const [selectedUsername, setSelectedUsername] = useState('');
 
 
     const handleViewUser = (username) => {
         navigate(`/profile/${username}`);
     };
 
-    const handleNewClick = () => {
-        console.log("new click")
-        setShowModal(true); // Show the modal
+    const handleNewUserClick = () => {
+        setShowUserModal(true);
     };
 
-    const handleModalClose = () => {
-        setShowModal(false); // Hide the modal
+    const handleNewEmployeeClick = (username) => {
+        console.log("handleNewEmployeeClick")
+        setSelectedUsername(username);
+        setShowEmployeeModal(true)
+
+    }
+
+    const handleCloseModal = () => {
+        setShowUserModal(false);
+        setShowEmployeeModal(false);
+        setSelectedUsername('')
     };
+
 
     useEffect(() => {
         const controller = new AbortController();
@@ -56,14 +68,11 @@ function Users() {
     }, []);
 
 
-
-
-
     return (
         <main>
             <div>
                 <h2>Users</h2>
-                <Button children="NEW" type="button" onClick={handleNewClick}/>
+                <Button children="NEW" type="button" onClick={handleNewUserClick}/>
                 {loading && <p>Loading...</p>}
                 {error ? <p>{errorMessage}</p> :
                     <table>
@@ -88,8 +97,9 @@ function Users() {
                                     <td>{user.isDeleted ? "Not Active" : "Active"}</td>
                                     <td>{user.email} </td>
                                     <td>{authoritiesDisplay}</td>
-                                    <td>{user.employee?.id}</td>
-                                    <td>{ <Button children="view" onClick={() => handleViewUser(user.username)} />}</td>
+                                    <td>{user.employee ? user.employee.id : <Button children="+Employee"
+                                                                                    onClick={() => handleNewEmployeeClick(user.username)}/>}</td>
+                                    <td>{<Button children="view" onClick={() => handleViewUser(user.username)}/>}</td>
                                 </tr>
 
                             }
@@ -98,19 +108,62 @@ function Users() {
                     </table>}
             </div>
             <UserCreationModal
-                isOpen={showModal}
-                onClose={handleModalClose}
+                isOpen={showUserModal}
+                onClose={handleCloseModal}
                 onSubmit={async formData => {
                     console.log('Form submitted with data:', formData);
                     try {
-                        await createUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+                        const id = await createUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+                        const newUser = await getUserData(token, id);
+                        setUsers(currentUsers => [...currentUsers, newUser]);
+                        const updatedUsers = [...users, newUser];
+                        setUsers(updatedUsers.sort((a, b) => a.username.localeCompare(b.username)));
+                        console.log(id)
                     } catch (e) {
                         console.log(e)
                     }
-                    // Here you would handle the form submission e.g., by calling an API
-                    // After submission, you would likely want to fetch the updated list of users
-                    // and then close the modal
-                    setShowModal(false);
+
+                    setShowUserModal(false);
+                }}
+            />
+            <EmployeeCreationModal
+                isOpen={showEmployeeModal}
+                onClose={handleCloseModal}
+                // username={selectedUsername}
+                onSubmit={async formData => {
+                    console.log('Form submitted with data:', formData);
+                    try {
+                        const newEmployee = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isActive, formData.teamName, selectedUsername)
+                        // setUsers(currentUsers => {
+                        //     return currentUsers.map(user => {
+                        //         console.log(user.employee.id)
+                        //         console.log(newEmployee.id)
+                        //         if (user.employee?.id === newEmployee.id) {
+                        //             return {
+                        //                 ...user,
+                        //                 employee: { ...newEmployee }
+                        //             };
+                        //         }
+                        //         return user;
+                        //     });
+                        // });
+                        setUsers(currentUsers => {
+                            return currentUsers.map(user => {
+                                if (user.username === selectedUsername) { // Gebruik de opgeslagen username om de juiste user te vinden
+                                    return {
+                                        ...user,
+                                        employee: { ...newEmployee }
+                                    };
+                                }
+                                return user;
+                            });
+                        });
+
+                    } catch (e) {
+                        console.log(e)
+                    }
+
+                    setShowEmployeeModal(false);
                 }}
             />
         </main>
