@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {createUser, getSelf, getUserData} from "../../service";
+import {createEmployee, createUser, getSelf, getUserData} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -62,29 +62,18 @@ function Profile() {
     };
 
     const handleFormSubmitUser =  async (formData) => {
-        let response;
         try {
-            response =  await createUser(token, formData.username, formData.password, formData.userRole,formData.email, isDeleted)
+            const response =  await createUser(token, formData.username, formData.password, formData.userRole,formData.email, isDeleted)
         } catch (e) {
             console.log(e)
         }
-        finally {
-            console.log(response)
-        }
+
     };
 
-    const handleFormSubmitEmployee = (formData) => {
-        const dataToSubmit = {
-            empId: formData.empId,
-            firstName: formData.firstName,
-            preposition: formData.preposition,
-            lastName: formData.lastName,
-            shortName: formData.shortName,
-            dob: formData.dob,
-            phoneNumber: formData.phoneNumber,
-            isActive: isActive,
-        };
-        console.log("Form Data:", dataToSubmit);
+    const handleFormSubmitEmployee = async (formData) => {
+        const response = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
+
+
     };
 
     if (!profileData) {
@@ -207,6 +196,15 @@ function Profile() {
                             register={register}
                             errors={errors}
                             defaultValue={profileData.employee ? profileData.employee.phoneNumber : ""}
+                        />
+                        <FormInputField
+                            label="Team"
+                            name="teamName"
+                            type="text"
+                            id="teamName"
+                            register={register}
+                            errors={errors}
+                            defaultValue={profileData.employee ? profileData.team.teamName: ""}
                         />
                         <Checkbox
                             label="Employee Active"
