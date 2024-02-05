@@ -5,7 +5,7 @@ import Employees from "./pages/employees/Employees";
 import Login from "./pages/login/Login";
 import {useContext,} from "react";
 import {AuthContext} from "./context/AuthContext";
-import LocaleContextProvider from "./context/LocaleContext";
+// import LocaleContextProvider from "./context/LocaleContext";
 import TempHome from "./pages/tempPages/TempHome";
 import TempRosters from "./pages/tempPages/TempRosters";
 import Profile from "./pages/profiles/Profile";
@@ -15,7 +15,7 @@ function App() {
     const {isAuth, authLevel} = useContext(AuthContext)
     return (
         <>
-            <LocaleContextProvider>
+            {/*<LocaleContextProvider>*/}
                 <Navbar/>
                 <Routes>
                     <Route path="/" element={isAuth ? <TempHome/> : <Login/>}/>
@@ -28,7 +28,7 @@ function App() {
                     <Route path="/rosters"
                            element={isAuth && (authLevel !== 'user') ? <TempRosters/> : <Navigate to={'/'}/>}/>
                 </Routes>
-            </LocaleContextProvider>
+            {/*</LocaleContextProvider>*/}
         </>
     );
 }
