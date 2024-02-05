@@ -25,12 +25,7 @@ function Navbar() {
             </NavLink>
 
             {isAuth && <ul className="navbar-ul">
-                {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/employees" &&
-                    <li>
-                        <NavLink to="/employees">
-                            Personeel
-                        </NavLink>
-                    </li>)}
+
                 {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/users" &&
                     <li>
                         <NavLink to="/users">

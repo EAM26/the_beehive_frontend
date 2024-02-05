@@ -1,7 +1,6 @@
 import './App.css';
 import Navbar from "./components/navbar/Navbar";
 import {Navigate, Route, Routes} from "react-router-dom";
-import Employees from "./pages/employees/Employees";
 import Login from "./pages/login/Login";
 import {useContext,} from "react";
 import {AuthContext} from "./context/AuthContext";
@@ -26,8 +25,7 @@ function App() {
                 {/*<Route path="/profile" element={isAuth ? <Profile/> : <Navigate to={'/login'}/>}/>*/}
 
 
-                <Route path="/employees"
-                       element={isAuth && (authLevel !== 'user') ? <Employees/> : <Navigate to={'/'}/>}/>
+
                 <Route path="/users" element={isAuth && (authLevel !== 'user') ? <Users/> : <Navigate to={'/'}/>}/>
                 <Route path="/rosters"
                        element={isAuth && (authLevel !== 'user') ? <TempRosters/> : <Navigate to={'/'}/>}/>
