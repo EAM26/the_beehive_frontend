@@ -63,6 +63,7 @@ function AuthContextProvider({children}) {
 
     function login(jwt, redirect) {
         localStorage.setItem('token', jwt)
+        setToken(jwt)
         void fetchData(jwt, redirect)
     }
 
@@ -75,6 +76,7 @@ function AuthContextProvider({children}) {
             status: "done",
         })
         navigate('/login')
+        setToken('')
     }
 
     const authContextData = {

@@ -82,6 +82,23 @@ export const createUser = async (jwt, username, password, userRole, email, isDel
     })
     return response.data
 }
+// export const updateUser = async (jwt, username, password, userRole, email, isDeleted)=> {
+//     const response = await axios.put(`http://localhost:8080/users/${username}`, {
+//
+//         username: username,
+//         password:  password,
+//         userRole: userRole,
+//         email: email,
+//         isDeleted: isDeleted,
+//     },{
+//         headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: `Bearer ${jwt}`
+//         }
+//     })
+//     console.log(response)
+//     return response.data
+// }
 
 export const createEmployee = async (jwt, firstName, preposition, lastName, shortName, dob, isActive, teamName, username)=> {
     const response = await axios.post('http://localhost:8080/employees', {

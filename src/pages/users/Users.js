@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
-import {getUsers} from "../../service";
+import {createUser, getUsers} from "../../service";
 import Button from "../../components/button/Button";
 import {useNavigate} from "react-router-dom";
 import UserCreationModal from "../../modals/UserCreationModal";
+import {AuthContext} from "../../context/AuthContext";
 
 
 function Users() {
@@ -14,6 +15,8 @@ function Users() {
     const [errorMessage, setErrormessage] = useState("")
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const { token } = useContext(AuthContext);
+
 
     const handleViewUser = (username) => {
         navigate(`/profile/${username}`);
@@ -97,8 +100,13 @@ function Users() {
             <UserCreationModal
                 isOpen={showModal}
                 onClose={handleModalClose}
-                onSubmit={formData => {
+                onSubmit={async formData => {
                     console.log('Form submitted with data:', formData);
+                    try {
+                        await createUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+                    } catch (e) {
+                        console.log(e)
+                    }
                     // Here you would handle the form submission e.g., by calling an API
                     // After submission, you would likely want to fetch the updated list of users
                     // and then close the modal

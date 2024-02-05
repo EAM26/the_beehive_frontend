@@ -61,7 +61,7 @@ function Profile() {
 
     const handleFormSubmitUser =  async (formData) => {
         try {
-            const response =  await createUser(token, formData.username, formData.password, formData.userRole,formData.email, isDeleted)
+            await createUser(token, formData.username, formData.password, formData.userRole,formData.email, isDeleted)
         } catch (e) {
             console.log(e)
         }
@@ -69,7 +69,7 @@ function Profile() {
     };
 
     const handleFormSubmitEmployee = async (formData) => {
-        const response = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
+        await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
 
 
     };

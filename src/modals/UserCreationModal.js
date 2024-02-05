@@ -1,8 +1,7 @@
-import {useState} from "react";
-import './UserCreationModal.css'; // Adjust the path as necessary
+import { useState } from "react";
+import './UserCreationModal.css';
 
-function UserCreationModal({isOpen, onClose, onSubmit}) {
-    console.log("test modal")
+function UserCreationModal({ isOpen, onClose, onSubmit }) {
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -31,8 +30,6 @@ function UserCreationModal({isOpen, onClose, onSubmit}) {
         <div className="modal">
             <div className="modal-content">
                 <form onSubmit={handleSubmit}>
-
-                    {/* Input fields for username, password, etc. */}
                     <div>
                         <label>Username:</label>
                         <input
