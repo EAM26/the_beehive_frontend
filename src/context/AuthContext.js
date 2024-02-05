@@ -9,7 +9,7 @@ import {getAuthData} from "../service";
 export const AuthContext = createContext({});
 
 function AuthContextProvider({children}) {
-
+    const [token, setToken] = useState(localStorage.getItem('token') || '');
     const [authLevel, setAuthLevel] = useState('');
     const [authState, setAuthState] = useState({
         isAuth: false,
@@ -23,9 +23,9 @@ function AuthContextProvider({children}) {
 
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token')
-        if (storedToken && checkTokenValidity(storedToken)) {
-            login(storedToken)
+        // const storedToken = localStorage.getItem('token')
+        if (token && checkTokenValidity(token)) {
+            login(token)
         } else {
             logout()
         }
@@ -63,6 +63,7 @@ function AuthContextProvider({children}) {
 
     function login(jwt, redirect) {
         localStorage.setItem('token', jwt)
+        setToken(jwt)
         void fetchData(jwt, redirect)
     }
 
@@ -75,6 +76,7 @@ function AuthContextProvider({children}) {
             status: "done",
         })
         navigate('/login')
+        setToken('')
     }
 
     const authContextData = {
@@ -87,6 +89,7 @@ function AuthContextProvider({children}) {
         setError,
         errorMessage,
         setErrormessage,
+        token
     };
 
 
