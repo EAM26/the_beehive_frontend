@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
 import {getUsers} from "../../service";
 import Button from "../../components/button/Button";
+import {useNavigate} from "react-router-dom";
 
 
 function Employees() {
@@ -10,6 +11,7 @@ function Employees() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -36,6 +38,10 @@ function Employees() {
         }
     }, []);
 
+    const handleClick = (username) => {
+        navigate(`/profile/${username}`);
+    };
+
     return (
         <main>
             <div>
@@ -57,7 +63,7 @@ function Employees() {
                         <tbody>
                         {users.map((user) => {
                                 const authoritiesDisplay = user.authorities.map(auth => auth.authority.replace('ROLE_', '')).join(', ')
-                                return <tr key={user.id}>
+                                return <tr key={user.username}>
 
                                     <td>{user.username}</td>
                                     <td>{user.employee?.firstName} {user.employee?.preposition} {user.employee?.lastName}</td>
@@ -65,8 +71,9 @@ function Employees() {
                                     <td>{user.email} </td>
                                     <td>{authoritiesDisplay}</td>
                                     <td>{user.employee?.id}</td>
-                                    <Button children="view"/>
+                                    <td>{ <Button children="view" onClick={() => handleClick(user.username)} />}</td>
                                 </tr>
+
                             }
                         )}
                         </tbody>

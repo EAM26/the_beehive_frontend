@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {getSelf} from "../../service";
+import {getUserData, getSelf} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -7,25 +7,28 @@ import Checkbox from "../../components/checkbox/Checkbox";
 import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./Profile.css"
+import {useParams} from "react-router-dom";
 
 function Profile() {
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
-    const [self, setSelf] = useState(null);
+    const [profileData, setProfileData] = useState(null);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
     const [isDeleted, setIsDeleted] = useState(false);
     const [isActive, setIsActive] = useState(false);
     const userLocale = useContext(LocaleContext)
+    // const [profileData, setProfileData] = useState(null);
+    const { username } = useParams();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         const fetchSelfData = async () => {
+            setLoading(true);
             try {
-                setLoading(true);
-                const selfData = await getSelf(token);
-                setSelf(selfData);
+                const data = username ? await getUserData(token, username) : await getSelf(token);
+                setProfileData(data);
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
@@ -38,14 +41,13 @@ function Profile() {
     }, []);
 
     useEffect(() => {
-        if (self) {
-            setIsDeleted(self.isDeleted);
-            if (self.employee) {
-                setIsActive(self.employee.isActive)
-                // setShifts(self.employee.shifts)
+        if (profileData) {
+            setIsDeleted(profileData.isDeleted);
+            if (profileData.employee) {
+                setIsActive(profileData.employee.isActive)
             }
         }
-    }, [self]);
+    }, [profileData]);
 
     const handleIsDeletedChange = (event) => {
         setIsDeleted(!event.target.checked);
@@ -57,20 +59,15 @@ function Profile() {
 
     const handleFormSubmitUser = (formData) => {
         const dataToSubmit = {
-            ...formData, isDeleted, // add isDeleted to the formData
-            isActive, // add isActive to the formData
+            ...formData, isDeleted,
+            isActive,
         };
         console.log("Form Data:", dataToSubmit);
-        // Here you would send the dataToSubmit to the server
     };
 
-    if (!self) {
+    if (!profileData) {
         return <div>Loading...</div>;
     }
-    // if (self && self.employee) {
-    //     console.log('Type of shifts:', typeof self.employee.shifts);
-    //     console.log('Is shifts an array:', Array.isArray(self.employee.shifts));
-    // }
 
 
     return (
@@ -89,7 +86,7 @@ function Profile() {
                             id="username"
                             register={register}
                             errors={errors}
-                            defaultValue={self ? self.username : ""}
+                            defaultValue={profileData ? profileData.username : ""}
                         />
                         <FormInputField
                             label="Email"
@@ -98,7 +95,7 @@ function Profile() {
                             id="email"
                             register={register}
                             errors={errors}
-                            defaultValue={self ? self.email : ""}
+                            defaultValue={profileData ? profileData.email : ""}
                         />
                         <Checkbox
                             label="User Not Deleted"
@@ -115,7 +112,7 @@ function Profile() {
                             id="empId"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.id : ""}
+                            defaultValue={profileData.employee ? profileData.employee.id : ""}
                         />
                         <Checkbox
                             label="Employee Active"
@@ -130,7 +127,7 @@ function Profile() {
                             id="firstName"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.firstName : ""}
+                            defaultValue={profileData.employee ? profileData.employee.firstName : ""}
                         />
                         <FormInputField
                             label="Preposition"
@@ -139,7 +136,7 @@ function Profile() {
                             id="preposition"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.preposition : ""}
+                            defaultValue={profileData.employee ? profileData.employee.preposition : ""}
                         />
                         <FormInputField
                             label="Last name"
@@ -148,7 +145,7 @@ function Profile() {
                             id="lastName"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.lastName : ""}
+                            defaultValue={profileData.employee ? profileData.employee.lastName : ""}
                         />
                         <FormInputField
                             label="Short name"
@@ -157,7 +154,7 @@ function Profile() {
                             id="shortName"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.shortName : ""}
+                            defaultValue={profileData.employee ? profileData.employee.shortName : ""}
                         />
                         <FormInputField
                             label="Date of Birth"
@@ -166,7 +163,7 @@ function Profile() {
                             id="dob"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.dob : ""}
+                            defaultValue={profileData.employee ? profileData.employee.dob : ""}
                         />
                         <FormInputField
                             label="Phone number"
@@ -175,7 +172,7 @@ function Profile() {
                             id="phoneNumber"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.phoneNumber : ""}
+                            defaultValue={profileData.employee ? profileData.employee.phoneNumber : ""}
                         />
                         <FormInputField
                             label="Employee id"
@@ -184,7 +181,7 @@ function Profile() {
                             id="empId"
                             register={register}
                             errors={errors}
-                            defaultValue={self.employee ? self.employee.id : ""}
+                            defaultValue={profileData.employee ? profileData.employee.id : ""}
                         />
                         <Button type="submit" children="Opslaan"/>
                     </form>
@@ -192,7 +189,7 @@ function Profile() {
                     <div>
                         SHIFTS
                         <div className="shifts-container">
-                            {self.shifts ? self.shifts.slice(0, 5).map((shift) => {
+                            {profileData.shifts ? profileData.shifts.slice(0, 5).map((shift) => {
 
                                 const startShiftDate = new Date(shift.startShift);
                                 const endShiftDate = new Date(shift.endShift);
@@ -216,7 +213,7 @@ function Profile() {
                     <div>
                         ABSENCES
                         <div className="absences-container">
-                            {self.absences ? self.absences.slice(0, 5).map((absence) => {
+                            {profileData.absences ? profileData.absences.slice(0, 5).map((absence) => {
 
                                 const startAbsenceDate = new Date(absence.startDate);
                                 const endAbsenceDate = new Date(absence.endDate);

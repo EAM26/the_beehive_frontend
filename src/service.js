@@ -1,21 +1,6 @@
 import axios from "axios";
 
 
-//Request to get all employees
-export const getEmployees = async (token, signal) => {
-
-    const response = await axios.get('http://localhost:8080/employees',
-        {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            signal: signal
-        })
-
-    return response.data
-
-}
 
 // Request to get all Users data with employee data
 export const getUsers = async (token, signal) => {
@@ -68,9 +53,11 @@ export const getAuthData = async (jwt) => {
     return response.data
 }
 
-export const getSingleEmployeeData = async (jwt, id) => {
-    console.log("getSingleEmployeeData running")
-    const response = await axios.get(`http://localhost:8080/employees/profile/${id}`, {
+
+
+export const getUserData = async (jwt, username)=> {
+    // const authData  = await getAuthData(jwt)
+    const response = await axios.get(`http://localhost:8080/users/${username}`, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`
@@ -79,29 +66,7 @@ export const getSingleEmployeeData = async (jwt, id) => {
     return response.data
 }
 
-export const getUserData = async (jwt)=> {
-    const authData  = await getAuthData(jwt)
-    const response = await axios.get(`http://localhost:8080/users/${authData.name}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwt}`
-        }
-    })
-    return response.data
-}
 
-// Request to get own profile data
-// export const getProfileData = async (token)=> {
-//
-//     const response = await axios.get('localhost:8080/users/self', {
-//         headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: `Bearer ${jwt}`
-//         }
-//     })
-//     console.log(response.data)
-//     return response.data
-// }
 
 
 
