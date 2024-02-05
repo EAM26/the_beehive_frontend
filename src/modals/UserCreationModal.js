@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './UserCreationModal.css';
+import './CreationModal.css';
 
 function UserCreationModal({ isOpen, onClose, onSubmit }) {
     const [formData, setFormData] = useState({
