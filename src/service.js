@@ -79,9 +79,9 @@ export const getSingleEmployeeData = async (jwt, id) => {
     return response.data
 }
 
-export const getUserData = async (jwt)=> {
-    const authData  = await getAuthData(jwt)
-    const response = await axios.get(`http://localhost:8080/users/${authData.name}`, {
+export const getUserData = async (jwt, username)=> {
+    // const authData  = await getAuthData(jwt)
+    const response = await axios.get(`http://localhost:8080/users/${username}`, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`
