@@ -142,6 +142,23 @@ export const updateEmployee = async (jwt, id, firstName, preposition, lastName, 
     return response.data
 }
 
+export const getTeams = async (token, signal) => {
+
+    const response = await axios.get('http://localhost:8080/teams',
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            signal: signal
+        })
+    console.log(response.data)
+    return response.data
+
+}
+
+
+
 
 
 
