@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {createEmployee, createUser, getSelf, getUserData} from "../../service";
+import {createEmployee, createUser, getSelf, getUserData, updateUser} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -26,11 +26,12 @@ function Profile() {
 
     useEffect(() => {
 
-        const fetchSelfData = async () => {
+        const fetchData = async () => {
             setLoading(true);
             try {
                 const data = username ? await getUserData(token, username) : await getSelf(token);
                 setProfileData(data);
+
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
@@ -39,7 +40,7 @@ function Profile() {
             }
         };
 
-        void fetchSelfData();
+        void fetchData();
     }, []);
 
     useEffect(() => {
@@ -61,7 +62,7 @@ function Profile() {
 
     const handleFormSubmitUser = async (formData) => {
         try {
-            await createUser(token, formData.username, formData.password, formData.userRole, formData.email, isDeleted)
+            await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, isDeleted)
         } catch (e) {
             console.log(e)
         }
