@@ -14,22 +14,17 @@ function App() {
     const {isAuth, authLevel} = useContext(AuthContext)
     return (
         <>
-            <Navbar/>
-            <Routes>
-                <Route path="/" element={isAuth ? <TempHome/> : <Login/>}/>
-                <Route path="/login" element={!isAuth ? <Login/> : <TempHome/>}/>
-
-                <Route path="/profile/:username" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
-                {/*<Route path="/profile/:id" element={isAuth ? <Profile/> : <Navigate to={'/login'}/>}/>*/}
-                <Route path="/profile" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
-                {/*<Route path="/profile" element={isAuth ? <Profile/> : <Navigate to={'/login'}/>}/>*/}
-
-
-
-                <Route path="/users" element={isAuth && (authLevel !== 'user') ? <Users/> : <Navigate to={'/'}/>}/>
-                <Route path="/rosters"
-                       element={isAuth && (authLevel !== 'user') ? <TempRosters/> : <Navigate to={'/'}/>}/>
-            </Routes>
+            <div className="app-overall-container">
+                <Navbar/>
+                <Routes>
+                    <Route path="/" element={isAuth ? <TempHome/> : <Login/>}/>
+                    <Route path="/login" element={!isAuth ? <Login/> : <TempHome/>}/>
+                    <Route path="/profile/:username" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
+                    <Route path="/profile" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
+                    <Route path="/users" element={isAuth && (authLevel !== 'user') ? <Users/> : <Navigate to={'/'}/>}/>
+                    <Route path="/rosters" element={isAuth && (authLevel !== 'user') ? <TempRosters/> : <Navigate to={'/'}/>}/>
+                </Routes>
+            </div>
         </>
     );
 }
