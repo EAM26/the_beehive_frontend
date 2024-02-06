@@ -96,6 +96,7 @@ function Users() {
         <main className="outer-container">
             <div className="inner-container">
                 <h2>Users</h2>
+                <Button children="NEW USER" type="button" onClick={handleNewUserClick}/>
                 <div>
                     <span>User Status</span>
                     <select value={deletedFilter} onChange={handleDeletedFilterChange}>
@@ -111,8 +112,6 @@ function Users() {
                         <option value="userOnly">Non Employees</option>
                     </select>
                 </div>
-
-                <Button children="NEW" type="button" onClick={handleNewUserClick}/>
                 {loading && <p>Loading...</p>}
                 {error ? <p>{errorMessage}</p> :
                     <table>
