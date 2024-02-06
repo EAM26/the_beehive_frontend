@@ -69,8 +69,8 @@ function Users() {
 
 
     return (
-        <main>
-            <div>
+        <main className="outer-container">
+            <div className="inner-container">
                 <h2>Users</h2>
                 <Button children="NEW" type="button" onClick={handleNewUserClick}/>
                 {loading && <p>Loading...</p>}
