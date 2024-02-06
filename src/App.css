@@ -1,17 +1,25 @@
 /* FLEXBOX */
-.outer-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
 
+.app-overall-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.outer-container {
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .inner-container {
     display: flex;
+    position: relative;
     flex-direction: column;
-    margin-inline: 1rem;
-    flex: 0 1 1200px;
     align-items: center;
+    flex: 0 1 1200px;
+
 }
 
 .form-error-message {
