@@ -57,7 +57,7 @@ function Users() {
 
     useEffect(() => {
         const controller = new AbortController();
-        const token = localStorage.getItem('token');
+        // const token = localStorage.getItem('token');
 
         const fetchData = async () => {
             try {
