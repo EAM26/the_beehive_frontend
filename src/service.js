@@ -154,7 +154,20 @@ export const getTeams = async (token, signal) => {
         })
     console.log(response.data)
     return response.data
+}
 
+export const getSingleTeam = async (token, signal, teamName) => {
+    console.log(teamName)
+    const response = await axios.get(`http://localhost:8080/teams/${teamName}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            signal: signal
+        })
+    console.log(response.data)
+    return response.data
 }
 
 
