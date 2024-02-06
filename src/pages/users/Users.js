@@ -19,6 +19,9 @@ function Users() {
     const {token} = useContext(AuthContext);
     const [showEmployeeModal, setShowEmployeeModal] = useState(false);
     const [selectedUsername, setSelectedUsername] = useState('');
+    const [deletedFilter, setDeletedFilter] = useState('all');
+    const [employeeFilter, setEmployeeFilter] = useState('all');
+
 
 
     const handleViewUser = (username) => {
@@ -42,6 +45,15 @@ function Users() {
         setSelectedUsername('')
     };
 
+    const handleDeletedFilterChange = (e) => {
+        setDeletedFilter(e.target.value);
+    };
+
+    const handleEmployeeFilterChange = (e) => {
+        setEmployeeFilter(e.target.value);
+    };
+
+
 
     useEffect(() => {
         const controller = new AbortController();
@@ -50,9 +62,21 @@ function Users() {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const usersData = await getUsers(token, controller.signal);
+                let usersData = await getUsers(token, controller.signal);
+
+                if (deletedFilter !== 'all') {
+                    const filterValue = deletedFilter === 'active';
+                    usersData = usersData.filter(user => user.isDeleted === filterValue);
+                }
+
+                if (employeeFilter === 'isEmployee') {
+                    usersData = usersData.filter(user => user.employee);
+                } else if (employeeFilter === 'userOnly') {
+                    usersData = usersData.filter(user => !user.employee);
+                }
+
                 setUsers(usersData);
-                console.log("fetch data running")
+
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
@@ -65,14 +89,29 @@ function Users() {
         return function cleanup() {
             controller.abort();
         }
-    }, []);
+    }, [deletedFilter, employeeFilter]);
 
 
     return (
         <main className="outer-container">
             <div className="inner-container">
                 <h2>Users</h2>
-                <Button children="NEW" type="button" onClick={handleNewUserClick}/>
+                <Button children="NEW USER" type="button" onClick={handleNewUserClick}/>
+                <div>
+                    <span>User Status</span>
+                    <select value={deletedFilter} onChange={handleDeletedFilterChange}>
+                        <option value="all">All</option>
+                        <option value="active">Not Deleted</option>
+                        <option value="deleted">Deleted</option>
+                    </select>
+
+                    <span>Employee</span>
+                    <select value={employeeFilter} onChange={handleEmployeeFilterChange}>
+                        <option value="all">All</option>
+                        <option value="isEmployee">Employees</option>
+                        <option value="userOnly">Non Employees</option>
+                    </select>
+                </div>
                 {loading && <p>Loading...</p>}
                 {error ? <p>{errorMessage}</p> :
                     <table>
@@ -134,22 +173,10 @@ function Users() {
                     console.log('Form submitted with data:', formData);
                     try {
                         const newEmployee = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isActive, formData.teamName, selectedUsername)
-                        // setUsers(currentUsers => {
-                        //     return currentUsers.map(user => {
-                        //         console.log(user.employee.id)
-                        //         console.log(newEmployee.id)
-                        //         if (user.employee?.id === newEmployee.id) {
-                        //             return {
-                        //                 ...user,
-                        //                 employee: { ...newEmployee }
-                        //             };
-                        //         }
-                        //         return user;
-                        //     });
-                        // });
+
                         setUsers(currentUsers => {
                             return currentUsers.map(user => {
-                                if (user.username === selectedUsername) { // Gebruik de opgeslagen username om de juiste user te vinden
+                                if (user.username === selectedUsername) {
                                     return {
                                         ...user,
                                         employee: { ...newEmployee }
