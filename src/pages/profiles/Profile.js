@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {createEmployee, createUser, getSelf, getUserData} from "../../service";
+import {createEmployee, createUser, getSelf, getUserData, updateEmployee, updateUser} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -26,11 +26,17 @@ function Profile() {
 
     useEffect(() => {
 
-        const fetchSelfData = async () => {
+        const fetchData = async () => {
             setLoading(true);
             try {
                 const data = username ? await getUserData(token, username) : await getSelf(token);
                 setProfileData(data);
+                if (data.shifts) {
+                    data.shifts.sort((a, b) => new Date(a.startShift) - new Date(b.startShift));
+                }
+                if (data.absences) {
+                    data.absences.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+                }
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
@@ -39,7 +45,7 @@ function Profile() {
             }
         };
 
-        void fetchSelfData();
+        void fetchData();
     }, []);
 
     useEffect(() => {
@@ -61,7 +67,7 @@ function Profile() {
 
     const handleFormSubmitUser = async (formData) => {
         try {
-            await createUser(token, formData.username, formData.password, formData.userRole, formData.email, isDeleted)
+            await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, isDeleted)
         } catch (e) {
             console.log(e)
         }
@@ -69,7 +75,7 @@ function Profile() {
     };
 
     const handleFormSubmitEmployee = async (formData) => {
-        await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
+        await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
 
 
     };
@@ -123,7 +129,7 @@ function Profile() {
                                     defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
                                 />
                                 <Checkbox
-                                    label="User Not Deleted"
+                                    label="User Active"
                                     name="isDeleted"
                                     checked={!isDeleted}
                                     onChange={handleIsDeletedChange}
@@ -134,9 +140,9 @@ function Profile() {
                                 <h3>Employee</h3>
                                 <FormInputField
                                     label="Employee id"
-                                    name="empId"
-                                    type="text"
-                                    id="empId"
+                                    name="id"
+                                    type="number"
+                                    id="id"
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData.employee ? profileData.employee.id : ""}

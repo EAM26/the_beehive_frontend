@@ -27,7 +27,7 @@ function Login() {
     return (
         <div className="outer-container">
             <div className="inner-container">
-                <form className="form-outer-container"
+                <form
                       onSubmit={handleSubmit(handleFormSubmit)}>
                     <FormInputField
                         label="Gebruikersnaam:"
