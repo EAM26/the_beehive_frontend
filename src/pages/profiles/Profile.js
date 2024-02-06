@@ -31,7 +31,12 @@ function Profile() {
             try {
                 const data = username ? await getUserData(token, username) : await getSelf(token);
                 setProfileData(data);
-
+                if (data.shifts) {
+                    data.shifts.sort((a, b) => new Date(a.startShift) - new Date(b.startShift));
+                }
+                if (data.absences) {
+                    data.absences.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+                }
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
