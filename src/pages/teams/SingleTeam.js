@@ -10,7 +10,7 @@ function SingleTeam(props) {
     const {teamName} = useParams()
     const {token} = useContext(AuthContext);
     const [employees, setEmployees] = useState([]);
-    const [rosters, setRosters] = useState({});
+    const [rosters, setRosters] = useState([]);
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
@@ -30,8 +30,8 @@ function SingleTeam(props) {
                         a.shortName.localeCompare(b.shortName)
                     ));
                 }
-                if(response.rostersOutputDto) {
-                    setRosters(response.rosters);
+                if(response.rostersOutputDtos) {
+                    setRosters(response.rostersOutputDtos);
                 }
 
             } catch (e) {
@@ -67,7 +67,7 @@ function SingleTeam(props) {
                         </thead>
                         <tbody>
 
-                        {employees.map((employee) => {
+                        {employees && employees.map((employee) => {
                            return  <tr key={employee.id}>
                                <td>{employee.shortName} </td>
                                <td>{employee.id}</td>
@@ -75,9 +75,28 @@ function SingleTeam(props) {
                                <td>{<Button children="view" onClick={() => handleViewUser(employee.username)}/>}</td>
                             </tr>
                         })}
-
                         </tbody>
                     </table>
+                    <div>
+                        <span>Rosters</span>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {rosters && rosters.map((roster) => {
+                                return <tr key={roster.id}>
+                                    <td>{roster.name}</td>
+                                    <td><Button children="View"/></td>
+                                </tr>
+                            })}
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
