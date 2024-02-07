@@ -16,7 +16,7 @@ function Teams(props) {
     const [errorMessage, setErrormessage] = useState("")
     const {token} = useContext(AuthContext);
     const [showTeamModal, setShowTeamModal] = useState(false)
-    const { controller, setController } = useState({})
+    const [ controller, setController ] = useState({})
 
     const handleNewTeamClick = (e) => {
         setShowTeamModal(true)
