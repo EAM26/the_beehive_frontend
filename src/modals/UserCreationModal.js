@@ -21,7 +21,7 @@ function UserCreationModal({ isOpen, onClose, onSubmit }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formData);
-        onClose(); // Close modal after submit
+        onClose();
     };
 
     if (!isOpen) return null;

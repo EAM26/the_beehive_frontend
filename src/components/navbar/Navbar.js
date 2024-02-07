@@ -26,6 +26,12 @@ function Navbar() {
 
             {isAuth && <ul className="navbar-ul">
 
+                {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/teams" &&
+                    <li>
+                        <NavLink to="/teams">
+                            Teams
+                        </NavLink>
+                    </li>)}
                 {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/users" &&
                     <li>
                         <NavLink to="/users">
