@@ -3,9 +3,11 @@ import {AuthContext} from "../../context/AuthContext";
 import Button from "../../components/button/Button";
 import {getTeams} from "../../service";
 import {errorHandler} from "../../helpers/errorHandler";
+import {useNavigate} from "react-router-dom";
 
 function Teams(props) {
 
+    const navigate = useNavigate();
     const [teams, setTeams] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
@@ -16,25 +18,30 @@ function Teams(props) {
         console.log("HandleNewTeam")
     }
 
+    const handleViewTeam = (teamName) => {
+        navigate(`/teams/${teamName}`);
+    }
+
     useEffect(() => {
         const controller = new AbortController();
 
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const teamsData = await getTeams(token, controller.signal);
-                setTeams(teamsData)
+                const response = await getTeams(token, controller.signal);
+                setTeams(response)
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
             } finally {
-                console.log("finally block")
+
                 setLoading(false);
             }
 
         }
         void fetchData();
-        console.log(teams)
+
+
         return function cleanup() {
             controller.abort();
         }
@@ -59,8 +66,8 @@ function Teams(props) {
 
                             return <tr key={team.teamName}>
                                 <td>{team.teamName}</td>
-                                <td>{team.isActive? "Active": "Inactive"}</td>
-                            <td><td>{<Button children="view" onClick={() => handleViewUser(user.username)}/>}</td></td>
+                                <td>{team.isActive ? "Active" : "Inactive"}</td>
+                                <td>{<Button children="view" onClick={() => handleViewTeam(team.teamName)}/>}</td>
                             </tr>
 
                         }
