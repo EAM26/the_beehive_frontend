@@ -16,7 +16,7 @@ function Teams(props) {
     const [errorMessage, setErrormessage] = useState("")
     const {token} = useContext(AuthContext);
     const [showTeamModal, setShowTeamModal] = useState(false)
-    const [ controller, setController ] = useState({})
+    // const [ controller, setController ] = useState({})
 
     const handleNewTeamClick = (e) => {
         setShowTeamModal(true)
@@ -31,7 +31,7 @@ function Teams(props) {
     }
 
     useEffect(() => {
-        setController(new AbortController());
+        const controller = new AbortController();
 
         const fetchData = async () => {
             try {
@@ -87,6 +87,7 @@ function Teams(props) {
             isOpen={showTeamModal}
             onClose={handleCloseModal}
             onSubmit={async formData => {
+                const controller = new AbortController();
                 try {
                   const newTeam = await createTeam(token, controller.signal, formData.teamName, formData.isActive)
                 } catch (e) {
