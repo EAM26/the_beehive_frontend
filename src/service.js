@@ -157,7 +157,6 @@ export const getTeams = async (token, signal) => {
 }
 
 export const getSingleTeam = async (token, signal, teamName) => {
-    console.log(teamName)
     const response = await axios.get(`http://localhost:8080/teams/${teamName}`,
         {
             headers: {
@@ -166,7 +165,7 @@ export const getSingleTeam = async (token, signal, teamName) => {
             },
             signal: signal
         })
-    console.log(response.data)
+    console.log(response.data.employees[0])
     return response.data
 }
 
