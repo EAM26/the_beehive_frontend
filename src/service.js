@@ -1,8 +1,6 @@
 import axios from "axios";
 
 
-
-// Request to get all Users data with employee data
 export const getUsers = async (token, signal) => {
 
     const response = await axios.get('http://localhost:8080/users',
@@ -13,22 +11,19 @@ export const getUsers = async (token, signal) => {
             },
             signal: signal
         })
-    console.log(response.data)
     return response.data
 
 }
 
-export const getSelf = async (token, signal) => {
-    console.log("Running getSelf:")
+export const getSelf = async (jwt, signal) => {
     const response = await axios.get('http://localhost:8080/users/self',
         {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${jwt}`
             },
             signal: signal
         })
-    console.log(response.data)
     return response.data
 
 }
@@ -166,6 +161,20 @@ export const getSingleTeam = async (token, signal, teamName) => {
             signal: signal
         })
     console.log(response.data)
+    return response.data
+}
+
+export const createTeam = async (jwt, signal, teamName, isActive)=> {
+    const response = await axios.post('http://localhost:8080/teams', {
+        teamName,
+        isActive
+    },{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`
+        },
+        signal: signal
+    })
     return response.data
 }
 

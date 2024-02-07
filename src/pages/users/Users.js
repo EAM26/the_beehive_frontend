@@ -150,7 +150,6 @@ function Users() {
                 isOpen={showUserModal}
                 onClose={handleCloseModal}
                 onSubmit={async formData => {
-                    console.log('Form submitted with data:', formData);
                     try {
                         const id = await createUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
                         const newUser = await getUserData(token, id);

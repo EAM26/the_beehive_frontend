@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../context/AuthContext";
 import Button from "../../components/button/Button";
-import {getTeams} from "../../service";
+import {createTeam, getTeams} from "../../service";
 import {errorHandler} from "../../helpers/errorHandler";
 import {useNavigate} from "react-router-dom";
+import TeamCreationModal from "../../modals/TeamCreationModal";
+
 
 function Teams(props) {
 
@@ -13,17 +15,23 @@ function Teams(props) {
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
     const {token} = useContext(AuthContext);
+    const [showTeamModal, setShowTeamModal] = useState(false)
+    const { controller, setController } = useState({})
 
     const handleNewTeamClick = (e) => {
-        console.log("HandleNewTeam")
+        setShowTeamModal(true)
     }
+
+    const handleCloseModal = () => {
+        setShowTeamModal(false)
+    };
 
     const handleViewTeam = (teamName) => {
         navigate(`/teams/${teamName}`);
     }
 
     useEffect(() => {
-        const controller = new AbortController();
+        setController(new AbortController());
 
         const fetchData = async () => {
             try {
@@ -75,6 +83,18 @@ function Teams(props) {
                     </tbody>
                 </table>}
             </div>
+            <TeamCreationModal
+            isOpen={showTeamModal}
+            onClose={handleCloseModal}
+            onSubmit={async formData => {
+                try {
+                  const newTeam = await createTeam(token, controller.signal, formData.teamName, formData.isActive)
+                } catch (e) {
+                    console.error(e)
+                }
+                setShowTeamModal(false)
+            }}
+            />
         </main>
     );
 }
