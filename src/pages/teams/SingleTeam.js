@@ -1,34 +1,42 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {getSingleTeam} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
+import Button from "../../components/button/Button";
+import {errorHandler} from "../../helpers/errorHandler";
 
 function SingleTeam(props) {
 
     const {teamName} = useParams()
-    const [team, setTeam] = useState({})
     const {token} = useContext(AuthContext);
     const [employees, setEmployees] = useState([]);
     const [rosters, setRosters] = useState({});
+    const navigate = useNavigate();
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrormessage] = useState("")
 
+    const handleViewUser = ((username) =>  {
+        navigate(`/profile/${username}`);
+    })
     useEffect(() => {
-        console.log("useEffect" + teamName)
-        console.log("single team function")
+
+
+        const controller = new AbortController();
         const fetchData = async () => {
-            const controller = new AbortController();
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
-                if(response.employees) {
-                    setEmployees(response.employees.sort((a, b) =>
+                if(response.employeesOutputDtos) {
+                    setEmployees(response.employeesOutputDtos.sort((a, b) =>
                         a.shortName.localeCompare(b.shortName)
                     ));
                 }
-                if(response.rosters) {
+                if(response.rostersOutputDto) {
                     setRosters(response.rosters);
                 }
 
             } catch (e) {
-
+                setError(true);
+                setErrormessage(errorHandler(e));
             } finally {
 
 
@@ -36,11 +44,13 @@ function SingleTeam(props) {
         }
 
         void fetchData();
+        return function cleanup() {
+            controller.abort();
+        }
 
     }, []);
 
-    console.log(employees)
-    console.log(rosters)
+
     return (
         <main>
             <div>
@@ -62,6 +72,7 @@ function SingleTeam(props) {
                                <td>{employee.shortName} </td>
                                <td>{employee.id}</td>
                                 <td>{employee.isActive? "Active" : "Inactive"}</td>
+                               <td>{<Button children="view" onClick={() => handleViewUser(employee.username)}/>}</td>
                             </tr>
                         })}
 

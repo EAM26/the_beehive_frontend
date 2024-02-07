@@ -165,7 +165,7 @@ export const getSingleTeam = async (token, signal, teamName) => {
             },
             signal: signal
         })
-    console.log(response.data.employees[0])
+    console.log(response.data)
     return response.data
 }
 

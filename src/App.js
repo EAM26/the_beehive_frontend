@@ -24,8 +24,8 @@ function App() {
                     <Route path="/profile/:username" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
                     <Route path="/profile" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
                     <Route path="/users" element={isAuth && (authLevel !== 'user') ? <Users/> : <Navigate to={'/'}/>}/>
+                    <Route path="/teams/:teamName" element={isAuth && (authLevel !== 'user') ? <SingleTeam/> : <Navigate to={'/'}/>}/>
                     <Route path="/teams" element={isAuth && (authLevel !== 'user') ? <Teams/> : <Navigate to={'/'}/>}/>
-                    <Route path="/single-team/:teamName" element={isAuth && (authLevel !== 'user') ? <SingleTeam/> : <Navigate to={'/'}/>}/>
                     <Route path="/rosters" element={isAuth && (authLevel !== 'user') ? <TempRosters/> : <Navigate to={'/'}/>}/>
                 </Routes>
             </div>
