@@ -4,6 +4,7 @@ import {getSingleTeam} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import Button from "../../components/button/Button";
 import {errorHandler} from "../../helpers/errorHandler";
+import {generalSort, sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 
 function SingleTeam(props) {
 
@@ -26,12 +27,10 @@ function SingleTeam(props) {
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
                 if(response.employeesOutputDtos) {
-                    setEmployees(response.employeesOutputDtos.sort((a, b) =>
-                        a.shortName.localeCompare(b.shortName)
-                    ));
+                    setEmployees(generalSort(response.employeesOutputDtos, "shortName"));
                 }
                 if(response.rostersOutputDtos) {
-                    setRosters(response.rostersOutputDtos);
+                    setRosters(sortRostersByYearAndWeek(response.rostersOutputDtos));
                 }
 
             } catch (e) {
