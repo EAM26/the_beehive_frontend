@@ -5,6 +5,7 @@ import {AuthContext} from "../../context/AuthContext";
 import Button from "../../components/button/Button";
 import {errorHandler} from "../../helpers/errorHandler";
 import {generalSort, sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
+import "./SingleTeam.css"
 
 function SingleTeam(props) {
 
@@ -51,10 +52,11 @@ function SingleTeam(props) {
 
 
     return (
-        <main>
-            <div>
-                <p>SingleTeamPage</p>
-                <div>
+        <main className="outer-container">
+            <div className="inner-container">
+                <h3>{teamName}</h3>
+                <div className="singleTeam-outer-container">
+                    <div>
                     <span>Employees</span>
                     <table>
                         <thead>
@@ -65,7 +67,6 @@ function SingleTeam(props) {
                         </tr>
                         </thead>
                         <tbody>
-
                         {employees && employees.map((employee) => {
                            return  <tr key={employee.id}>
                                <td>{employee.shortName} </td>
@@ -76,6 +77,7 @@ function SingleTeam(props) {
                         })}
                         </tbody>
                     </table>
+                    </div>
                     <div>
                         <span>Rosters</span>
                         <table>
