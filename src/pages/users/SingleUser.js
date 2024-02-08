@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {getUser, updateUser} from "../../service";
+import {getUser, updateEmployee, updateUser} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
@@ -34,6 +34,8 @@ function SingleUser(props) {
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
+            console.error(e)
+
         }
 
     };
@@ -41,10 +43,12 @@ function SingleUser(props) {
     const handleFormSubmitEmployee = async (formData) => {
         try {
             console.log(formData)
-            // await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+            await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.teamName, formData.username)
+
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
+            console.error(e)
         }
 
     };
@@ -54,7 +58,6 @@ function SingleUser(props) {
             const fetchData = async () => {
                 try {
                     const user = await getUser(token, username);
-                    console.log(user)
                     if (user.shifts) {
                         user.shifts.sort((a, b) => new Date(a.startShift) - new Date(b.startShift));
                     }
@@ -130,10 +133,10 @@ function SingleUser(props) {
                             validation={{
                                 required:
                                     {
-                                        value: true,
+                                        value: false,
                                         message: "Field is required",
                                     }, pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()\[\]{}:;',?/*~$^+=<>]).{8,20}$/,
                                     message: "1. Password must contain at least one digit [0-9]. " +
                                         "2. Password must contain at least one lowercase Latin character [a-z]. " +
                                         "3. Password must contain at least one uppercase Latin character [A-Z]." +

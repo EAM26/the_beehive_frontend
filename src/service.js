@@ -116,7 +116,7 @@ export const createEmployee = async (jwt, firstName, preposition, lastName, shor
     return response.data
 }
 export const updateEmployee = async (jwt, id, firstName, preposition, lastName, shortName, dob, isActive, teamName, username)=> {
-    console.log("the id of employee is: " + id)
+
     const response = await axios.put(`http://localhost:8080/employees/${id}`, {
         firstName,
         preposition,
