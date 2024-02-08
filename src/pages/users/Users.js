@@ -65,7 +65,7 @@ function Users() {
                 let usersData = await getUsers(token, controller.signal);
 
                 if (deletedFilter !== 'all') {
-                    const filterValue = deletedFilter === 'active';
+                    const filterValue = deletedFilter === 'deleted';
                     usersData = usersData.filter(user => user.isDeleted === filterValue);
                 }
 
