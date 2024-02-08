@@ -69,14 +69,20 @@ function Profile() {
         try {
             await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, isDeleted)
         } catch (e) {
-            console.log(e)
+            setError(true);
+            setErrormessage(errorHandler(e));
         }
 
     };
 
     const handleFormSubmitEmployee = async (formData) => {
-        await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
 
+        try {
+            await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, isActive, formData.teamName, formData.username)
+        } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
+        }
 
     };
 
@@ -101,6 +107,7 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData ? profileData.username : ""}
+                                    readOnly={true}
                                 />
                                 <FormInputField
                                     label="Email"
@@ -110,6 +117,17 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData ? profileData.email : ""}
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "Field is required",
+                                            } , pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
+                                            message: "Not a valid email address"
+                                        }
+                                    }
+                                    }
                                 />
                                 <FormInputField
                                     label="Password"
@@ -127,6 +145,14 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "Field is required",
+                                            }
+                                    }
+                                    }
                                 />
                                 <Checkbox
                                     label="User Active"
@@ -146,6 +172,7 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData.employee ? profileData.employee.id : ""}
+                                    readOnly={true}
                                 />
 
                                 <FormInputField
@@ -156,6 +183,14 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData.employee ? profileData.employee.firstName : ""}
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "Field is required",
+                                            }
+                                    }
+                                    }
                                 />
                                 <FormInputField
                                     label="Preposition"
@@ -165,6 +200,7 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData.employee ? profileData.employee.preposition : ""}
+
                                 />
                                 <FormInputField
                                     label="Last name"
@@ -174,6 +210,14 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData.employee ? profileData.employee.lastName : ""}
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "Field is required",
+                                            }
+                                    }
+                                    }
                                 />
                                 <FormInputField
                                     label="Short name"
@@ -183,6 +227,14 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData.employee ? profileData.employee.shortName : ""}
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "Field is required",
+                                            }
+                                    }
+                                    }
                                 />
                                 <FormInputField
                                     label="Date of Birth"
@@ -210,6 +262,14 @@ function Profile() {
                                     register={register}
                                     errors={errors}
                                     defaultValue={profileData.employee ? profileData.team.teamName : ""}
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "Field is required",
+                                            }
+                                    }
+                                    }
                                 />
                                 <Checkbox
                                     label="Employee Active"
