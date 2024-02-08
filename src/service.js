@@ -79,10 +79,10 @@ export const createUser = async (jwt, username, password, userRole, email, isDel
 }
 
 export const updateUser = async (jwt, username, password, userRole, email, isDeleted)=> {
+    const checkedPassword = password === '' ? null : password
     const response = await axios.put(`http://localhost:8080/users/${username}`, {
-
         username: username,
-        password:  password,
+        password:  checkedPassword,
         userRole: userRole,
         email: email,
         isDeleted: isDeleted,

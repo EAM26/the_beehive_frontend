@@ -30,7 +30,7 @@ function SingleUser(props) {
     const handleFormSubmitUser = async (formData) => {
         try {
             console.log(formData)
-            // await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+            await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
@@ -113,9 +113,10 @@ function SingleUser(props) {
                                         value: true,
                                         message: "Field is required",
                                     }, pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
                                     message: "Not a valid email address"
                                 }
+
                             }
                             }
                         />
@@ -126,6 +127,21 @@ function SingleUser(props) {
                             id="password"
                             register={register}
                             errors={errors}
+                            validation={{
+                                required:
+                                    {
+                                        value: true,
+                                        message: "Field is required",
+                                    }, pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: "1. Password must contain at least one digit [0-9]. " +
+                                        "2. Password must contain at least one lowercase Latin character [a-z]. " +
+                                        "3. Password must contain at least one uppercase Latin character [A-Z]." +
+                                        "4. Password must contain at least one special character.\n" +
+                                        "5. Password must contain a length of at least 8 characters and a maximum of 20 characters."
+                                }
+                            }
+                            }
                         />
                         <FormInputField
                             label="Authority"
