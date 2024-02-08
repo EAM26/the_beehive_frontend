@@ -171,8 +171,7 @@ function Users() {
                 onSubmit={async formData => {
                     console.log('Form submitted with data:', formData);
                     try {
-                        const newEmployee = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isActive, formData.teamName, selectedUsername)
-
+                        const newEmployee = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isActive, formData.phoneNumber, formData.teamName, selectedUsername)
                         setUsers(currentUsers => {
                             return currentUsers.map(user => {
                                 if (user.username === selectedUsername) {
