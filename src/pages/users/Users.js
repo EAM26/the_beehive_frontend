@@ -25,7 +25,7 @@ function Users() {
 
 
     const handleViewUser = (username) => {
-        navigate(`/profile/${username}`);
+        navigate(`/users/${username}`);
     };
 
     const handleNewUserClick = () => {
