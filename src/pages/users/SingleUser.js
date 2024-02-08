@@ -1,14 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { getSelf, updateEmployee, updateUser} from "../../service";
+import {useParams} from "react-router-dom";
+import {getUser, updateEmployee, updateUser} from "../../service";
+import {AuthContext} from "../../context/AuthContext";
+import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
-import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
-import "./Profile.css"
-import {AuthContext} from "../../context/AuthContext";
 
-function Profile() {
+
+function SingleUser(props) {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm({
         mode: "onTouched",
         defaultValues: {
@@ -16,16 +17,19 @@ function Profile() {
             isEmpActive: false,
         }
     })
-    const [profileData, setProfileData] = useState(null);
+    const {username} = useParams();
+    const {token} = useContext(AuthContext);
+    const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
     const userLocale = useContext(LocaleContext)
-    const {token} = useContext(AuthContext);
+
+
 
     const handleFormSubmitUser = async (formData) => {
         try {
-            console.log(formData)
+            // console.log(formData)
             await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
         } catch (e) {
             setError(true);
@@ -50,45 +54,40 @@ function Profile() {
     };
 
     useEffect(() => {
+            const fetchData = async () => {
+                setLoading(true);
+                try {
+                    const user = await getUser(token, username);
+                    if (user.shifts) {
+                        user.shifts.sort((a, b) => new Date(a.startShift) - new Date(b.startShift));
+                    }
+                    if (user.absences) {
+                        user.absences.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+                    }
 
-        const controller = new AbortController();
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const user =  await getSelf(token);
+                    setValue('isEmpActive', user.employee?.isActive)
+                    setValue('isDeleted', user.isDeleted)
+                    setUserData(user);
+                } catch (e) {
+                    setError(true);
+                    setErrormessage(errorHandler(e))
+                } finally {
 
-                setValue('isEmpActive', user.employee?.isActive)
-                setValue('isDeleted', user.isDeleted)
-
-                if (user.shifts) {
-                    user.shifts.sort((a, b) => new Date(a.startShift) - new Date(b.startShift));
                 }
-                if (user.absences) {
-                    user.absences.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
-                }
-                setProfileData(user);
-            } catch (e) {
-                setError(true);
-                setErrormessage(errorHandler(e));
-                console.error(e)
-            } finally {
                 setLoading(false);
-            }
-        };
+            };
 
-        void fetchData();
-        return function cleanup() {
-            controller.abort();
-        }
-    }, []);
-    console.log(profileData)
+            void fetchData();
 
-    if (!profileData) {
+        },
+        []);
+
+    if (!userData) {
         return <div>Loading...</div>;
     }
 
     return (
-        <main >
+        <main>
             <div>
                 <div>
                     <form onSubmit={handleSubmit(handleFormSubmitUser)}>
@@ -100,7 +99,7 @@ function Profile() {
                             id="username"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData ? profileData.username : ""}
+                            defaultValue={userData ? userData.username : ""}
                             readOnly={true}
                         />
                         <FormInputField
@@ -110,7 +109,7 @@ function Profile() {
                             id="email"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData ? profileData.email : ""}
+                            defaultValue={userData ? userData.email : ""}
                             validation={{
                                 required:
                                     {
@@ -154,7 +153,7 @@ function Profile() {
                             id="userRole"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
+                            defaultValue={userData ? userData.authorities[0].authority.replace('ROLE_', '') : ""}
                             validation={{
                                 required:
                                     {
@@ -174,7 +173,7 @@ function Profile() {
                         />
                         <Button type="submit" children="Save"/>
                     </form>
-
+                    {userData.employee?
                     <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
                         <h3>Employee</h3>
                         <FormInputField
@@ -184,7 +183,7 @@ function Profile() {
                             id="id"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.id : ""}
+                            defaultValue={userData.employee ? userData.employee.id : ""}
                             readOnly={true}
                         />
 
@@ -196,7 +195,7 @@ function Profile() {
                             id="firstName"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.firstName : ""}
+                            defaultValue={userData.employee ? userData.employee.firstName : ""}
                             validation={{
                                 required:
                                     {
@@ -213,7 +212,7 @@ function Profile() {
                             id="preposition"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.preposition : ""}
+                            defaultValue={userData.employee ? userData.employee.preposition : ""}
 
                         />
                         <FormInputField
@@ -223,7 +222,7 @@ function Profile() {
                             id="lastName"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.lastName : ""}
+                            defaultValue={userData.employee ? userData.employee.lastName : ""}
                             validation={{
                                 required:
                                     {
@@ -240,7 +239,7 @@ function Profile() {
                             id="shortName"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.shortName : ""}
+                            defaultValue={userData.employee ? userData.employee.shortName : ""}
                             validation={{
                                 required:
                                     {
@@ -257,7 +256,7 @@ function Profile() {
                             id="dob"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.dob : ""}
+                            defaultValue={userData.employee ? userData.employee.dob : ""}
                         />
                         <FormInputField
                             label="Phone number"
@@ -266,7 +265,7 @@ function Profile() {
                             id="phoneNumber"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.phoneNumber : ""}
+                            defaultValue={userData.employee ? userData.employee.phoneNumber : ""}
                         />
                         <FormInputField
                             label="Team"
@@ -275,7 +274,7 @@ function Profile() {
                             id="teamName"
                             register={register}
                             errors={errors}
-                            defaultValue={profileData.employee ? profileData.team.teamName : ""}
+                            defaultValue={userData.employee ? userData.team.teamName : ""}
                             validation={{
                                 required:
                                     {
@@ -295,10 +294,11 @@ function Profile() {
                         />
                         <Button type="submit" children="Save"/>
                     </form>
+                    : null }
                     <div className="screen-container">
                         <div className="shifts-container">
                             SHIFTS
-                            {profileData.shifts ? profileData.shifts.slice(0, 5).map((shift) => {
+                            {userData.shifts ? userData.shifts.slice(0, 5).map((shift) => {
 
                                 const startShiftDate = new Date(shift.startShift);
                                 const endShiftDate = new Date(shift.endShift);
@@ -320,7 +320,7 @@ function Profile() {
 
                         <div className="absences-container">
                             ABSENCES
-                            {profileData.absences ? profileData.absences.slice(0, 5).map((absence) => {
+                            {userData.absences ? userData.absences.slice(0, 5).map((absence) => {
 
                                 const startAbsenceDate = new Date(absence.startDate);
                                 const endAbsenceDate = new Date(absence.endDate);
@@ -339,5 +339,5 @@ function Profile() {
     );
 }
 
-export default Profile;
 
+export default SingleUser;

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
-import {createEmployee, createUser, getUserData, getUsers} from "../../service";
+import {createEmployee, createUser, getUser, getUsers} from "../../service";
 import Button from "../../components/button/Button";
 import {useNavigate} from "react-router-dom";
 import UserCreationModal from "../../modals/UserCreationModal";
@@ -25,7 +25,7 @@ function Users() {
 
 
     const handleViewUser = (username) => {
-        navigate(`/profile/${username}`);
+        navigate(`/users/${username}`);
     };
 
     const handleNewUserClick = () => {
@@ -152,7 +152,7 @@ function Users() {
                 onSubmit={async formData => {
                     try {
                         const id = await createUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
-                        const newUser = await getUserData(token, id);
+                        const newUser = await getUser(token, id);
                         setUsers(currentUsers => [...currentUsers, newUser]);
                         const updatedUsers = [...users, newUser];
                         setUsers(updatedUsers.sort((a, b) => a.username.localeCompare(b.username)));
@@ -171,8 +171,7 @@ function Users() {
                 onSubmit={async formData => {
                     console.log('Form submitted with data:', formData);
                     try {
-                        const newEmployee = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isActive, formData.teamName, selectedUsername)
-
+                        const newEmployee = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isActive, formData.phoneNumber, formData.teamName, selectedUsername)
                         setUsers(currentUsers => {
                             return currentUsers.map(user => {
                                 if (user.username === selectedUsername) {

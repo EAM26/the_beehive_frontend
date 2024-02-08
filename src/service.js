@@ -11,6 +11,7 @@ export const getUsers = async (token, signal) => {
             },
             signal: signal
         })
+    console.log(response)
     return response.data
 
 }
@@ -24,6 +25,7 @@ export const getSelf = async (jwt, signal) => {
             },
             signal: signal
         })
+    console.log(response)
     return response.data
 
 }
@@ -34,6 +36,7 @@ export const postLoginData = async(data) => {
         username: data.username,
         password: data.password,
     })
+    console.log(response)
     return response.data;
 }
 
@@ -45,12 +48,13 @@ export const getAuthData = async (jwt) => {
             Authorization: `Bearer ${jwt}`
         }
     })
+    console.log(response)
     return response.data
 }
 
 
 
-export const getUserData = async (jwt, username)=> {
+export const getUser = async (jwt, username)=> {
     // const authData  = await getAuthData(jwt)
     const response = await axios.get(`http://localhost:8080/users/${username}`, {
         headers: {
@@ -58,6 +62,7 @@ export const getUserData = async (jwt, username)=> {
             Authorization: `Bearer ${jwt}`
         }
     })
+    console.log(response)
     return response.data
 }
 
@@ -75,14 +80,15 @@ export const createUser = async (jwt, username, password, userRole, email, isDel
             Authorization: `Bearer ${jwt}`
         }
     })
+    console.log(response)
     return response.data
 }
 
 export const updateUser = async (jwt, username, password, userRole, email, isDeleted)=> {
+    const checkedPassword = password === '' ? null : password
     const response = await axios.put(`http://localhost:8080/users/${username}`, {
-
         username: username,
-        password:  password,
+        password:  checkedPassword,
         userRole: userRole,
         email: email,
         isDeleted: isDeleted,
@@ -96,7 +102,7 @@ export const updateUser = async (jwt, username, password, userRole, email, isDel
     return response.data
 }
 
-export const createEmployee = async (jwt, firstName, preposition, lastName, shortName, dob, isActive, teamName, username)=> {
+export const createEmployee = async (jwt, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username)=> {
     const response = await axios.post('http://localhost:8080/employees', {
         firstName,
         preposition,
@@ -104,6 +110,7 @@ export const createEmployee = async (jwt, firstName, preposition, lastName, shor
         shortName,
         dob,
         isActive,
+        phoneNumber,
         teamName,
         username
 
@@ -113,10 +120,11 @@ export const createEmployee = async (jwt, firstName, preposition, lastName, shor
             Authorization: `Bearer ${jwt}`
         }
     })
+    console.log(response)
     return response.data
 }
-export const updateEmployee = async (jwt, id, firstName, preposition, lastName, shortName, dob, isActive, teamName, username)=> {
-    console.log("the id of employee is: " + id)
+export const updateEmployee = async (jwt, id, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username)=> {
+
     const response = await axios.put(`http://localhost:8080/employees/${id}`, {
         firstName,
         preposition,
@@ -124,6 +132,7 @@ export const updateEmployee = async (jwt, id, firstName, preposition, lastName, 
         shortName,
         dob,
         isActive,
+        phoneNumber,
         teamName,
         username
 
@@ -134,6 +143,7 @@ export const updateEmployee = async (jwt, id, firstName, preposition, lastName, 
             Authorization: `Bearer ${jwt}`
         }
     })
+    console.log(response)
     return response.data
 }
 
@@ -147,7 +157,7 @@ export const getTeams = async (token, signal) => {
             },
             signal: signal
         })
-    console.log(response.data)
+    console.log(response)
     return response.data
 }
 
@@ -160,7 +170,7 @@ export const getSingleTeam = async (token, signal, teamName) => {
             },
             signal: signal
         })
-    console.log(response.data)
+    console.log(response)
     return response.data
 }
 
@@ -175,6 +185,7 @@ export const createTeam = async (jwt, signal, teamName, isActive)=> {
         },
         signal: signal
     })
+    console.log(response)
     return response.data
 }
 
