@@ -50,7 +50,7 @@ export const getAuthData = async (jwt) => {
 
 
 
-export const getUserData = async (jwt, username)=> {
+export const getUser = async (jwt, username)=> {
     // const authData  = await getAuthData(jwt)
     const response = await axios.get(`http://localhost:8080/users/${username}`, {
         headers: {

@@ -11,6 +11,7 @@ import Profile from "./pages/profiles/Profile";
 import Users from "./pages/users/Users";
 import Teams from "./pages/teams/Teams";
 import SingleTeam from "./pages/teams/SingleTeam";
+import SingleUser from "./pages/users/SingleUser";
 
 function App() {
     const {isAuth, authLevel} = useContext(AuthContext)
@@ -21,8 +22,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={isAuth ? <TempHome/> : <Login/>}/>
                     <Route path="/login" element={!isAuth ? <Login/> : <TempHome/>}/>
-                    <Route path="/profile/:username" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
                     <Route path="/profile" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
+                    <Route path="/users/:username" element={isAuth  && (authLevel !== 'user')?  <SingleUser/> : <Navigate to="/login"/>}/>
                     <Route path="/users" element={isAuth && (authLevel !== 'user') ? <Users/> : <Navigate to={'/'}/>}/>
                     <Route path="/teams/:teamName" element={isAuth && (authLevel !== 'user') ? <SingleTeam/> : <Navigate to={'/'}/>}/>
                     <Route path="/teams" element={isAuth && (authLevel !== 'user') ? <Teams/> : <Navigate to={'/'}/>}/>
