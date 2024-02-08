@@ -54,8 +54,8 @@ function SingleUser(props) {
     };
 
     useEffect(() => {
-            setLoading(true);
             const fetchData = async () => {
+                setLoading(true);
                 try {
                     const user = await getUser(token, username);
                     if (user.shifts) {
@@ -171,7 +171,7 @@ function SingleUser(props) {
                             register={register}
                             errors={errors}
                         />
-                        <Button type="submit" children="Opslaan"/>
+                        <Button type="submit" children="Save"/>
                     </form>
                     {userData.employee?
                     <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
@@ -292,7 +292,7 @@ function SingleUser(props) {
                             register={register}
                             errors={errors}
                         />
-                        <Button type="submit" children="Opslaan"/>
+                        <Button type="submit" children="Save"/>
                     </form>
                     : null }
                     <div className="screen-container">

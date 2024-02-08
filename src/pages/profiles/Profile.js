@@ -1,9 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {createEmployee, createUser, getSelf, getUser, updateEmployee, updateUser} from "../../service";
+import { getSelf, updateEmployee, updateUser} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
-import Checkbox from "../../components/checkbox/Checkbox";
 import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./Profile.css"
@@ -52,8 +51,9 @@ function Profile() {
 
     useEffect(() => {
 
-        setLoading(true);
+        const controller = new AbortController();
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const user =  await getSelf(token);
 
@@ -77,6 +77,9 @@ function Profile() {
         };
 
         void fetchData();
+        return function cleanup() {
+            controller.abort();
+        }
     }, []);
     console.log(profileData)
 
@@ -169,7 +172,7 @@ function Profile() {
                             register={register}
                             errors={errors}
                         />
-                        <Button type="submit" children="Opslaan"/>
+                        <Button type="submit" children="Save"/>
                     </form>
 
                     <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
@@ -290,7 +293,7 @@ function Profile() {
                             register={register}
                             errors={errors}
                         />
-                        <Button type="submit" children="Opslaan"/>
+                        <Button type="submit" children="Save"/>
                     </form>
                     <div className="screen-container">
                         <div className="shifts-container">
