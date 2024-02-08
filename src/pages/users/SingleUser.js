@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {getUser} from "../../service";
+import {getUser, updateUser} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
+import {LocaleContext} from "../../context/LocaleContext";
 
 
 function SingleUser(props) {
@@ -22,17 +23,31 @@ function SingleUser(props) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
-    const [isDeleted, setIsDeleted] = useState(false);
-    const [isActive, setIsActive] = useState(false);
+    const userLocale = useContext(LocaleContext)
 
-    const handleFormSubmitEmployee = async (formData) => {
+
+
+    const handleFormSubmitUser = async (formData) => {
         try {
-            console.log("handleformsubmit");
+            console.log(formData)
+            // await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
         }
-    }
+
+    };
+
+    const handleFormSubmitEmployee = async (formData) => {
+        try {
+            console.log(formData)
+            // await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+        } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
+        }
+
+    };
 
     useEffect(() => {
             setLoading(true);
@@ -48,7 +63,7 @@ function SingleUser(props) {
                     }
                     setUserData(user);
                     setValue('isEmpActive', user.employee?.isActive)
-                    setValue('Deleted', user.isDeleted)
+                    setValue('isDeleted', user.isDeleted)
 
                 } catch (e) {
                     setError(true);
@@ -72,7 +87,8 @@ function SingleUser(props) {
         <main>
             <div>
                 <div>
-                    <form action="">
+                    <form onSubmit={handleSubmit(handleFormSubmitUser)}>
+                        <h3>User</h3>
                         <FormInputField
                             label="User name"
                             name="username"
@@ -139,7 +155,7 @@ function SingleUser(props) {
                         <Button type="submit" children="Opslaan"/>
                     </form>
 
-                    <form onSubmit={handleSubmit(handleFormSubmitEmployee)} className="form-inner-container">
+                    <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
                         <h3>Employee</h3>
                         <FormInputField
                             label="Employee id"
@@ -257,17 +273,46 @@ function SingleUser(props) {
                             register={register}
                             errors={errors}
                         />
-
-                        {/*    <Checkbox*/}
-                        {/*        label="Employee Active"*/}
-                        {/*        name="isActive"*/}
-                        {/*        checked={isActive}*/}
-                        {/*        onChange={handleIsActiveChange}*/}
-                        {/*    />*/}
-
-                        {/*    <Button type="submit" children="Opslaan"/>*/}
-                        {/*</form>*/}
+                        <Button type="submit" children="Opslaan"/>
                     </form>
+                    <div className="screen-container">
+                        <div className="shifts-container">
+                            SHIFTS
+                            {userData.shifts ? userData.shifts.slice(0, 5).map((shift) => {
+
+                                const startShiftDate = new Date(shift.startShift);
+                                const endShiftDate = new Date(shift.endShift);
+
+
+                                const date = `${startShiftDate.getDate().toString().padStart(2, '0')}-${(startShiftDate.getMonth() + 1).toString().padStart(2, '0')}-${startShiftDate.getFullYear()}`;
+                                const startTime = startShiftDate.toLocaleTimeString(userLocale, {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                const endTime = endShiftDate.toLocaleTimeString(userLocale, {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                return <p key={shift.id}>{date} {startTime} - {endTime}</p>
+                            }) : "No Shifts Available"}
+                        </div>
+
+
+                        <div className="absences-container">
+                            ABSENCES
+                            {userData.absences ? userData.absences.slice(0, 5).map((absence) => {
+
+                                const startAbsenceDate = new Date(absence.startDate);
+                                const endAbsenceDate = new Date(absence.endDate);
+
+                                const startDate = `${startAbsenceDate.getDate().toString().padStart(2, '0')}-${(startAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${startAbsenceDate.getFullYear()}`;
+                                const endDate = `${endAbsenceDate.getDate().toString().padStart(2, '0')}-${(endAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${endAbsenceDate.getFullYear()}`;
+
+                                return <p key={absence.id}>{startDate} {endDate}</p>
+                            }) : "No Absences Available"
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
