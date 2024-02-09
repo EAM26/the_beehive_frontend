@@ -1,7 +1,9 @@
-import { useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import './CreationModal.css';
+import {getTeams} from "../service";
+import  {AuthContext} from "../context/AuthContext";
 
-function EmployeeCreationModal({ isOpen, onClose, onSubmit,  }) {
+function EmployeeCreationModal({isOpen, onClose, onSubmit,}) {
     const [formData, setFormData] = useState({
         firstName: '',
         preposition: '',
@@ -14,6 +16,10 @@ function EmployeeCreationModal({ isOpen, onClose, onSubmit,  }) {
 
     });
 
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const {token} = useContext(AuthContext)
+
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
         setFormData(prev => ({
@@ -22,11 +28,34 @@ function EmployeeCreationModal({ isOpen, onClose, onSubmit,  }) {
         }));
     };
 
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(formData)
         onSubmit(formData);
         onClose();
     };
+
+    useEffect(() => {
+        const fetchData = (async () => {
+            setLoading(true)
+            try {
+                const response = await getTeams(token);
+                setTeams(response);
+            } catch (e) {
+                console.error(e)
+            } finally {
+                setLoading(false)
+            }
+
+        })
+        void fetchData();
+    }, []);
+
+    if (!teams) {
+        return <div>Loading...</div>;
+    }
 
     if (!isOpen) return null;
 
@@ -89,13 +118,13 @@ function EmployeeCreationModal({ isOpen, onClose, onSubmit,  }) {
                         />
                     </div>
                     <div>
-                        <label>Team:</label>
-                        <input
-                            type="text"
-                            name="teamName"
-                            value={formData.teamName}
-                            onChange={handleChange}
-                        />
+                        <label>Team</label>
+                        <select  name="teamName" onChange={handleChange}>
+                            {teams.map((team)=> {
+                                return <option key={team.teamName} value={team.teamName}>{team.teamName}</option>
+                            })}
+                        </select>
+
                     </div>
                     <div>
                         <label>
