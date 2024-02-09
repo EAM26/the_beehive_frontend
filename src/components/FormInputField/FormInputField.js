@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function FormInputField( {name, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, children} ) {
+function FormInputField( {name, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, className, disabled, children} ) {
     return (
         <div>
             <label htmlFor={id}>
@@ -12,6 +12,8 @@ function FormInputField( {name, type, id, label, defaultValue ,placeholder, regi
                     defaultValue={defaultValue}
                     placeholder={placeholder}
                     readOnly={readOnly}
+                    disabled={disabled}
+                    className={className}
                     {...register(name, validation)}
                 />
             </label>

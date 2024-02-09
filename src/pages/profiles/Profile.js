@@ -154,6 +154,7 @@ function Profile() {
                             id="userRole"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
                             validation={{
                                 required:
@@ -171,6 +172,8 @@ function Profile() {
                             id="isDeleted"
                             register={register}
                             errors={errors}
+                            disabled="disabled"
+
                         />
                         <Button type="submit" children="Save"/>
                     </form>
@@ -196,6 +199,7 @@ function Profile() {
                             id="firstName"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData.employee ? profileData.employee.firstName : ""}
                             validation={{
                                 required:
@@ -213,8 +217,8 @@ function Profile() {
                             id="preposition"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData.employee ? profileData.employee.preposition : ""}
-
                         />
                         <FormInputField
                             label="Last name"
@@ -223,6 +227,7 @@ function Profile() {
                             id="lastName"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData.employee ? profileData.employee.lastName : ""}
                             validation={{
                                 required:
@@ -240,6 +245,7 @@ function Profile() {
                             id="shortName"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData.employee ? profileData.employee.shortName : ""}
                             validation={{
                                 required:
@@ -257,6 +263,7 @@ function Profile() {
                             id="dob"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData.employee ? profileData.employee.dob : ""}
                         />
                         <FormInputField
@@ -266,6 +273,7 @@ function Profile() {
                             id="phoneNumber"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData.employee ? profileData.employee.phoneNumber : ""}
                         />
                         <FormInputField
@@ -275,6 +283,7 @@ function Profile() {
                             id="teamName"
                             register={register}
                             errors={errors}
+                            readOnly={true}
                             defaultValue={profileData.employee ? profileData.team.teamName : ""}
                             validation={{
                                 required:
@@ -292,6 +301,7 @@ function Profile() {
                             id="isEmpActive"
                             register={register}
                             errors={errors}
+                            disabled="disabled"
                         />
                         <Button type="submit" children="Save"/>
                     </form>
