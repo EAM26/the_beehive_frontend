@@ -3,7 +3,10 @@ import {useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import {getRoster} from "../../service";
-import Shift from "../../components/shift/Shift";
+import DayColumn from "../../components/DayColumn/DayColumn";
+import {LocaleContext} from "../../context/LocaleContext";
+import "./SingleRoster.css"
+
 
 function SingleRoster(props) {
 
@@ -14,6 +17,7 @@ function SingleRoster(props) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
+    const userLocale = useContext(LocaleContext)
 
 
     useEffect(() => {
@@ -24,6 +28,7 @@ function SingleRoster(props) {
                 setSingleRoster(rosterData)
                 if (rosterData.shiftOutputDtos) {
                     setShifts(rosterData.shiftOutputDtos)
+                    console.log(rosterData)
                     console.log(rosterData.shiftOutputDtos)
                 }
             } catch (e) {
@@ -36,20 +41,36 @@ function SingleRoster(props) {
         }
         void fetchData()
     }, []);
+
+    if (!singleRoster.weekDates) {
+        return <div>Loading...</div>;
+    }
+    console.log(singleRoster.weekDates)
     return (
         <main className="outer-container">
             <div className="inner-container">
-                {shifts ? shifts.map((shift) => {
-                    return <div key={shift.id}>
-                        <Shift
-                        start={shift.startShift}
-                        end={shift.endShift}
-                        employeeShortName={shift.employeeShortName}
+                <div className="day-outer" >
+                {loading && <p>Loading...</p>}
+                {singleRoster.weekDates.map((dateString) => {
+                    const date = new Date(dateString);
+                    return (
+                        <div key={dateString}>
+                            <DayColumn  date={date} />
+                        </div>
+                    );
+                })}
 
-                        ></Shift>
-                    </div>
-                }) : ""}
+                {/*{shifts ? shifts.map((shift) => {*/}
+                {/*    return <div key={shift.id}>*/}
+                {/*        <Shift*/}
+                {/*        start={shift.startShift}*/}
+                {/*        end={shift.endShift}*/}
+                {/*        employeeShortName={shift.employeeShortName}*/}
 
+                {/*        ></Shift>*/}
+                {/*    </div>*/}
+                {/*}) : ""}*/}
+                </div>
             </div>
         </main>
     );
