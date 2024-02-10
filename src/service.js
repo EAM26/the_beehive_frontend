@@ -54,7 +54,6 @@ export const getAuthData = async (jwt) => {
 
 
 export const getUser = async (jwt, username) => {
-    // const authData  = await getAuthData(jwt)
     const response = await axios.get(`http://localhost:8080/users/${username}`, {
         headers: {
             'Content-Type': 'application/json',
@@ -196,7 +195,7 @@ export const getRosters = async (token, signal) => {
         },
         signal: signal
     })
-
+    console.log(response.data)
     return response.data
 }
 
@@ -213,6 +212,32 @@ export const createRoster = async (token, week, year, teamName) => {
     })
 
     return response.data
+}
+
+export const getRoster = async (jwt, id) => {
+    const response = await axios.get(`http://localhost:8080/rosters/${id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    console.log(response)
+    return response.data
+}
+
+export const createShift = async (token, start, end) => {
+    console.log("create shift to backend")
+    // const response = await axios.post("http://localhost:8080/rosters", {
+    //     start,
+    //     end,
+    // },{
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`
+    //     },
+    // })
+    //
+    // return response.data
 }
 export const testRequest = async () => {
     console.log("Test Request running")
