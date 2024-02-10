@@ -33,6 +33,8 @@ function Rosters(props) {
         try{
             await createRoster(token, newRoster.week, newRoster.year, newRoster.teamName);
         } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
             console.error(e)
         } finally {
 
