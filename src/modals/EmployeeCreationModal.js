@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import './CreationModal.css';
 import {getTeams} from "../service";
 import  {AuthContext} from "../context/AuthContext";
+import Button from "../components/button/Button";
 
 function EmployeeCreationModal({isOpen, onClose, onSubmit,}) {
     const [formData, setFormData] = useState({
@@ -137,8 +138,8 @@ function EmployeeCreationModal({isOpen, onClose, onSubmit,}) {
                             />
                         </label>
                     </div>
-                    <button type="submit">Create Employee</button>
-                    <button type="button" onClick={onClose}>Cancel</button>
+                    <Button type="submit">Create Employee</Button>
+                    <Button type="button" onClick={onClose}>Cancel</Button>
                 </form>
             </div>
         </div>
