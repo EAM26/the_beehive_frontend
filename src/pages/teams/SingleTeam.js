@@ -11,7 +11,7 @@ function SingleTeam(props) {
 
     const {teamName} = useParams()
     const {token} = useContext(AuthContext);
-    const [employees, setEmployees] = useState([]);
+    const [teamData, setTeamData] = useState([]);
     const [rosters, setRosters] = useState([]);
     const navigate = useNavigate();
     const [error, setError] = useState(false);
@@ -27,12 +27,13 @@ function SingleTeam(props) {
         const fetchData = async () => {
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
-                if(response.employeesOutputDtos) {
-                    setEmployees(generalSort(response.employeesOutputDtos, "shortName"));
-                }
-                if(response.rostersOutputDtos) {
-                    setRosters(sortRostersByYearAndWeek(response.rostersOutputDtos));
-                }
+                // if(response.employeesOutputDtos) {
+                //     setTeamData(generalSort(response.employeesOutputDtos, "shortName"));
+                // }
+                // if(response.rostersOutputDtos) {
+                //     setRosters(sortRostersByYearAndWeek(response.rostersOutputDtos));
+                // }
+                setTeamData(response);
 
             } catch (e) {
                 setError(true);
@@ -50,7 +51,7 @@ function SingleTeam(props) {
 
     }, []);
 
-
+    console.log(teamData)
     return (
         <main className="outer-container">
             <div className="inner-container">
@@ -62,42 +63,42 @@ function SingleTeam(props) {
                         <thead>
                         <tr>
                             <th>Short Name</th>
-                            <th>Id</th>
-                            <th>Status</th>
+                            {/*<th>Id</th>*/}
+                            {/*<th>Status</th>*/}
                         </tr>
                         </thead>
                         <tbody>
-                        {employees && employees.map((employee) => {
-                           return  <tr key={employee.id}>
-                               <td>{employee.shortName} </td>
-                               <td>{employee.id}</td>
-                                <td>{employee.isActive? "Active" : "Inactive"}</td>
-                               <td>{<Button children="view" onClick={() => handleViewUser(employee.username)}/>}</td>
+                        {teamData.employeeNames && teamData.employeeNames.map((name) => {
+                           return  <tr key={name}>
+                               <td>{name} </td>
+                               {/*<td>{employee.id}</td>*/}
+                               {/* <td>{employee.isActive? "Active" : "Inactive"}</td>*/}
+                               {/*<td>{<Button children="view" onClick={() => handleViewUser(employee.username)}/>}</td>*/}
                             </tr>
                         })}
                         </tbody>
                     </table>
                     </div>
-                    <div>
-                        <span>Rosters</span>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                            </thead>
+                    {/*<div>*/}
+                    {/*    <span>Rosters</span>*/}
+                    {/*    <table>*/}
+                    {/*        <thead>*/}
+                    {/*        <tr>*/}
+                    {/*            <th>Name</th>*/}
+                    {/*        </tr>*/}
+                    {/*        </thead>*/}
 
-                            <tbody>
-                            {rosters && rosters.map((roster) => {
-                                return <tr key={roster.id}>
-                                    <td>{roster.name}</td>
-                                    <td><Button children="View"/></td>
-                                </tr>
-                            })}
+                    {/*        <tbody>*/}
+                    {/*        {rosters && rosters.map((roster) => {*/}
+                    {/*            return <tr key={roster.id}>*/}
+                    {/*                <td>{roster.name}</td>*/}
+                    {/*                <td><Button children="View"/></td>*/}
+                    {/*            </tr>*/}
+                    {/*        })}*/}
 
-                            </tbody>
-                        </table>
-                    </div>
+                    {/*        </tbody>*/}
+                    {/*    </table>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </main>
