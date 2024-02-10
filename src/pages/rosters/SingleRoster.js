@@ -6,6 +6,7 @@ import {getRoster} from "../../service";
 import DayColumn from "../../components/DayColumn/DayColumn";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
+import Shift from "../../components/shift/Shift";
 
 
 function SingleRoster(props) {
@@ -53,23 +54,30 @@ function SingleRoster(props) {
                 {loading && <p>Loading...</p>}
                 {singleRoster.weekDates.map((dateString) => {
                     const date = new Date(dateString);
+                    const filteredShifts = shifts && shifts.filter((shift) => {
+                        const shiftDate = shift.startShift.split('T')[0];
+                        return shiftDate === dateString;
+                    });
                     return (
                         <div key={dateString}>
-                            <DayColumn  date={date} />
+                            <DayColumn  date={date} >
+                                {filteredShifts ? filteredShifts.map((shift) => {
+                                    return <div key={shift.id}>
+                                        <Shift
+                                        start={shift.startShift}
+                                        end={shift.endShift}
+                                        employeeShortName={shift.employeeShortName}
+
+                                        ></Shift>
+                                    </div>
+                                }) : ""}
+                            </DayColumn>
+
                         </div>
                     );
                 })}
 
-                {/*{shifts ? shifts.map((shift) => {*/}
-                {/*    return <div key={shift.id}>*/}
-                {/*        <Shift*/}
-                {/*        start={shift.startShift}*/}
-                {/*        end={shift.endShift}*/}
-                {/*        employeeShortName={shift.employeeShortName}*/}
 
-                {/*        ></Shift>*/}
-                {/*    </div>*/}
-                {/*}) : ""}*/}
                 </div>
             </div>
         </main>
