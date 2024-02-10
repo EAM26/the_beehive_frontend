@@ -31,7 +31,7 @@ export const getSelf = async (jwt, signal) => {
 }
 
 // Request for login
-export const postLoginData = async(data) => {
+export const postLoginData = async (data) => {
     const response = await axios.post(`http://localhost:8080/authenticate`, {
         username: data.username,
         password: data.password,
@@ -53,8 +53,7 @@ export const getAuthData = async (jwt) => {
 }
 
 
-
-export const getUser = async (jwt, username)=> {
+export const getUser = async (jwt, username) => {
     // const authData  = await getAuthData(jwt)
     const response = await axios.get(`http://localhost:8080/users/${username}`, {
         headers: {
@@ -66,15 +65,15 @@ export const getUser = async (jwt, username)=> {
     return response.data
 }
 
-export const createUser = async (jwt, username, password, userRole, email, isDeleted)=> {
+export const createUser = async (jwt, username, password, userRole, email, isDeleted) => {
     const response = await axios.post('http://localhost:8080/users', {
 
         username: username,
-        password:  password,
+        password: password,
         userRole: userRole,
         email: email,
         isDeleted: isDeleted,
-    },{
+    }, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`
@@ -84,15 +83,15 @@ export const createUser = async (jwt, username, password, userRole, email, isDel
     return response.data
 }
 
-export const updateUser = async (jwt, username, password, userRole, email, isDeleted)=> {
+export const updateUser = async (jwt, username, password, userRole, email, isDeleted) => {
     const checkedPassword = password === '' ? null : password
     const response = await axios.put(`http://localhost:8080/users/${username}`, {
         username: username,
-        password:  checkedPassword,
+        password: checkedPassword,
         userRole: userRole,
         email: email,
         isDeleted: isDeleted,
-    },{
+    }, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`
@@ -102,7 +101,7 @@ export const updateUser = async (jwt, username, password, userRole, email, isDel
     return response.data
 }
 
-export const createEmployee = async (jwt, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username)=> {
+export const createEmployee = async (jwt, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username) => {
     const response = await axios.post('http://localhost:8080/employees', {
         firstName,
         preposition,
@@ -114,7 +113,7 @@ export const createEmployee = async (jwt, firstName, preposition, lastName, shor
         teamName,
         username
 
-    },{
+    }, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`
@@ -123,7 +122,7 @@ export const createEmployee = async (jwt, firstName, preposition, lastName, shor
     console.log(response)
     return response.data
 }
-export const updateEmployee = async (jwt, id, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username)=> {
+export const updateEmployee = async (jwt, id, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username) => {
 
     const response = await axios.put(`http://localhost:8080/employees/${id}`, {
         firstName,
@@ -137,7 +136,7 @@ export const updateEmployee = async (jwt, id, firstName, preposition, lastName, 
         username
 
 
-    },{
+    }, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${jwt}`
@@ -174,11 +173,11 @@ export const getSingleTeam = async (token, signal, teamName) => {
     return response.data
 }
 
-export const createTeam = async (jwt, signal, teamName, isActive)=> {
+export const createTeam = async (jwt, signal, teamName, isActive) => {
     const response = await axios.post('http://localhost:8080/teams', {
         teamName,
         isActive
-    },{
+    }, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`
@@ -187,6 +186,10 @@ export const createTeam = async (jwt, signal, teamName, isActive)=> {
     })
     console.log(response)
     return response.data
+}
+
+export const getRosters = async (jwt, signal) => {
+    return ["get Rosters testing"]
 }
 
 

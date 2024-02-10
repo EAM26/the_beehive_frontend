@@ -41,7 +41,7 @@ function Navbar() {
                 {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/rosters" &&
                     <li>
                         <NavLink to="/rosters">
-                            Roosters
+                            Rosters
                         </NavLink>
                     </li>)}
                 {location.pathname !== "/profile" &&
