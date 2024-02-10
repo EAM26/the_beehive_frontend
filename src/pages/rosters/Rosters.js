@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
 import {AuthContext} from "../../context/AuthContext";
-import {getRosters} from "../../service";
+import {createRoster, getRosters, testRequest} from "../../service";
 import Button from "../../components/button/Button";
 import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 import BaseModal from "../../modals/BaseModal";
@@ -29,8 +29,15 @@ function Rosters(props) {
         setNewRoster({ ...newRoster, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  async (e) => {
         e.preventDefault();
+        try{
+            await createRoster(token, newRoster.week, newRoster.year, newRoster.teamName);
+        } catch (e) {
+            console.error(e)
+        } finally {
+
+        }
         console.log(newRoster);
         setShowModal(false);
     };
@@ -59,7 +66,7 @@ function Rosters(props) {
         }
     }, []);
 
-    console.log(rosters)
+
     return (
        <main className="outer-container">
        <div className="inner-container">
@@ -85,7 +92,7 @@ function Rosters(props) {
                        <div>
                            <label>
                                Team Name:
-                               <input type="text" name="teamname" value={newRoster.teamName} onChange={handleInputChange} />
+                               <input type="text" name="teamName" value={newRoster.teamName} onChange={handleInputChange} />
                            </label>
                        </div>
 

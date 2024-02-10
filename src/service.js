@@ -200,6 +200,24 @@ export const getRosters = async (token, signal) => {
     return response.data
 }
 
+export const createRoster = async (token, week, year, teamName) => {
+    const response = await axios.post("http://localhost:8080/rosters", {
+        week,
+        year,
+        teamName,
+    },{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    })
+
+    return response.data
+}
+export const testRequest = async () => {
+    console.log("Test Request running")
+}
+
 
 
 
