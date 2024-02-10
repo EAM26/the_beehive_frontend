@@ -1,11 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
 import {AuthContext} from "../../context/AuthContext";
-import {createRoster, getRosters, testRequest} from "../../service";
+import {createRoster, getRosters} from "../../service";
 import Button from "../../components/button/Button";
 import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 import BaseModal from "../../modals/BaseModal";
-import {set} from "react-hook-form";
 
 function Rosters(props) {
 
