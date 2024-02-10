@@ -4,6 +4,8 @@ import {AuthContext} from "../../context/AuthContext";
 import {getRosters} from "../../service";
 import Button from "../../components/button/Button";
 import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
+import BaseModal from "../../modals/BaseModal";
+import {set} from "react-hook-form";
 
 function Rosters(props) {
 
@@ -12,6 +14,23 @@ function Rosters(props) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
+    const [showModal, setShowModal] = useState(false);
+    const [newRoster, setNewRoster] = useState({
+        week: '',
+        year: '',
+        teamName: ''
+    });
+
+    const handleInputChange = (e) => {
+        setNewRoster({ ...newRoster, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(newRoster);
+        setShowModal(false);
+    };
+
 
     useEffect(() => {
         const controller = new AbortController();
@@ -41,7 +60,35 @@ function Rosters(props) {
        <main className="outer-container">
        <div className="inner-container">
            <h2>Rosters</h2>
-           <Button childeren="NEW ROSTER" type="button"/>
+           <Button children="NEW ROSTER" type="button" onClick={() => setShowModal(true)}/>
+           {showModal && (
+               <BaseModal isOpen={showModal} onClose={() => setShowModal(false)}>
+                   <form onSubmit={handleSubmit}>
+
+                       <div>
+                           <label>
+                           Week:
+                           </label>
+                           <input type="text" name="week" value={newRoster.week} onChange={handleInputChange} />
+
+                       </div>
+                       <div>
+                           <label>
+                               Year:
+                               <input type="text" name="year" value={newRoster.year} onChange={handleInputChange} />
+                           </label>
+                       </div>
+                       <div>
+                           <label>
+                               Team Name:
+                               <input type="text" name="teamname" value={newRoster.teamname} onChange={handleInputChange} />
+                           </label>
+                       </div>
+
+                       <Button type="submit">Add Roster</Button>
+                   </form>
+               </BaseModal>
+           )}
            {loading && <p>Loading...</p>}
            {error ? <p>{errorMessage}</p> :
 
