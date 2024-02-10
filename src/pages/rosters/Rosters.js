@@ -3,6 +3,7 @@ import {errorHandler} from "../../helpers/errorHandler";
 import {AuthContext} from "../../context/AuthContext";
 import {getRosters} from "../../service";
 import Button from "../../components/button/Button";
+import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 
 function Rosters(props) {
 
@@ -19,6 +20,7 @@ function Rosters(props) {
             setLoading(true)
             try {
                 const response = await getRosters(token, controller.signal);
+                sortRostersByYearAndWeek(response)
                 setRosters(response)
             } catch (e) {
                 setError(true);
@@ -46,14 +48,19 @@ function Rosters(props) {
            <table>
                <thead>
                <tr>
-                   <th>Week Year Team</th>
+                   <th>Week</th>
+                   <th>Year</th>
+                   <th>Team</th>
 
                </tr>
                </thead>
                <tbody>
                {rosters.map((roster) => {
+                   const [week, year, team] = roster.name.split('-');
                    return <tr key={roster.id}>
-                       <td>{roster.name}</td>
+                       <td>{week}</td>
+                       <td>{year}</td>
+                       <td>{team}</td>
                        <td><Button children="view"/></td>
                    </tr>
                })}
