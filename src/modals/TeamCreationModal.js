@@ -2,7 +2,6 @@ import { useState } from "react";
 import './CreationModal.css';
 
 function TeamCreationModal({ isOpen, onClose, onSubmit,  }) {
-    console.log("Team")
     const [formData, setFormData] = useState({
         teamName: '',
         isActive: true,
