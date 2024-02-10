@@ -188,8 +188,16 @@ export const createTeam = async (jwt, signal, teamName, isActive) => {
     return response.data
 }
 
-export const getRosters = async (jwt, signal) => {
-    return ["get Rosters testing"]
+export const getRosters = async (token, signal) => {
+    const response = await axios.get("http://localhost:8080/rosters", {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        signal: signal
+    })
+
+    return response.data
 }
 
 
