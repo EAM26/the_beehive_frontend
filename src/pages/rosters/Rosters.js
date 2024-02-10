@@ -5,6 +5,8 @@ import {createRoster, getRosters} from "../../service";
 import Button from "../../components/button/Button";
 import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 import BaseModal from "../../modals/BaseModal";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function Rosters(props) {
 
@@ -13,6 +15,7 @@ function Rosters(props) {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [newRoster, setNewRoster] = useState({
         week: '',
@@ -30,6 +33,7 @@ function Rosters(props) {
 
     const handleSubmit =  async (e) => {
         e.preventDefault();
+
         try{
             await createRoster(token, newRoster.week, newRoster.year, newRoster.teamName);
         } catch (e) {
@@ -42,6 +46,10 @@ function Rosters(props) {
         console.log(newRoster);
         setShowModal(false);
     };
+
+    const handleClickView = (rosterId) => {
+        navigate(`/rosters/${rosterId}`)
+    }
 
 
     useEffect(() => {
@@ -121,7 +129,7 @@ function Rosters(props) {
                        <td>{week}</td>
                        <td>{year}</td>
                        <td>{team}</td>
-                       <td><Button children="view"/></td>
+                       <td><Button onClick={() => handleClickView(roster.id)} children="view"/></td>
                    </tr>
                })}
 
