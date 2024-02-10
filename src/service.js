@@ -224,6 +224,21 @@ export const getRoster = async (jwt, id) => {
     console.log(response)
     return response.data
 }
+
+export const createShift = async (token, start, end) => {
+    console.log("create shift to backend")
+    // const response = await axios.post("http://localhost:8080/rosters", {
+    //     start,
+    //     end,
+    // },{
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`
+    //     },
+    // })
+    //
+    // return response.data
+}
 export const testRequest = async () => {
     console.log("Test Request running")
 }

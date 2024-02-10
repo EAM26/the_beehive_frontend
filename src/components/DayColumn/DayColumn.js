@@ -22,7 +22,6 @@ function DayColumn({ day, date, shifts, children, }) {
             <h3>{dayName.substring(0, 3)}</h3>
             <h3>{day}<span className="date">{formattedDayMonth}</span></h3>
 
-                {/*{shifts.map(shift => <Shift key={shift.id} {...shift} />)}*/}
             {children}
         </div>
     );
