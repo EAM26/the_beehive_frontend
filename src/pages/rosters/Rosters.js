@@ -21,6 +21,10 @@ function Rosters(props) {
         teamName: ''
     });
 
+    const handleOnClose = () => {
+        setShowModal(false)
+    }
+
     const handleInputChange = (e) => {
         setNewRoster({ ...newRoster, [e.target.name]: e.target.value });
     };
@@ -62,7 +66,7 @@ function Rosters(props) {
            <h2>Rosters</h2>
            <Button children="NEW ROSTER" type="button" onClick={() => setShowModal(true)}/>
            {showModal && (
-               <BaseModal isOpen={showModal} onClose={() => setShowModal(false)}>
+               <BaseModal isOpen={showModal} onClose={handleOnClose}>
                    <form onSubmit={handleSubmit}>
 
                        <div>
@@ -81,11 +85,12 @@ function Rosters(props) {
                        <div>
                            <label>
                                Team Name:
-                               <input type="text" name="teamname" value={newRoster.teamname} onChange={handleInputChange} />
+                               <input type="text" name="teamname" value={newRoster.teamName} onChange={handleInputChange} />
                            </label>
                        </div>
 
                        <Button type="submit">Add Roster</Button>
+                       <Button type="button" onClick={handleOnClose}>Cancel</Button>
                    </form>
                </BaseModal>
            )}
