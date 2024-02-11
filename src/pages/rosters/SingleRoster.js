@@ -112,6 +112,7 @@ function SingleRoster(props) {
                                                 start={shift.startShift}
                                                 end={shift.endShift}
                                                 employeeShortName={shift.employeeShortName}
+                                                shiftId={shift.id}
                                             >
                                             </Shift>
                                         </div>

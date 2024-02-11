@@ -245,8 +245,24 @@ export const createShift = async (token, start, end, date, teamName) => {
 
     return response.data
 }
-export const testRequest = async () => {
+
+export const getAvailableEmployees = async (token, id) => {
+
+    const response = await axios.get(`http://localhost:8080/employees/shift/${id}`,{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    })
+
+    // console.log(response.data)
+    return response.data
+}
+
+
+export const testRequest = async (shiftId) => {
     console.log("Test Request running")
+    return[]
 }
 
 

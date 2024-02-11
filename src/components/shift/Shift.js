@@ -1,20 +1,36 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Button from "../button/Button";
-import {testRequest} from "../../service";
+import {getAvailableEmployees, testRequest} from "../../service";
+import {AuthContext} from "../../context/AuthContext";
 
 
-function Shift({start, end, employeeShortName, onClick}) {
+function Shift({start, end, employeeShortName, employeeId, onEmployeeAssigned, shiftId }) {
     const formattedStart = start.substring(11, 16);
     const formattedEnd = end.substring(11, 16);
+    const [availableEmployees, setAvailableEmployees] = useState([]);
+    const { token } = useContext(AuthContext)
 
-    const handleClick = async () => {
-        try {
-            const employees = await testRequest(); // Vervang door je eigen functie die de beschikbare werknemers ophaalt
-        } catch (e) {
-            console.error(e);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getAvailableEmployees(token, shiftId);
+                setAvailableEmployees(response)
+            } catch (e) {
+                console.error(e)
+            }
         }
+        void fetchData();
+    }, []);
+
+    const handleEmployeeChange = (e) => {
+        const selectedEmployeeId = e.target.value;
+        onEmployeeAssigned(selectedEmployeeId, employeeId);
     };
 
+    if(!availableEmployees) {
+        return <div>Loading....</div>
+    }
+    console.log(availableEmployees)
 
     return (
         <div>
@@ -27,7 +43,12 @@ function Shift({start, end, employeeShortName, onClick}) {
                         <td>{employeeShortName}</td>
                     ) : (
                         <td>
-                            <Button onClick={handleClick} type="button" children="+Emp"/>
+                        <select onChange={handleEmployeeChange} defaultValue="">
+                            <option value="" disabled>no emp</option>
+                            {availableEmployees.map((emp) => (
+                                <option key={emp.id} value={emp.id}>{emp.id} {emp.shortName}</option>
+                            ))}
+                        </select>
                         </td>
                     )}
                 </tr>
