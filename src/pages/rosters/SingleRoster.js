@@ -23,12 +23,16 @@ function SingleRoster(props) {
     const [errorMessage, setErrormessage] = useState("")
     const userLocale = useContext(LocaleContext)
     const [showModal, setShowModal] = useState(false);
-    const [newShift, setNewShfit] = useState( {
+    const [newShift, setNewShift] = useState( {
         start: '',
-        end: ''
+        end: '',
+        date: {},
+        teamName: ''
     })
 
-    const handleNewShiftClick = () => {
+
+    const handleNewShiftClick = (date) => {
+        setNewShift({...newShift, date: date, teamName: singleRoster.teamName})
         console.log("handleNewShiftClick")
         setShowModal(true)
     }
@@ -41,7 +45,7 @@ function SingleRoster(props) {
         setLoading(true)
 
         try{
-            await createShift(token, newShift.start, newShift.end);
+            await createShift(token, newShift.start, newShift.end, newShift.date, newShift.teamName);
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
@@ -89,6 +93,7 @@ function SingleRoster(props) {
                     return (
                         <div key={dateString}>
                             <DayColumn  date={date} >
+                                {/*{setNewShift({...newShift, date: date, teamName: singleRoster.teamName})}*/}
                                 {filteredShifts ? filteredShifts.map((shift) => {
                                     return <div key={shift.id}>
                                         <Shift
@@ -99,7 +104,9 @@ function SingleRoster(props) {
                                         </Shift>
                                     </div>
                                 }) : ""}
-                                <Button children="+shift" type="button"onClick = {handleNewShiftClick}/>
+                                <Button children="+shift" type="button"onClick = {() => {
+                                    handleNewShiftClick(date)
+                                }}/>
                                 {showModal && (
                                     <BaseModal  isOpen={showModal} onClose={handleClose}>
                                         <form onSubmit={handleSubmit}>
@@ -110,7 +117,7 @@ function SingleRoster(props) {
                                                     <select
                                                         name="start"
                                                         value={newShift.start}
-                                                        onChange={e => setNewShfit({ ...newShift, start: e.target.value })}>
+                                                        onChange={e => setNewShift({ ...newShift, start: e.target.value })}>
                                                         {generateTimeOptions().map((time) => (
                                                             <option key={time} value={time}>{time}</option>
                                                         ))}
@@ -123,7 +130,7 @@ function SingleRoster(props) {
                                                     <select
                                                         name="end"
                                                         value={newShift.end}
-                                                        onChange={e => setNewShfit({ ...newShift, end: e.target.value })}>
+                                                        onChange={e => setNewShift({ ...newShift, end: e.target.value })}>
                                                         {generateTimeOptions().map((time) => (
                                                             <option key={time} value={time}>{time}</option>
                                                         ))}
@@ -131,7 +138,7 @@ function SingleRoster(props) {
                                                 </label>
                                             </div>
 
-                                            <Button type="submit">Add Roster</Button>
+                                            <Button type="submit">Create</Button>
                                             {/*<Button type="button" onClick={handleOnClose}>Cancel</Button>*/}
                                         </form>
                                     </BaseModal>

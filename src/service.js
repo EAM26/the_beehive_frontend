@@ -225,8 +225,12 @@ export const getRoster = async (jwt, id) => {
     return response.data
 }
 
-export const createShift = async (token, start, end) => {
+export const createShift = async (token, start, end, date, teamName) => {
     console.log("create shift to backend")
+    console.log("start: " + start)
+    console.log("end: " + end)
+    console.log("date: " + date)
+    console.log("teamname: " + teamName)
     // const response = await axios.post("http://localhost:8080/rosters", {
     //     start,
     //     end,
