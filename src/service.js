@@ -1,4 +1,6 @@
 import axios from "axios";
+import {formatShiftDateTime} from "./helpers/timeFunctions";
+import employeeCreationModal from "./modals/EmployeeCreationModal";
 
 
 export const getUsers = async (token, signal) => {
@@ -226,22 +228,24 @@ export const getRoster = async (jwt, id) => {
 }
 
 export const createShift = async (token, start, end, date, teamName) => {
-    console.log("create shift to backend")
-    console.log("start: " + start)
-    console.log("end: " + end)
-    console.log("date: " + date)
-    console.log("teamname: " + teamName)
-    // const response = await axios.post("http://localhost:8080/rosters", {
-    //     start,
-    //     end,
-    // },{
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${token}`
-    //     },
-    // })
-    //
-    // return response.data
+    const startShift = formatShiftDateTime(date, start)
+    let endShift = formatShiftDateTime(date, end)
+    if(startShift >= endShift) {
+        endShift = formatShiftDateTime(date, end, true)
+    }
+
+    const response = await axios.post("http://localhost:8080/shifts", {
+        startShift: startShift,
+        endShift: endShift,
+        teamName
+    },{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    })
+
+    return response.data
 }
 export const testRequest = async () => {
     console.log("Test Request running")

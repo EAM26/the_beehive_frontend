@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
-import {createRoster, createShift, getRoster} from "../../service";
+import {createShift, getRoster} from "../../service";
 import DayColumn from "../../components/DayColumn/DayColumn";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
@@ -23,7 +23,7 @@ function SingleRoster(props) {
     const [errorMessage, setErrormessage] = useState("")
     const userLocale = useContext(LocaleContext)
     const [showModal, setShowModal] = useState(false);
-    const [newShift, setNewShift] = useState( {
+    const [newShift, setNewShift] = useState({
         start: '',
         end: '',
         date: {},
@@ -40,11 +40,11 @@ function SingleRoster(props) {
     const handleClose = () => {
         setShowModal(false)
     }
-    const handleSubmit =  async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
 
-        try{
+        try {
             await createShift(token, newShift.start, newShift.end, newShift.date, newShift.teamName);
         } catch (e) {
             setError(true);
@@ -82,72 +82,78 @@ function SingleRoster(props) {
     return (
         <main className="outer-container">
             <div className="inner-container">
-                <div className="day-outer" >
-                {loading && <p>Loading...</p>}
-                {singleRoster.weekDates.map((dateString) => {
-                    const date = new Date(dateString);
-                    const filteredShifts = shifts && shifts.filter((shift) => {
-                        const shiftDate = shift.startShift.split('T')[0];
-                        return shiftDate === dateString;
-                    });
-                    return (
-                        <div key={dateString}>
-                            <DayColumn  date={date} >
-                                {/*{setNewShift({...newShift, date: date, teamName: singleRoster.teamName})}*/}
-                                {filteredShifts ? filteredShifts.map((shift) => {
-                                    return <div key={shift.id}>
-                                        <Shift
-                                        start={shift.startShift}
-                                        end={shift.endShift}
-                                        employeeShortName={shift.employeeShortName}
-                                        >
-                                        </Shift>
-                                    </div>
-                                }) : ""}
-                                <Button children="+shift" type="button"onClick = {() => {
-                                    handleNewShiftClick(date)
-                                }}/>
-                                {showModal && (
-                                    <BaseModal  isOpen={showModal} onClose={handleClose}>
-                                        <form onSubmit={handleSubmit}>
+                <div className="day-outer">
+                    {loading && <p>Loading...</p>}
+                    {singleRoster.weekDates.map((dateString) => {
+                        const date = new Date(dateString);
+                        const filteredShifts = shifts && shifts.filter((shift) => {
+                            const shiftDate = shift.startShift.split('T')[0];
+                            return shiftDate === dateString;
+                        });
+                        return (
+                            <div key={dateString}>
+                                <DayColumn date={date}>
+                                    {/*{setNewShift({...newShift, date: date, teamName: singleRoster.teamName})}*/}
+                                    {filteredShifts ? filteredShifts.map((shift) => {
+                                        return <div key={shift.id}>
+                                            <Shift
+                                                start={shift.startShift}
+                                                end={shift.endShift}
+                                                employeeShortName={shift.employeeShortName}
+                                            >
+                                            </Shift>
+                                        </div>
+                                    }) : ""}
+                                    <Button children="+shift" type="button" onClick={() => {
+                                        handleNewShiftClick(date)
+                                    }}/>
+                                    {showModal && (
+                                        <BaseModal isOpen={showModal} onClose={handleClose}>
+                                            <form onSubmit={handleSubmit}>
 
-                                            <div>
-                                                <label>
-                                                    Start:
-                                                    <select
-                                                        name="start"
-                                                        value={newShift.start}
-                                                        onChange={e => setNewShift({ ...newShift, start: e.target.value })}>
-                                                        {generateTimeOptions().map((time) => (
-                                                            <option key={time} value={time}>{time}</option>
-                                                        ))}
-                                                    </select>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    End:
-                                                    <select
-                                                        name="end"
-                                                        value={newShift.end}
-                                                        onChange={e => setNewShift({ ...newShift, end: e.target.value })}>
-                                                        {generateTimeOptions().map((time) => (
-                                                            <option key={time} value={time}>{time}</option>
-                                                        ))}
-                                                    </select>
-                                                </label>
-                                            </div>
+                                                <div>
+                                                    <label>
+                                                        Start:
+                                                        <select
+                                                            name="start"
+                                                            value={newShift.start}
+                                                            onChange={e => setNewShift({
+                                                                ...newShift,
+                                                                start: e.target.value
+                                                            })}>
+                                                            {generateTimeOptions().map((time) => (
+                                                                <option key={time} value={time}>{time}</option>
+                                                            ))}
+                                                        </select>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        End:
+                                                        <select
+                                                            name="end"
+                                                            value={newShift.end}
+                                                            onChange={e => setNewShift({
+                                                                ...newShift,
+                                                                end: e.target.value
+                                                            })}>
+                                                            {generateTimeOptions().map((time) => (
+                                                                <option key={time} value={time}>{time}</option>
+                                                            ))}
+                                                        </select>
+                                                    </label>
+                                                </div>
 
-                                            <Button type="submit">Create</Button>
-                                            {/*<Button type="button" onClick={handleOnClose}>Cancel</Button>*/}
-                                        </form>
-                                    </BaseModal>
-                                )}
-                            </DayColumn>
+                                                <Button type="submit">Create</Button>
+                                                {/*<Button type="button" onClick={handleOnClose}>Cancel</Button>*/}
+                                            </form>
+                                        </BaseModal>
+                                    )}
+                                </DayColumn>
 
-                        </div>
-                    );
-                })}
+                            </div>
+                        );
+                    })}
 
 
                 </div>
