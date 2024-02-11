@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import {formatShiftDateTime} from "./helpers/timeFunctions";
 
 export const getUsers = async (token, signal) => {
 
@@ -225,22 +225,61 @@ export const getRoster = async (jwt, id) => {
     return response.data
 }
 
-export const createShift = async (token, start, end) => {
-    console.log("create shift to backend")
-    // const response = await axios.post("http://localhost:8080/rosters", {
-    //     start,
-    //     end,
-    // },{
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${token}`
-    //     },
-    // })
-    //
-    // return response.data
+export const createShift = async (token, start, end, date, teamName) => {
+    const startShift = formatShiftDateTime(date, start)
+    let endShift = formatShiftDateTime(date, end)
+    if(startShift >= endShift) {
+        endShift = formatShiftDateTime(date, end, true)
+    }
+
+    const response = await axios.post("http://localhost:8080/shifts", {
+        startShift: startShift,
+        endShift: endShift,
+        teamName
+    },{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    })
+
+    return response.data
 }
-export const testRequest = async () => {
+
+export const getAvailableEmployees = async (token, id) => {
+
+    const response = await axios.get(`http://localhost:8080/employees/shift/${id}`,{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    })
+
+
+    return response.data
+}
+
+export const updateShift = async (token, shift, shiftId, employeeId, ) => {
+    const response = await axios.put(`http://localhost:8080/shifts/${shiftId}`, {
+        id: shiftId,
+        startShift: shift.startShift,
+        endShift: shift.endShift,
+        employeeId,
+        teamName: shift.teamName,
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    })
+    console.log(response)
+
+}
+
+
+export const testRequest = async (selectedEmployeeId, shiftId) => {
     console.log("Test Request running")
+    return[]
 }
 
 
