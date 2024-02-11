@@ -1,10 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import Button from "../button/Button";
-import {getAvailableEmployees, testRequest} from "../../service";
+import {createShift, getAvailableEmployees, testRequest, updateShift} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 
 
-function Shift({start, end, employeeShortName, employeeId, onEmployeeAssigned, shiftId }) {
+function Shift({start, end, employeeShortName, employeeId, shiftId, shift }) {
     const formattedStart = start.substring(11, 16);
     const formattedEnd = end.substring(11, 16);
     const [availableEmployees, setAvailableEmployees] = useState([]);
@@ -22,10 +21,24 @@ function Shift({start, end, employeeShortName, employeeId, onEmployeeAssigned, s
         void fetchData();
     }, []);
 
-    const handleEmployeeChange = (e) => {
+
+
+    const handleEmployeeChange = async (e) => {
+        e.preventDefault();
         const selectedEmployeeId = e.target.value;
-        onEmployeeAssigned(selectedEmployeeId, employeeId);
+
+        try {
+            await updateShift(token, shift, shift.id, selectedEmployeeId );
+        } catch (e) {
+
+            console.error(e)
+        } finally {
+
+        }
+
     };
+
+
 
     if(!availableEmployees) {
         return <div>Loading....</div>

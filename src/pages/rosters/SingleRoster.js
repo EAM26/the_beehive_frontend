@@ -23,6 +23,7 @@ function SingleRoster(props) {
     const [errorMessage, setErrormessage] = useState("")
     const userLocale = useContext(LocaleContext)
     const [showShiftModal, setShowShiftModal] = useState(false);
+    const [refresh, setRefresh] = useState(0)
     const [newShift, setNewShift] = useState({
         start: '',
         end: '',
@@ -51,17 +52,17 @@ function SingleRoster(props) {
         resetNewShift();
     }
     const handleSubmit = async (e) => {
-        e.preventDefault();
         setLoading(true)
 
         try {
             await createShift(token, newShift.start, newShift.end, newShift.date, newShift.teamName);
-        } catch (e) {
+
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
         } finally {
             resetNewShift()
+            setRefresh(prevState => 1)
             setLoading(false)
             setShowShiftModal(false);
         }
@@ -85,7 +86,7 @@ function SingleRoster(props) {
             }
         }
         void fetchData()
-    }, []);
+    }, [refresh]);
 
     if (!singleRoster.weekDates) {
         return <div>Loading...</div>;
@@ -113,6 +114,7 @@ function SingleRoster(props) {
                                                 end={shift.endShift}
                                                 employeeShortName={shift.employeeShortName}
                                                 shiftId={shift.id}
+                                                shift = {shift}
                                             >
                                             </Shift>
                                         </div>

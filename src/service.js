@@ -255,12 +255,29 @@ export const getAvailableEmployees = async (token, id) => {
         },
     })
 
-    // console.log(response.data)
+
     return response.data
 }
 
+export const updateShift = async (token, shift, shiftId, employeeId, ) => {
+    const response = await axios.put(`http://localhost:8080/shifts/${shiftId}`, {
+        id: shiftId,
+        startShift: shift.startShift,
+        endShift: shift.endShift,
+        employeeId,
+        teamName: shift.teamName,
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    })
+    console.log(response)
 
-export const testRequest = async (shiftId) => {
+}
+
+
+export const testRequest = async (selectedEmployeeId, shiftId) => {
     console.log("Test Request running")
     return[]
 }
