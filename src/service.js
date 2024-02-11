@@ -1,7 +1,5 @@
 import axios from "axios";
 import {formatShiftDateTime} from "./helpers/timeFunctions";
-import employeeCreationModal from "./modals/EmployeeCreationModal";
-
 
 export const getUsers = async (token, signal) => {
 

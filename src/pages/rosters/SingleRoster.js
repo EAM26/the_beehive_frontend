@@ -22,7 +22,7 @@ function SingleRoster(props) {
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
     const userLocale = useContext(LocaleContext)
-    const [showModal, setShowModal] = useState(false);
+    const [showShiftModal, setShowShiftModal] = useState(false);
     const [newShift, setNewShift] = useState({
         start: '',
         end: '',
@@ -30,15 +30,25 @@ function SingleRoster(props) {
         teamName: ''
     })
 
+    const resetNewShift = () => {
+        setNewShift({
+            start: '',
+            end: '',
+            date: {},
+            teamName: ''
+        });
+    };
+
 
     const handleNewShiftClick = (date) => {
         setNewShift({...newShift, date: date, teamName: singleRoster.teamName})
         console.log("handleNewShiftClick")
-        setShowModal(true)
+        setShowShiftModal(true)
     }
 
     const handleClose = () => {
-        setShowModal(false)
+        setShowShiftModal(false)
+        resetNewShift();
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -51,9 +61,11 @@ function SingleRoster(props) {
             setErrormessage(errorHandler(e));
             console.error(e)
         } finally {
+            resetNewShift()
             setLoading(false)
+            setShowShiftModal(false);
         }
-        setShowModal(false);
+
     };
     useEffect(() => {
         const fetchData = async () => {
@@ -107,8 +119,8 @@ function SingleRoster(props) {
                                     <Button children="+shift" type="button" onClick={() => {
                                         handleNewShiftClick(date)
                                     }}/>
-                                    {showModal && (
-                                        <BaseModal isOpen={showModal} onClose={handleClose}>
+                                    {showShiftModal && (
+                                        <BaseModal isOpen={showShiftModal} onClose={handleClose}>
                                             <form onSubmit={handleSubmit}>
 
                                                 <div>
@@ -145,7 +157,7 @@ function SingleRoster(props) {
                                                 </div>
 
                                                 <Button type="submit">Create</Button>
-                                                {/*<Button type="button" onClick={handleOnClose}>Cancel</Button>*/}
+                                                <Button type="button" onClick={handleClose}>Cancel</Button>
                                             </form>
                                         </BaseModal>
                                     )}
