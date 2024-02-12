@@ -10,6 +10,7 @@ import Shift from "../../components/shift/Shift";
 import Button from "../../components/button/Button";
 import BaseModal from "../../modals/BaseModal";
 import {generateTimeOptions} from "../../helpers/timeFunctions";
+import {generalSort} from "../../helpers/mySorterFunctions";
 
 
 function SingleRoster(props) {
@@ -23,7 +24,6 @@ function SingleRoster(props) {
     const [errorMessage, setErrormessage] = useState("")
     const userLocale = useContext(LocaleContext)
     const [showShiftModal, setShowShiftModal] = useState(false);
-    const [refresh, setRefresh] = useState(0)
     const [newShift, setNewShift] = useState({
         start: '',
         end: '',
@@ -49,7 +49,6 @@ function SingleRoster(props) {
 
     const handleClose = () => {
         setShowShiftModal(false)
-        resetNewShift();
     }
     const handleSubmit = async (e) => {
         setLoading(true)
@@ -62,7 +61,6 @@ function SingleRoster(props) {
             console.error(e)
         } finally {
             resetNewShift()
-            setRefresh(prevState => 1)
             setLoading(false)
             setShowShiftModal(false);
         }
@@ -86,9 +84,10 @@ function SingleRoster(props) {
             }
         }
         void fetchData()
-    }, [refresh]);
+    }, []);
 
     if (!singleRoster.weekDates) {
+
         return <div>Loading...</div>;
     }
 
@@ -99,14 +98,14 @@ function SingleRoster(props) {
                     {loading && <p>Loading...</p>}
                     {singleRoster.weekDates.map((dateString) => {
                         const date = new Date(dateString);
-                        const filteredShifts = shifts && shifts.filter((shift) => {
+                        let filteredShifts = shifts && shifts.filter((shift) => {
                             const shiftDate = shift.startShift.split('T')[0];
                             return shiftDate === dateString;
                         });
+                        filteredShifts = generalSort(filteredShifts, 'startShift', 'endShift')
                         return (
                             <div key={dateString}>
                                 <DayColumn date={date}>
-                                    {/*{setNewShift({...newShift, date: date, teamName: singleRoster.teamName})}*/}
                                     {filteredShifts ? filteredShifts.map((shift) => {
                                         return <div key={shift.id}>
                                             <Shift
