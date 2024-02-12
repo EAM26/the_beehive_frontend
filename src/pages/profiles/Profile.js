@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { getSelf, updateEmployee, updateUser} from "../../service";
+import {getSelf, updateEmployee, updateUser, updateUserAsSelf} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -26,7 +26,7 @@ function Profile() {
     const handleFormSubmitUser = async (formData) => {
         try {
             console.log(formData)
-            await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+            await updateUserAsSelf(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
@@ -36,18 +36,19 @@ function Profile() {
 
     };
 
-    const handleFormSubmitEmployee = async (formData) => {
-        try {
-            console.log(formData)
-            await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.phoneNumber, formData.teamName, formData.username)
-
-        } catch (e) {
-            setError(true);
-            setErrormessage(errorHandler(e));
-            console.error(e)
-        }
-
-    };
+    // const handleFormSubmitEmployee = async (formData) => {
+    //     console.log("handle put employee self")
+    //     try {
+    //         console.log(formData)
+    //         await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.phoneNumber, formData.teamName, formData.username)
+    //
+    //     } catch (e) {
+    //         setError(true);
+    //         setErrormessage(errorHandler(e));
+    //         console.error(e)
+    //     }
+    //
+    // };
 
     useEffect(() => {
 
@@ -178,7 +179,8 @@ function Profile() {
                         <Button type="submit" children="Save"/>
                     </form>
 
-                    <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
+                    {/*<form onSubmit={handleSubmit(handleFormSubmitEmployee)}>*/}
+                    <form>
                         <h3>Employee</h3>
                         <FormInputField
                             label="Employee id"
@@ -303,7 +305,7 @@ function Profile() {
                             errors={errors}
                             disabled="disabled"
                         />
-                        <Button type="submit" children="Save"/>
+                        {/*<Button type="submit" children="Save"/>*/}
                     </form>
                     <div className="screen-container">
                         <div className="shifts-container">
