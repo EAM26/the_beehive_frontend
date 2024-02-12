@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import './CreationModal.css';
+import '../components/baseModal/BaseModal.css';
 import {getTeams} from "../service";
 import  {AuthContext} from "../context/AuthContext";
 import Button from "../components/button/Button";

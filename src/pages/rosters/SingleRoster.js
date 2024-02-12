@@ -8,7 +8,7 @@ import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
 import Shift from "../../components/shift/Shift";
 import Button from "../../components/button/Button";
-import BaseModal from "../../modals/BaseModal";
+import BaseModal from "../../components/baseModal/BaseModal";
 import {generateTimeOptions} from "../../helpers/timeFunctions";
 import {generalSort} from "../../helpers/mySorterFunctions";
 
