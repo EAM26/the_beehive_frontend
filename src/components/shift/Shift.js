@@ -3,7 +3,7 @@ import {createShift, getAvailableEmployees, testRequest, updateShift} from "../.
 import {AuthContext} from "../../context/AuthContext";
 
 
-function Shift({start, end, employeeShortName, employeeId, shiftId, shift }) {
+function Shift({start, end, employeeShortName, employeeId, shiftId, shift, handleEmployeeChange }) {
     const formattedStart = start.substring(11, 16);
     const formattedEnd = end.substring(11, 16);
     const [availableEmployees, setAvailableEmployees] = useState([]);
@@ -23,20 +23,20 @@ function Shift({start, end, employeeShortName, employeeId, shiftId, shift }) {
 
 
 
-    const handleEmployeeChange = async (e) => {
-        e.preventDefault();
-        const selectedEmployeeId = e.target.value;
-
-        try {
-            await updateShift(token, shift, shift.id, selectedEmployeeId );
-        } catch (e) {
-
-            console.error(e)
-        } finally {
-
-        }
-
-    };
+    // const handleEmployeeChange = async (e) => {
+    //     e.preventDefault();
+    //     const selectedEmployeeId = e.target.value;
+    //
+    //     try {
+    //         await updateShift(token, shift, shift.id, selectedEmployeeId );
+    //     } catch (e) {
+    //
+    //         console.error(e)
+    //     } finally {
+    //
+    //     }
+    //
+    // };
 
 
 

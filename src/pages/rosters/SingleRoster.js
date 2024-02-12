@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
-import {createShift, getRoster} from "../../service";
+import {createShift, getRoster, updateShift} from "../../service";
 import DayColumn from "../../components/DayColumn/DayColumn";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
@@ -30,6 +30,7 @@ function SingleRoster(props) {
         date: {},
         teamName: ''
     })
+    const [newEmp, setNewEmp] = useState(false)
 
     const resetNewShift = () => {
         setNewShift({
@@ -38,6 +39,21 @@ function SingleRoster(props) {
             date: {},
             teamName: ''
         });
+    };
+
+    const handleEmployeeChange = (shift, shiftId) => async (e) => {
+        e.preventDefault();
+        const selectedEmployeeId = e.target.value;
+
+        try {
+            await updateShift(token, shift, shiftId, selectedEmployeeId );
+        } catch (e) {
+
+            console.error(e)
+        } finally {
+            setNewEmp(!newEmp);
+        }
+
     };
 
 
@@ -84,7 +100,7 @@ function SingleRoster(props) {
             }
         }
         void fetchData()
-    }, []);
+    }, [newEmp]);
 
     if (!singleRoster.weekDates) {
 
@@ -114,6 +130,7 @@ function SingleRoster(props) {
                                                 employeeShortName={shift.employeeShortName}
                                                 shiftId={shift.id}
                                                 shift = {shift}
+                                                handleEmployeeChange={handleEmployeeChange(shift, shift.id)}
                                             >
                                             </Shift>
                                         </div>
