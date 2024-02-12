@@ -19,14 +19,23 @@ export function sortRostersByYearAndWeek(rosters) {
     });
 }
 
-export function generalSort(myArray, sorter) {
+export function generalSort(myArray, primaryAttribute, secondaryAttribute) {
     return myArray.sort((a, b) => {
-        if(a[sorter] < b[sorter]) {
+        if (a[primaryAttribute] < b[primaryAttribute]) {
             return -1;
         }
-        if(a[sorter] > b[sorter]) {
+        if (a[primaryAttribute] > b[primaryAttribute]) {
             return 1;
+        }
+        if (secondaryAttribute) {
+            if (a[secondaryAttribute] < b[secondaryAttribute]) {
+                return -1;
+            }
+            if (a[secondaryAttribute] > b[secondaryAttribute]) {
+                return 1;
+            }
         }
         return 0;
     });
 }
+
