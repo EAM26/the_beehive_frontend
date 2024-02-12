@@ -20,35 +20,28 @@ function Profile() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
+    const [modifiedUserFields, setModifiedUserFields] = useState({})
     const userLocale = useContext(LocaleContext)
     const {token} = useContext(AuthContext);
 
     const handleFormSubmitUser = async (formData) => {
         try {
-            console.log(formData)
             await updateUserAsSelf(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+            setModifiedUserFields({})
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
 
         }
-
     };
 
-    // const handleFormSubmitEmployee = async (formData) => {
-    //     console.log("handle put employee self")
-    //     try {
-    //         console.log(formData)
-    //         await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.phoneNumber, formData.teamName, formData.username)
-    //
-    //     } catch (e) {
-    //         setError(true);
-    //         setErrormessage(errorHandler(e));
-    //         console.error(e)
-    //     }
-    //
-    // };
+    const handleOnInput = (fieldName) => (event) => {
+        setModifiedUserFields(prevState => ({ ...prevState, [fieldName]: true }));
+
+    }
+
+
 
     useEffect(() => {
 
@@ -110,6 +103,8 @@ function Profile() {
                             type="email"
                             id="email"
                             register={register}
+                            onInput={handleOnInput('email')}
+                            className={modifiedUserFields.email ? 'modified': ''}
                             errors={errors}
                             defaultValue={profileData ? profileData.email : ""}
                             validation={{
@@ -132,11 +127,12 @@ function Profile() {
                             id="password"
                             register={register}
                             errors={errors}
+                            onInput={handleOnInput('password')}
+                            className={modifiedUserFields.password? 'modified': ''}
                             validation={{
                                 required:
                                     {
                                         value: false,
-                                        message: "Field is required",
                                     }, pattern: {
                                     value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
                                     message: "1. Password must contain at least one digit [0-9]. " +

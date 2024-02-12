@@ -24,6 +24,8 @@ function SingleUser(props) {
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
     const userLocale = useContext(LocaleContext)
+    const [modifiedUserFields, setModifiedUserFields] = useState({})
+    const [modifiedEmployeeFields, setModifiedEmployeeFields] = useState({})
 
 
 
@@ -31,20 +33,25 @@ function SingleUser(props) {
         try {
             // console.log(formData)
             await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+            setModifiedUserFields({})
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
-
         }
 
     };
+
+    const handleUserOnInput = (fieldName) => (event) => {
+        setModifiedUserFields(prevState => ({ ...prevState, [fieldName]: true }));
+
+    }
 
     const handleFormSubmitEmployee = async (formData) => {
         try {
-            console.log(formData)
-            await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.phoneNumber, formData.teamName, formData.username)
 
+            await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.phoneNumber, formData.teamName, formData.username)
+            setModifiedEmployeeFields({})
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
@@ -52,6 +59,11 @@ function SingleUser(props) {
         }
 
     };
+
+    const handleEmployeeOnInput = (fieldName) => (event) => {
+        setModifiedEmployeeFields(prevState => ({ ...prevState, [fieldName]: true }));
+
+    }
 
     useEffect(() => {
             const fetchData = async () => {
@@ -108,6 +120,8 @@ function SingleUser(props) {
                             type="email"
                             id="email"
                             register={register}
+                            onInput={handleUserOnInput('email')}
+                            className={modifiedUserFields.email ? 'modified': ''}
                             errors={errors}
                             defaultValue={userData ? userData.email : ""}
                             validation={{
@@ -129,12 +143,13 @@ function SingleUser(props) {
                             type="password"
                             id="password"
                             register={register}
+                            onInput={handleUserOnInput('password')}
+                            className={modifiedUserFields.password ? 'modified': ''}
                             errors={errors}
                             validation={{
                                 required:
                                     {
                                         value: false,
-                                        message: "Field is required",
                                     }, pattern: {
                                     value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
                                     message: "1. Password must contain at least one digit [0-9]. " +
@@ -152,6 +167,8 @@ function SingleUser(props) {
                             type="text"
                             id="userRole"
                             register={register}
+                            onInput={handleUserOnInput('userRole')}
+                            className={modifiedUserFields.userRole ? 'modified': ''}
                             errors={errors}
                             defaultValue={userData ? userData.authorities[0].authority.replace('ROLE_', '') : ""}
                             validation={{
@@ -195,6 +212,8 @@ function SingleUser(props) {
                             id="firstName"
                             register={register}
                             errors={errors}
+                            onInput={handleEmployeeOnInput('firstName')}
+                            className={modifiedEmployeeFields.firstName ? 'modified': ''}
                             defaultValue={userData.employee ? userData.employee.firstName : ""}
                             validation={{
                                 required:
@@ -211,6 +230,8 @@ function SingleUser(props) {
                             type="text"
                             id="preposition"
                             register={register}
+                            onInput={handleEmployeeOnInput('preposition')}
+                            className={modifiedEmployeeFields.preposition ? 'modified': ''}
                             errors={errors}
                             defaultValue={userData.employee ? userData.employee.preposition : ""}
 
@@ -222,6 +243,8 @@ function SingleUser(props) {
                             id="lastName"
                             register={register}
                             errors={errors}
+                            onInput={handleEmployeeOnInput('lastName')}
+                            className={modifiedEmployeeFields.lastName ? 'modified': ''}
                             defaultValue={userData.employee ? userData.employee.lastName : ""}
                             validation={{
                                 required:
@@ -238,6 +261,8 @@ function SingleUser(props) {
                             type="text"
                             id="shortName"
                             register={register}
+                            onInput={handleEmployeeOnInput('shortName')}
+                            className={modifiedEmployeeFields.shortName ? 'modified': ''}
                             errors={errors}
                             defaultValue={userData.employee ? userData.employee.shortName : ""}
                             validation={{
@@ -255,6 +280,8 @@ function SingleUser(props) {
                             type="date"
                             id="dob"
                             register={register}
+                            onInput={handleEmployeeOnInput('dob')}
+                            className={modifiedEmployeeFields.dob ? 'modified': ''}
                             errors={errors}
                             defaultValue={userData.employee ? userData.employee.dob : ""}
                         />
@@ -264,8 +291,20 @@ function SingleUser(props) {
                             type="text"
                             id="phoneNumber"
                             register={register}
+                            onInput={handleEmployeeOnInput('phoneNumber')}
+                            className={modifiedEmployeeFields.phoneNumber ? 'modified': ''}
                             errors={errors}
                             defaultValue={userData.employee ? userData.employee.phoneNumber : ""}
+                            validation={{
+                                required:
+                                    {
+                                        value: false,
+                                    }, pattern: {
+                                    value: /^\d+$/,
+                                    message: "Phone number can only contain numbers"
+                                }
+                            }
+                            }
                         />
                         <FormInputField
                             label="Team"
@@ -273,8 +312,11 @@ function SingleUser(props) {
                             type="text"
                             id="teamName"
                             register={register}
+                            onInput={handleEmployeeOnInput('teamName')}
+                            className={modifiedEmployeeFields.teamName ? 'modified': ''}
                             errors={errors}
                             defaultValue={userData.employee ? userData.team.teamName : ""}
+                            readOnly={true}
                             validation={{
                                 required:
                                     {
