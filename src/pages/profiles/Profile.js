@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { getSelf, updateEmployee, updateUser} from "../../service";
+import {getSelf, updateEmployee, updateUser, updateUserAsSelf} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
-import "./Profile.css"
+import "../users/SingleUser_Profile.css"
 import {AuthContext} from "../../context/AuthContext";
 
 function Profile() {
@@ -20,34 +20,28 @@ function Profile() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
+    const [modifiedUserFields, setModifiedUserFields] = useState({})
     const userLocale = useContext(LocaleContext)
     const {token} = useContext(AuthContext);
 
     const handleFormSubmitUser = async (formData) => {
         try {
-            console.log(formData)
-            await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+            await updateUserAsSelf(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
+            setModifiedUserFields({})
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
 
         }
-
     };
 
-    const handleFormSubmitEmployee = async (formData) => {
-        try {
-            console.log(formData)
-            await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.phoneNumber, formData.teamName, formData.username)
+    const handleOnInput = (fieldName) => (event) => {
+        setModifiedUserFields(prevState => ({ ...prevState, [fieldName]: true }));
 
-        } catch (e) {
-            setError(true);
-            setErrormessage(errorHandler(e));
-            console.error(e)
-        }
+    }
 
-    };
+
 
     useEffect(() => {
 
@@ -88,11 +82,12 @@ function Profile() {
     }
 
     return (
-        <main >
-            <div>
-                <div>
+        <main className="outer-container" >
+            <div className="inner-container">
+                <div className="form-outer-container">
+                    <div className="form-inner-container">
                     <form onSubmit={handleSubmit(handleFormSubmitUser)}>
-                        <h3>User</h3>
+                        <h3>USER</h3>
                         <FormInputField
                             label="User name"
                             name="username"
@@ -109,6 +104,8 @@ function Profile() {
                             type="email"
                             id="email"
                             register={register}
+                            onInput={handleOnInput('email')}
+                            className={modifiedUserFields.email ? 'modified': ''}
                             errors={errors}
                             defaultValue={profileData ? profileData.email : ""}
                             validation={{
@@ -131,11 +128,12 @@ function Profile() {
                             id="password"
                             register={register}
                             errors={errors}
+                            onInput={handleOnInput('password')}
+                            className={modifiedUserFields.password? 'modified': ''}
                             validation={{
                                 required:
                                     {
                                         value: false,
-                                        message: "Field is required",
                                     }, pattern: {
                                     value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
                                     message: "1. Password must contain at least one digit [0-9]. " +
@@ -178,8 +176,9 @@ function Profile() {
                         <Button type="submit" children="Save"/>
                     </form>
 
-                    <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
-                        <h3>Employee</h3>
+                    {/*<form onSubmit={handleSubmit(handleFormSubmitEmployee)}>*/}
+                    <form>
+                        <h3>EMPLOYEE</h3>
                         <FormInputField
                             label="Employee id"
                             name="id"
@@ -303,11 +302,12 @@ function Profile() {
                             errors={errors}
                             disabled="disabled"
                         />
-                        <Button type="submit" children="Save"/>
+                        {/*<Button type="submit" children="Save"/>*/}
                     </form>
-                    <div className="screen-container">
+                    </div>
+                    <div className="form-inner-container">
                         <div className="shifts-container">
-                            SHIFTS
+                            <h3>SHIFTS</h3>
                             {profileData.shifts ? profileData.shifts.slice(0, 5).map((shift) => {
 
                                 const startShiftDate = new Date(shift.startShift);
@@ -329,7 +329,7 @@ function Profile() {
 
 
                         <div className="absences-container">
-                            ABSENCES
+                            <h3>ABSENCES</h3>
                             {profileData.absences ? profileData.absences.slice(0, 5).map((absence) => {
 
                                 const startAbsenceDate = new Date(absence.startDate);

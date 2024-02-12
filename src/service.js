@@ -100,6 +100,24 @@ export const updateUser = async (jwt, username, password, userRole, email, isDel
     return response.data
 }
 
+export const updateUserAsSelf = async (jwt, username, password, userRole, email, isDeleted) => {
+    const checkedPassword = password === '' ? null : password
+    const response = await axios.put("http://localhost:8080/users/self", {
+        username: username,
+        password: checkedPassword,
+        userRole: userRole,
+        email: email,
+        isDeleted: isDeleted,
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    console.log(response)
+    return response.data
+}
+
 export const createEmployee = async (jwt, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username) => {
     const response = await axios.post('http://localhost:8080/employees', {
         firstName,
@@ -122,6 +140,7 @@ export const createEmployee = async (jwt, firstName, preposition, lastName, shor
     return response.data
 }
 export const updateEmployee = async (jwt, id, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username) => {
+    console.log("service update Emp")
 
     const response = await axios.put(`http://localhost:8080/employees/${id}`, {
         firstName,
