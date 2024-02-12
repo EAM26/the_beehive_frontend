@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {errorHandler} from "../../helpers/errorHandler";
-import {createEmployee, createUser, getUser, getUsers} from "../../service";
+import {createEmployee, createUser, getTeams, getUser, getUsers} from "../../service";
 import Button from "../../components/button/Button";
 import {useNavigate} from "react-router-dom";
 import UserCreationModal from "../../modals/UserCreationModal";
 import {AuthContext} from "../../context/AuthContext";
-import EmployeeCreationModal from "../../modals/EmployeeCreationModal";
+import BaseModal from "../../components/baseModal/BaseModal";
 
 
 function Users() {
@@ -21,6 +21,18 @@ function Users() {
     const [selectedUsername, setSelectedUsername] = useState('');
     const [deletedFilter, setDeletedFilter] = useState('all');
     const [employeeFilter, setEmployeeFilter] = useState('all');
+    const [teams, setTeams] = useState([]);
+    const [formDataEmployee, setFormDataEmployee] = useState({
+        firstName: '',
+        preposition: '',
+        lastName: '',
+        shortName: '',
+        dob: '',
+        phoneNumber: '',
+        teamName: '',
+        isActive: true,
+
+    });
 
 
 
@@ -53,9 +65,61 @@ function Users() {
         setEmployeeFilter(e.target.value);
     };
 
+    const handleSubmitEmployee  = async (e) => {
+        e.preventDefault()
+        try {
+            const newEmployee = await createEmployee(token, formDataEmployee.firstName, formDataEmployee.preposition, formDataEmployee.lastName, formDataEmployee.shortName, formDataEmployee.dob, formDataEmployee.isActive, formDataEmployee.phoneNumber, formDataEmployee.teamName, selectedUsername)
+            setUsers(currentUsers => {
+                return currentUsers.map(user => {
+                    if (user.username === selectedUsername) {
+                        return {
+                            ...user,
+                            employee: { ...newEmployee }
+                        };
+                    }
+                    return user;
+                });
+            });
+
+        } catch (e) {
+            console.log(e)
+        }
+
+        setShowEmployeeModal(false);
+    }
+
+    const handleChange = (e) => {
+        const {name, value, type, checked} = e.target;
+        setFormDataEmployee(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    useEffect(() => {
+        console.log("useEffect team data")
+        const fetchTeamsData = (async () => {
+            setLoading(true)
+            try {
+                const response = await getTeams(token);
+                setTeams(response);
+            } catch (e) {
+                console.error(e)
+            } finally {
+                setLoading(false)
+            }
+
+        })
+        void fetchTeamsData();
+    }, []);
+
+    // if (!teams) {
+    //     return <div>Loading...</div>;
+    // }
 
 
     useEffect(() => {
+        console.log("use effect userData")
         const controller = new AbortController();
         // const token = localStorage.getItem('token');
 
@@ -164,33 +228,96 @@ function Users() {
                     setShowUserModal(false);
                 }}
             />
-            <EmployeeCreationModal
-                isOpen={showEmployeeModal}
-                onClose={handleCloseModal}
-                // username={selectedUsername}
-                onSubmit={async formData => {
-                    console.log('Form submitted with data:', formData);
-                    try {
-                        const newEmployee = await createEmployee(token, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isActive, formData.phoneNumber, formData.teamName, selectedUsername)
-                        setUsers(currentUsers => {
-                            return currentUsers.map(user => {
-                                if (user.username === selectedUsername) {
-                                    return {
-                                        ...user,
-                                        employee: { ...newEmployee }
-                                    };
-                                }
-                                return user;
-                            });
-                        });
+            <BaseModal
+            isOpen={showEmployeeModal}
+            onClose={handleCloseModal}
+            >
+                <div className="modal">
+                <div className="modal-content">
+                    <form onSubmit={handleSubmitEmployee}>
+                        <div>
+                            <label>First Name:</label>
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={formDataEmployee.firstName}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Preposition:</label>
+                            <input
+                                type="text"
+                                name="preposition"
+                                value={formDataEmployee.preposition}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Last Name:</label>
+                            <input
+                                type="text"
+                                name="lastName"
+                                value={formDataEmployee.lastName}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Short Name:</label>
+                            <input
+                                type="text"
+                                name="shortName"
+                                value={formDataEmployee.shortName}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Date of Birth:</label>
+                            <input
+                                type="date"
+                                name="dob"
+                                value={formDataEmployee.dob}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Phone Number:</label>
+                            <input
+                                type="text"
+                                name="phoneNumber"
+                                value={formDataEmployee.phoneNumber}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label>Team</label>
+                            <select  name="teamName" onChange={handleChange} defaultValue={""}>
+                                <option value="" disabled>team</option>
+                                {teams.map((team)=> {
+                                    return <option key={team.teamName} value={team.teamName}>{team.teamName}</option>
+                                })}
+                            </select>
 
-                    } catch (e) {
-                        console.log(e)
-                    }
+                        </div>
+                        <div>
+                            <label>
+                                Employee Active:
+                                <input
+                                    type="checkbox"
+                                    name="isActive"
+                                    checked={formDataEmployee.isActive}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                        </div>
+                        <Button type="submit">Create Employee</Button>
+                        <Button type="button" onClick={handleCloseModal}>Cancel</Button>
+                    </form>
+                </div>
+            </div>
 
-                    setShowEmployeeModal(false);
-                }}
-            />
+            </BaseModal>
+
         </main>
     );
 }
