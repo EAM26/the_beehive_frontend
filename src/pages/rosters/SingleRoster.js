@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
-import {createShift, getRoster, updateShift} from "../../service";
+import {createShift, deleteShift, getRoster, testRequest, updateShift} from "../../service";
 import DayColumn from "../../components/DayColumn/DayColumn";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
@@ -31,6 +31,7 @@ function SingleRoster(props) {
         teamName: ''
     })
     const [newEmp, setNewEmp] = useState(false)
+    const [isDelete, setIsDelete] = useState(false)
 
     const resetNewShift = () => {
         setNewShift({
@@ -51,10 +52,22 @@ function SingleRoster(props) {
 
             console.error(e)
         } finally {
-            setNewEmp(!newEmp);
+            setNewEmp(!newEmp)
         }
 
     };
+
+
+    const handleShiftDelete = async (shiftId) => {
+
+        try {
+            await deleteShift(token, shiftId);
+        } catch (e) {
+            console.error(e)
+        } finally {
+            setIsDelete(!isDelete);
+        }
+    }
 
 
     const handleNewShiftClick = (date) => {
@@ -100,10 +113,9 @@ function SingleRoster(props) {
             }
         }
         void fetchData()
-    }, [newEmp]);
+    }, [newEmp, isDelete]);
 
     if (!singleRoster.weekDates) {
-
         return <div>Loading...</div>;
     }
 
@@ -132,6 +144,9 @@ function SingleRoster(props) {
                                                 shift = {shift}
                                                 handleEmployeeChange={handleEmployeeChange(shift, shift.id)}
                                             >
+                                                <Button children="Del" onClick={() => {
+                                                    void handleShiftDelete(shift.id)
+                                                }}/>
                                             </Shift>
                                         </div>
                                     }) : ""}

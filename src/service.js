@@ -265,6 +265,19 @@ export const createShift = async (token, start, end, date, teamName) => {
     return response.data
 }
 
+export const deleteShift = async (token, id) => {
+    const response = await axios.delete(`http://localhost:8080/shifts/${id}` ,{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    })
+
+    return response.data
+}
+
+
+
 export const getAvailableEmployees = async (token, id) => {
 
     const response = await axios.get(`http://localhost:8080/employees/shift/${id}`,{
