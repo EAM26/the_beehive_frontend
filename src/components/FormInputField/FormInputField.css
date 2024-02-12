@@ -1,1 +1,6 @@
 /**/
+
+.modified{
+    font-style: italic;
+    background-color: orange;
+}

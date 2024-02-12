@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
-import "./Profile.css"
+import "../users/SingleUser_Profile.css"
 import {AuthContext} from "../../context/AuthContext";
 
 function Profile() {
@@ -82,11 +82,12 @@ function Profile() {
     }
 
     return (
-        <main >
-            <div>
-                <div>
+        <main className="outer-container" >
+            <div className="inner-container">
+                <div className="form-outer-container">
+                    <div className="form-inner-container">
                     <form onSubmit={handleSubmit(handleFormSubmitUser)}>
-                        <h3>User</h3>
+                        <h3>USER</h3>
                         <FormInputField
                             label="User name"
                             name="username"
@@ -177,7 +178,7 @@ function Profile() {
 
                     {/*<form onSubmit={handleSubmit(handleFormSubmitEmployee)}>*/}
                     <form>
-                        <h3>Employee</h3>
+                        <h3>EMPLOYEE</h3>
                         <FormInputField
                             label="Employee id"
                             name="id"
@@ -303,9 +304,10 @@ function Profile() {
                         />
                         {/*<Button type="submit" children="Save"/>*/}
                     </form>
-                    <div className="screen-container">
+                    </div>
+                    <div className="form-inner-container">
                         <div className="shifts-container">
-                            SHIFTS
+                            <h3>SHIFTS</h3>
                             {profileData.shifts ? profileData.shifts.slice(0, 5).map((shift) => {
 
                                 const startShiftDate = new Date(shift.startShift);
@@ -327,7 +329,7 @@ function Profile() {
 
 
                         <div className="absences-container">
-                            ABSENCES
+                            <h3>ABSENCES</h3>
                             {profileData.absences ? profileData.absences.slice(0, 5).map((absence) => {
 
                                 const startAbsenceDate = new Date(absence.startDate);
