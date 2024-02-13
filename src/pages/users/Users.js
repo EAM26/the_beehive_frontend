@@ -62,9 +62,13 @@ function Users() {
             const updatedUsers = [...users, newUser];
             setUsers(updatedUsers.sort((a, b) => a.username.localeCompare(b.username)));
             reset();
+            setError(false)
+            setErrormessage("")
 
         } catch (e) {
             console.error(e)
+            setError(true);
+            setErrormessage(errorHandler(e));
         }
         setShowUserModal(false)
     };
@@ -78,7 +82,6 @@ function Users() {
 
     const handleSubmitEmployee = async (formDataEmployee) => {
         try {
-            console.log(formDataEmployee)
             const newEmployee = await createEmployee(token, formDataEmployee.firstName, formDataEmployee.preposition, formDataEmployee.lastName, formDataEmployee.shortName, formDataEmployee.dob, formDataEmployee.isActive, formDataEmployee.phoneNumber, formDataEmployee.teamName, selectedUsername)
             setUsers(currentUsers => {
                 return currentUsers.map(user => {
@@ -92,20 +95,17 @@ function Users() {
                 });
             });
             reset()
+            setError(false)
+            setErrormessage("")
         } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
             console.error(e)
         }
 
         setShowEmployeeModal(false);
     }
 
-    // const handleChangeEmployeeField = (e) => {
-    //     const {name, value, type, checked} = e.target;
-    //     setFormDataEmployee(prev => ({
-    //         ...prev,
-    //         [name]: type === 'checkbox' ? checked : value
-    //     }));
-    // };
 
     const handleCloseModal = () => {
         setShowUserModal(false);
@@ -189,7 +189,7 @@ function Users() {
                     </select>
                 </div>
                 {loading && <p>Loading...</p>}
-                {error ? <p>{errorMessage}</p> :
+                <p>{error ? errorMessage: ""}</p> :
                     <table>
                         <thead>
                         <tr>
@@ -222,7 +222,7 @@ function Users() {
                             }
                         )}
                         </tbody>
-                    </table>}
+                    </table>
             </div>
             {/* User Modal */}
             <BaseModal
