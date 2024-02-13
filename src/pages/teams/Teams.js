@@ -6,10 +6,12 @@ import {errorHandler} from "../../helpers/errorHandler";
 import {useNavigate} from "react-router-dom";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {mySorterIgnoreCaseSingleAttr} from "../../helpers/mySorterFunctions";
+import {set} from "react-hook-form";
 
 
 function Teams(props) {
 
+    const [teamCreated, setTeamCreated] = useState({})
     const navigate = useNavigate();
     const [teams, setTeams] = useState([])
     const [loading, setLoading] = useState(false)
@@ -44,9 +46,16 @@ function Teams(props) {
     };
 
     const handleSubmit = async (e)  => {
+        e.preventDefault()
         try {
-            await createTeam(token,  formData.teamName, formData.isActive)
+            const response = await createTeam(token,  formData.teamName, formData.isActive)
+            setTeamCreated(response)
+            setError(false)
+            setErrormessage("")
+
         } catch (e) {
+            setError(true)
+            setErrormessage(errorHandler(e))
             console.error(e)
         }
 
@@ -77,7 +86,7 @@ function Teams(props) {
         return function cleanup() {
             controller.abort();
         }
-    }, []);
+    }, [teamCreated]);
 
 
     return (
@@ -86,7 +95,8 @@ function Teams(props) {
                 <h2>Teams</h2>
                 <Button children="NEW TEAM" type="button" onClick={handleNewTeamClick}/>
                 {loading && <p>Loading...</p>}
-                {error ? <p>{errorMessage}</p> : <table>
+                <p>{error ? errorMessage: ""}</p>
+                <table>
                     <thead>
                     <tr>
                         <th>Team Name</th>
@@ -105,7 +115,7 @@ function Teams(props) {
                         }
                     )}
                     </tbody>
-                </table>}
+                </table>
             </div>
             <BaseModal
                 onClose={handleCloseModal}

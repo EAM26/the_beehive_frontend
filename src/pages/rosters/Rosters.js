@@ -5,11 +5,11 @@ import {createRoster, getRosters} from "../../service";
 import Button from "../../components/button/Button";
 import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 import BaseModal from "../../components/baseModal/BaseModal";
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 function Rosters(props) {
 
+    const [rosterCreated, setRosterCreated] = useState({})
     const [rosters, setRosters] = useState([])
     const {token} = useContext(AuthContext)
     const [loading, setLoading] = useState(false)
@@ -28,22 +28,23 @@ function Rosters(props) {
     }
 
     const handleInputChange = (e) => {
-        setNewRoster({ ...newRoster, [e.target.name]: e.target.value });
+        setNewRoster({...newRoster, [e.target.name]: e.target.value});
     };
 
-    const handleSubmit =  async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await createRoster(token, newRoster.week, newRoster.year, newRoster.teamName);
+            setRosterCreated(response)
+            setError(false)
+            setErrormessage("")
 
-        try{
-            await createRoster(token, newRoster.week, newRoster.year, newRoster.teamName);
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
         } finally {
-
         }
-        console.log(newRoster);
         setShowModal(false);
     };
 
@@ -67,76 +68,78 @@ function Rosters(props) {
             } finally {
                 setLoading(false)
             }
+
         }
 
         void fetchData()
         return function cleanup() {
             controller.abort();
         }
-    }, []);
+    }, [rosterCreated]);
 
 
     return (
-       <main className="outer-container">
-       <div className="inner-container">
-           <h2>Rosters</h2>
-           <Button children="NEW ROSTER" type="button" onClick={() => setShowModal(true)}/>
-           {showModal && (
-               <BaseModal isOpen={showModal} onClose={handleOnClose}>
-                   <form onSubmit={handleSubmit}>
+        <main className="outer-container">
+            <div className="inner-container">
+                <h2>Rosters</h2>
+                <Button children="NEW ROSTER" type="button" onClick={() => setShowModal(true)}/>
 
-                       <div>
-                           <label>
-                           Week:
-                           </label>
-                           <input type="text" name="week" value={newRoster.week} onChange={handleInputChange} />
+                {loading && <p>Loading...</p>}
+                <p>{error ? errorMessage : ""}</p>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Year</th>
+                        <th>Team</th>
 
-                       </div>
-                       <div>
-                           <label>
-                               Year:
-                               <input type="text" name="year" value={newRoster.year} onChange={handleInputChange} />
-                           </label>
-                       </div>
-                       <div>
-                           <label>
-                               Team Name:
-                               <input type="text" name="teamName" value={newRoster.teamName} onChange={handleInputChange} />
-                           </label>
-                       </div>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {rosters.map((roster) => {
+                        const [week, year, team] = roster.name.split('-');
+                        return <tr key={roster.id}>
+                            <td>{week}</td>
+                            <td>{year}</td>
+                            <td>{team}</td>
+                            <td><Button onClick={() => handleClickView(roster.id)} children="view"/></td>
+                        </tr>
+                    })}
 
-                       <Button type="submit">Add Roster</Button>
-                       <Button type="button" onClick={handleOnClose}>Cancel</Button>
-                   </form>
-               </BaseModal>
-           )}
-           {loading && <p>Loading...</p>}
-           {error ? <p>{errorMessage}</p> :
+                    </tbody>
+                </table>
+                {showModal && (
+                    <BaseModal isOpen={showModal} onClose={handleOnClose}>
+                        <form onSubmit={handleSubmit}>
 
-           <table>
-               <thead>
-               <tr>
-                   <th>Week</th>
-                   <th>Year</th>
-                   <th>Team</th>
+                            <div>
+                                <label>
+                                    Week:
+                                </label>
+                                <input type="text" name="week" value={newRoster.week} onChange={handleInputChange}/>
 
-               </tr>
-               </thead>
-               <tbody>
-               {rosters.map((roster) => {
-                   const [week, year, team] = roster.name.split('-');
-                   return <tr key={roster.id}>
-                       <td>{week}</td>
-                       <td>{year}</td>
-                       <td>{team}</td>
-                       <td><Button onClick={() => handleClickView(roster.id)} children="view"/></td>
-                   </tr>
-               })}
+                            </div>
+                            <div>
+                                <label>
+                                    Year:
+                                    <input type="text" name="year" value={newRoster.year} onChange={handleInputChange}/>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    Team Name:
+                                    <input type="text" name="teamName" value={newRoster.teamName}
+                                           onChange={handleInputChange}/>
+                                </label>
+                            </div>
 
-               </tbody>
-           </table>}
-       </div>
-       </main>
+                            <Button type="submit">Add Roster</Button>
+                            <Button type="button" onClick={handleOnClose}>Cancel</Button>
+                        </form>
+                    </BaseModal>
+                )}
+            </div>
+        </main>
     );
 }
 
