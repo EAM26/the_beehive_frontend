@@ -23,7 +23,7 @@ function Users() {
     const [deletedFilter, setDeletedFilter] = useState('all');
     const [employeeFilter, setEmployeeFilter] = useState('all');
     const [teams, setTeams] = useState([]);
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm({})
+    const {register, reset, handleSubmit, formState: {errors}, setValue} = useForm({})
     const [formDataEmployee, setFormDataEmployee] = useState({
         firstName: '',
         preposition: '',
@@ -62,27 +62,23 @@ function Users() {
         setShowUserModal(true);
     };
 
-    const handleSubmitUser = async (e) => {
+    const handleSubmitUser = async (formDataUser) => {
         try {
+
             const id = await createUser(token, formDataUser.username, formDataUser.password, formDataUser.userRole, formDataUser.email, formDataUser.isDeleted)
             const newUser = await getUser(token, id);
             setUsers(currentUsers => [...currentUsers, newUser]);
             const updatedUsers = [...users, newUser];
             setUsers(updatedUsers.sort((a, b) => a.username.localeCompare(b.username)));
-            console.log(id)
+            reset();
+
         } catch (e) {
-            console.log(e)
+            console.error(e)
         }
         setShowUserModal(false)
     };
 
-    const handleChangeUserField = (e) => {
-        const {name, value, type, checked} = e.target;
-        setFormDataUser(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
+
 
     // Employee functions
     const handleNewEmployeeClick = (username) => {
@@ -244,26 +240,26 @@ function Users() {
                 <div className="modal">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit(handleSubmitUser)}>
-                            <div>
-                                <FormInputField
-                                    label="UserName"
-                                    name="username"
-                                    type="text"
-                                    id="username"
-                                    errors={errors}
-                                    register={register}
-                                    validation={{ required: "Field is required" }}
-                                />
-
-                            </div>
+                            <FormInputField
+                                label="UserName"
+                                name="username"
+                                type="text"
+                                id="username"
+                                defaultValue=""
+                                errors={errors}
+                                register={register}
+                                validation={{required: "Field is required"}}
+                            />
                             <FormInputField
                                 label="Password"
                                 name="password"
                                 type="password"
                                 id="password"
+                                defaultValue=""
                                 errors={errors}
                                 register={register}
-                                validation={{ required: "Field is required",
+                                validation={{
+                                    required: "Field is required",
                                     pattern: {
                                         value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
                                         message: "1. Password must contain at least one digit [0-9]. " +
@@ -271,46 +267,49 @@ function Users() {
                                             "3. Password must contain at least one uppercase Latin character [A-Z]." +
                                             "4. Password must contain at least one special character." +
                                             "5. Password must contain a length of at least 8 characters and a maximum of 20 characters."
-                                    }  }}
+                                    }
+                                }}
                             />
-                            {/*<div>*/}
-                            {/*    <label>Password:</label>*/}
-                            {/*    <input*/}
-                            {/*        type="password"*/}
-                            {/*        name="password"*/}
-                            {/*        value={formDataUser.password}*/}
-                            {/*        onChange={handleChangeUserField}*/}
-                            {/*    />*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <label>Email:</label>*/}
-                            {/*    <input*/}
-                            {/*        type="email"*/}
-                            {/*        name="email"*/}
-                            {/*        value={formDataUser.email}*/}
-                            {/*        onChange={handleChangeUserField}*/}
-                            {/*    />*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <label>User Role:</label>*/}
-                            {/*    <input*/}
-                            {/*        type="text"*/}
-                            {/*        name="userRole"*/}
-                            {/*        value={formDataUser.userRole}*/}
-                            {/*        onChange={handleChangeUserField}*/}
-                            {/*    />*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <label>*/}
-                            {/*        Is Deleted:*/}
-                            {/*        <input*/}
-                            {/*            type="checkbox"*/}
-                            {/*            name="isDeleted"*/}
-                            {/*            checked={formDataUser.isDeleted}*/}
-                            {/*            onChange={handleChangeUserField}*/}
-                            {/*        />*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
+
+                            <FormInputField
+                                label="Email"
+                                name="email"
+                                type="email"
+                                id="email"
+                                errors={errors}
+                                register={register}
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Field is required",
+                                        }, pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "Not a valid email address"
+                                    }
+
+                                }
+                                }
+                            />
+                            <FormInputField
+                                label="Authority"
+                                name="userRole"
+                                type="text"
+                                id="userRole"
+                                errors={errors}
+                                register={register}
+                                validation={{required: "Field is required"}}
+                            />
+
+                            <FormInputField
+                                label="Deleted"
+                                name="isDeleted"
+                                type="checkbox"
+                                id="isDeleted"
+                                errors={errors}
+                                register={register}
+                            />
+
                             <button type="submit">Create User</button>
                             <button type="button" onClick={handleCloseModal}>Cancel</button>
                         </form>
@@ -335,6 +334,8 @@ function Users() {
             {/*        setShowUserModal(false);*/}
             {/*    }}*/}
             {/*/>*/}
+
+
             {/*Employee Modal*/}
             <BaseModal
                 isOpen={showEmployeeModal}
