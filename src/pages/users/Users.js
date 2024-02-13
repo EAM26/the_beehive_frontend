@@ -23,26 +23,17 @@ function Users() {
     const [deletedFilter, setDeletedFilter] = useState('all');
     const [employeeFilter, setEmployeeFilter] = useState('all');
     const [teams, setTeams] = useState([]);
-    const {register, reset, handleSubmit, formState: {errors}, setValue} = useForm({})
-    const [formDataEmployee, setFormDataEmployee] = useState({
-        firstName: '',
-        preposition: '',
-        lastName: '',
-        shortName: '',
-        dob: '',
-        phoneNumber: '',
-        teamName: '',
-        isActive: true,
+    const {register, reset, handleSubmit, formState: {errors},} = useForm({
+        defaultValues: {
+            isActive: true
+        }
+    })
 
-    });
-    const [formDataUser, setFormDataUser] = useState({
-        username: '',
-        password: '',
-        userRole: '',
-        email: '',
-        isDeleted: false,
+    const teamOptions = teams.map(team => ({
+        value: team.teamName, // Assuming 'teamName' is the identifier in your teams data
+        label: team.teamName // The text to display for each option
+    }));
 
-    });
 
     // filter options
     const handleDeletedFilterChange = (e) => {
@@ -79,15 +70,15 @@ function Users() {
     };
 
 
-
     // Employee functions
     const handleNewEmployeeClick = (username) => {
         setSelectedUsername(username);
         setShowEmployeeModal(true)
     }
 
-    const handleSubmitEmployee = async (e) => {
+    const handleSubmitEmployee = async (formDataEmployee) => {
         try {
+            console.log(formDataEmployee)
             const newEmployee = await createEmployee(token, formDataEmployee.firstName, formDataEmployee.preposition, formDataEmployee.lastName, formDataEmployee.shortName, formDataEmployee.dob, formDataEmployee.isActive, formDataEmployee.phoneNumber, formDataEmployee.teamName, selectedUsername)
             setUsers(currentUsers => {
                 return currentUsers.map(user => {
@@ -100,7 +91,7 @@ function Users() {
                     return user;
                 });
             });
-
+            reset()
         } catch (e) {
             console.error(e)
         }
@@ -108,13 +99,13 @@ function Users() {
         setShowEmployeeModal(false);
     }
 
-    const handleChangeEmployeeField = (e) => {
-        const {name, value, type, checked} = e.target;
-        setFormDataEmployee(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
+    // const handleChangeEmployeeField = (e) => {
+    //     const {name, value, type, checked} = e.target;
+    //     setFormDataEmployee(prev => ({
+    //         ...prev,
+    //         [name]: type === 'checkbox' ? checked : value
+    //     }));
+    // };
 
     const handleCloseModal = () => {
         setShowUserModal(false);
@@ -245,7 +236,6 @@ function Users() {
                                 name="username"
                                 type="text"
                                 id="username"
-                                defaultValue=""
                                 errors={errors}
                                 register={register}
                                 validation={{required: "Field is required"}}
@@ -255,7 +245,6 @@ function Users() {
                                 name="password"
                                 type="password"
                                 id="password"
-                                defaultValue=""
                                 errors={errors}
                                 register={register}
                                 validation={{
@@ -316,26 +305,6 @@ function Users() {
                     </div>
                 </div>
             </BaseModal>
-            {/*<UserCreationModal*/}
-            {/*    isOpen={showUserModal}*/}
-            {/*    onClose={handleCloseModal}*/}
-            {/*    onSubmit={async formData => {*/}
-            {/*        try {*/}
-            {/*            const id = await createUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)*/}
-            {/*            const newUser = await getUser(token, id);*/}
-            {/*            setUsers(currentUsers => [...currentUsers, newUser]);*/}
-            {/*            const updatedUsers = [...users, newUser];*/}
-            {/*            setUsers(updatedUsers.sort((a, b) => a.username.localeCompare(b.username)));*/}
-            {/*            console.log(id)*/}
-            {/*        } catch (e) {*/}
-            {/*            console.log(e)*/}
-            {/*        }*/}
-
-            {/*        setShowUserModal(false);*/}
-            {/*    }}*/}
-            {/*/>*/}
-
-
             {/*Employee Modal*/}
             <BaseModal
                 isOpen={showEmployeeModal}
@@ -343,83 +312,83 @@ function Users() {
             >
                 <div className="modal">
                     <div className="modal-content">
-                        <form onSubmit={handleSubmitEmployee}>
-                            <div>
-                                <label>First Name:</label>
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    value={formDataEmployee.firstName}
-                                    onChange={handleChangeEmployeeField}
-                                />
-                            </div>
-                            <div>
-                                <label>Preposition:</label>
-                                <input
-                                    type="text"
-                                    name="preposition"
-                                    value={formDataEmployee.preposition}
-                                    onChange={handleChangeEmployeeField}
-                                />
-                            </div>
-                            <div>
-                                <label>Last Name:</label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    value={formDataEmployee.lastName}
-                                    onChange={handleChangeEmployeeField}
-                                />
-                            </div>
-                            <div>
-                                <label>Short Name:</label>
-                                <input
-                                    type="text"
-                                    name="shortName"
-                                    value={formDataEmployee.shortName}
-                                    onChange={handleChangeEmployeeField}
-                                />
-                            </div>
-                            <div>
-                                <label>Date of Birth:</label>
-                                <input
-                                    type="date"
-                                    name="dob"
-                                    value={formDataEmployee.dob}
-                                    onChange={handleChangeEmployeeField}
-                                />
-                            </div>
-                            <div>
-                                <label>Phone Number:</label>
-                                <input
-                                    type="text"
-                                    name="phoneNumber"
-                                    value={formDataEmployee.phoneNumber}
-                                    onChange={handleChangeEmployeeField}
-                                />
-                            </div>
-                            <div>
-                                <label>Team</label>
-                                <select name="teamName" onChange={handleChangeEmployeeField} defaultValue={""}>
-                                    <option value="" disabled>team</option>
-                                    {teams.map((team) => {
-                                        return <option key={team.teamName}
-                                                       value={team.teamName}>{team.teamName}</option>
-                                    })}
-                                </select>
-
-                            </div>
-                            <div>
-                                <label>
-                                    Employee Active:
-                                    <input
-                                        type="checkbox"
-                                        name="isActive"
-                                        checked={formDataEmployee.isActive}
-                                        onChange={handleChangeEmployeeField}
-                                    />
-                                </label>
-                            </div>
+                        <form onSubmit={handleSubmit(handleSubmitEmployee)}>
+                            <FormInputField
+                                label="First Name"
+                                name="firstName"
+                                type="text"
+                                id="firstName"
+                                errors={errors}
+                                register={register}
+                                validation={{required: "Field is required"}}
+                            />
+                            <FormInputField
+                                label="Preposition"
+                                name="preposition"
+                                type="text"
+                                id="preposition"
+                                errors={errors}
+                                register={register}
+                            />
+                            <FormInputField
+                                label="Last Name"
+                                name="lastName"
+                                type="text"
+                                id="lastName"
+                                errors={errors}
+                                register={register}
+                                validation={{required: "Field is required"}}
+                            />
+                            <FormInputField
+                                label="Short Name"
+                                name="shortName"
+                                type="text"
+                                id="shortName"
+                                errors={errors}
+                                register={register}
+                                validation={{required: "Field is required"}}
+                            />
+                            <FormInputField
+                                label="Date of Birth"
+                                name="dob"
+                                type="date"
+                                id="dob"
+                                errors={errors}
+                                register={register}
+                            />
+                            <FormInputField
+                                label="Phone Number"
+                                name="phoneNumber"
+                                type="text"
+                                id="phoneNumber"
+                                errors={errors}
+                                register={register}
+                                validation={{
+                                    pattern: {
+                                        value: /^\d*$/,
+                                        message: "Phone number must contain only digits"
+                                    }
+                                }}
+                            />
+                            <FormInputField
+                                label="Team"
+                                type="select"
+                                name="teamName"
+                                id="teamName"
+                                options={teamOptions}
+                                errors={errors}
+                                register={register}
+                                validation={{required: "Field is required"}}
+                            />
+                            <FormInputField
+                                label="Active"
+                                name="isActive"
+                                type="checkbox"
+                                id="isActive"
+                                errors={errors}
+                                register={register}
+                                defaultValue={true}
+                            />
                             <Button type="submit">Create Employee</Button>
                             <Button type="button" onClick={handleCloseModal}>Cancel</Button>
                         </form>
