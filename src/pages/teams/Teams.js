@@ -5,6 +5,7 @@ import {createTeam, getTeams} from "../../service";
 import {errorHandler} from "../../helpers/errorHandler";
 import {useNavigate} from "react-router-dom";
 import BaseModal from "../../components/baseModal/BaseModal";
+import {mySorterIgnoreCaseSingleAttr} from "../../helpers/mySorterFunctions";
 
 
 function Teams(props) {
@@ -48,6 +49,7 @@ function Teams(props) {
         } catch (e) {
             console.error(e)
         }
+
         setShowTeamModal(false)
     };
 
@@ -59,7 +61,7 @@ function Teams(props) {
             try {
                 setLoading(true);
                 const response = await getTeams(token, controller.signal);
-                setTeams(response)
+                setTeams(mySorterIgnoreCaseSingleAttr(response, "teamName"))
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));

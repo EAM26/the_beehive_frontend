@@ -19,7 +19,17 @@ export function sortRostersByYearAndWeek(rosters) {
     });
 }
 
-export function generalSort(myArray, primaryAttribute, secondaryAttribute) {
+export function mySorterIgnoreCaseSingleAttr(myArray, attribute) {
+    return myArray.sort((a, b) => a[attribute].localeCompare(b[attribute], undefined, {sensitivity: 'base'}))
+}
+
+export function mySorterIgnoreCase(myArray) {
+    return myArray.sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}))
+}
+
+
+
+export function mySorterTwoAttributes(myArray, primaryAttribute, secondaryAttribute) {
     return myArray.sort((a, b) => {
         if (a[primaryAttribute] < b[primaryAttribute]) {
             return -1;
@@ -38,4 +48,5 @@ export function generalSort(myArray, primaryAttribute, secondaryAttribute) {
         return 0;
     });
 }
+
 
