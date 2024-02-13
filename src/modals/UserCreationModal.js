@@ -2,7 +2,7 @@ import { useState } from "react";
 import '../components/baseModal/BaseModal.css';
 
 function UserCreationModal({ isOpen, onClose, onSubmit }) {
-    const [formData, setFormData] = useState({
+    const [formDataUser, setFormDataUser] = useState({
         username: '',
         password: '',
         userRole: '',
@@ -10,17 +10,17 @@ function UserCreationModal({ isOpen, onClose, onSubmit }) {
         isDeleted: false,
     });
 
-    const handleChange = (e) => {
+    const handleChangeUserField = (e) => {
         const {name, value, type, checked} = e.target;
-        setFormData(prev => ({
+        setFormDataUser(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmitUser = (e) => {
         e.preventDefault();
-        onSubmit(formData);
+        onSubmit(formDataUser);
         onClose();
     };
 
@@ -29,14 +29,14 @@ function UserCreationModal({ isOpen, onClose, onSubmit }) {
     return (
         <div className="modal">
             <div className="modal-content">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmitUser}>
                     <div>
                         <label>Username:</label>
                         <input
                             type="text"
                             name="username"
-                            value={formData.username}
-                            onChange={handleChange}
+                            value={formDataUser.username}
+                            onChange={handleChangeUserField}
                         />
                     </div>
                     <div>
@@ -44,8 +44,8 @@ function UserCreationModal({ isOpen, onClose, onSubmit }) {
                         <input
                             type="password"
                             name="password"
-                            value={formData.password}
-                            onChange={handleChange}
+                            value={formDataUser.password}
+                            onChange={handleChangeUserField}
                         />
                     </div>
                     <div>
@@ -53,8 +53,8 @@ function UserCreationModal({ isOpen, onClose, onSubmit }) {
                         <input
                             type="email"
                             name="email"
-                            value={formData.email}
-                            onChange={handleChange}
+                            value={formDataUser.email}
+                            onChange={handleChangeUserField}
                         />
                     </div>
                     <div>
@@ -62,8 +62,8 @@ function UserCreationModal({ isOpen, onClose, onSubmit }) {
                         <input
                             type="text"
                             name="userRole"
-                            value={formData.userRole}
-                            onChange={handleChange}
+                            value={formDataUser.userRole}
+                            onChange={handleChangeUserField}
                         />
                     </div>
                     <div>
@@ -72,8 +72,8 @@ function UserCreationModal({ isOpen, onClose, onSubmit }) {
                             <input
                                 type="checkbox"
                                 name="isDeleted"
-                                checked={formData.isDeleted}
-                                onChange={handleChange}
+                                checked={formDataUser.isDeleted}
+                                onChange={handleChangeUserField}
                             />
                         </label>
                     </div>
