@@ -4,7 +4,7 @@ import Button from "../../components/button/Button";
 import {createTeam, getTeams} from "../../service";
 import {errorHandler} from "../../helpers/errorHandler";
 import {useNavigate} from "react-router-dom";
-import TeamCreationModal from "../../modals/TeamCreationModal";
+import BaseModal from "../../components/baseModal/BaseModal";
 
 
 function Teams(props) {
@@ -16,7 +16,11 @@ function Teams(props) {
     const [errorMessage, setErrormessage] = useState("")
     const {token} = useContext(AuthContext);
     const [showTeamModal, setShowTeamModal] = useState(false)
-    // const [ controller, setController ] = useState({})
+    const [formData, setFormData] = useState({
+        teamName: '',
+        isActive: true,
+
+    });
 
     const handleNewTeamClick = (e) => {
         setShowTeamModal(true)
@@ -29,6 +33,24 @@ function Teams(props) {
     const handleViewTeam = (teamName) => {
         navigate(`/teams/${teamName}`);
     }
+
+    const handleChange = (e) => {
+        const {name, value, type, checked} = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleSubmit = async (e)  => {
+        try {
+            await createTeam(token,  formData.teamName, formData.isActive)
+        } catch (e) {
+            console.error(e)
+        }
+        setShowTeamModal(false)
+    };
+
 
     useEffect(() => {
         const controller = new AbortController();
@@ -83,19 +105,39 @@ function Teams(props) {
                     </tbody>
                 </table>}
             </div>
-            <TeamCreationModal
-            isOpen={showTeamModal}
-            onClose={handleCloseModal}
-            onSubmit={async formData => {
-                const controller = new AbortController();
-                try {
-                  const newTeam = await createTeam(token, controller.signal, formData.teamName, formData.isActive)
-                } catch (e) {
-                    console.error(e)
-                }
-                setShowTeamModal(false)
-            }}
-            />
+            <BaseModal
+                onClose={handleCloseModal}
+                isOpen={showTeamModal}>
+                <div className="modal">
+                    <div className="modal-content">
+                        <form onSubmit={handleSubmit}>
+                            <div>
+                                <label>Team Name:</label>
+                                <input
+                                    type="text"
+                                    name="teamName"
+                                    value={formData.teamName}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label>
+                                    Team Active:
+                                    <input
+                                        type="checkbox"
+                                        name="isActive"
+                                        checked={formData.isActive}
+                                        onChange={handleChange}
+                                    />
+                                </label>
+                            </div>
+                            <Button type="submit">Create Team</Button>
+                            <Button type="button" onClick={handleCloseModal}>Cancel</Button>
+                        </form>
+                    </div>
+                </div>
+            </BaseModal>
+
         </main>
     );
 }

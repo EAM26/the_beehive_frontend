@@ -191,7 +191,7 @@ export const getSingleTeam = async (token, signal, teamName) => {
     return response.data
 }
 
-export const createTeam = async (jwt, signal, teamName, isActive) => {
+export const createTeam = async (jwt, teamName, isActive) => {
     const response = await axios.post('http://localhost:8080/teams', {
         teamName,
         isActive
@@ -200,7 +200,7 @@ export const createTeam = async (jwt, signal, teamName, isActive) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`
         },
-        signal: signal
+
     })
     console.log(response)
     return response.data

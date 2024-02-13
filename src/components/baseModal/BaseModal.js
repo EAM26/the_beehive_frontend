@@ -1,5 +1,5 @@
 import React from 'react';
-import './CreationModal.css';
+import './BaseModal.css';
 
 function BaseModal({isOpen, onClose, onSubmit, children}) {
 
@@ -9,7 +9,7 @@ function BaseModal({isOpen, onClose, onSubmit, children}) {
 
     return (
         <div className="modal">
-            <div className="modal-content">
+            <div className="modal-content" onClose={onClose} onClick={onSubmit}>
                 {children}
             </div>
         </div>

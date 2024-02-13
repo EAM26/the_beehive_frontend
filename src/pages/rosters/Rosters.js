@@ -4,7 +4,7 @@ import {AuthContext} from "../../context/AuthContext";
 import {createRoster, getRosters} from "../../service";
 import Button from "../../components/button/Button";
 import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
-import BaseModal from "../../modals/BaseModal";
+import BaseModal from "../../components/baseModal/BaseModal";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
