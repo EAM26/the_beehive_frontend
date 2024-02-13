@@ -4,6 +4,7 @@ import {getSingleTeam} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import "./SingleTeam.css"
+import {mySorterIgnoreCase, mySorterIgnoreCaseSingleAttr, mySorterTest} from "../../helpers/mySorterFunctions";
 
 function SingleTeam(props) {
 
@@ -24,7 +25,7 @@ function SingleTeam(props) {
         const fetchData = async () => {
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
-
+                response.employeeNames = mySorterIgnoreCase(response.employeeNames)
                 setTeamData(response);
 
             } catch (e) {
