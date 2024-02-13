@@ -10,7 +10,7 @@ import Shift from "../../components/shift/Shift";
 import Button from "../../components/button/Button";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {generateTimeOptions} from "../../helpers/timeFunctions";
-import {generalSort} from "../../helpers/mySorterFunctions";
+import {mySorterTwoAttributes} from "../../helpers/mySorterFunctions";
 
 
 function SingleRoster(props) {
@@ -84,7 +84,6 @@ function SingleRoster(props) {
 
         try {
             await createShift(token, newShift.start, newShift.end, newShift.date, newShift.teamName);
-
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
@@ -130,7 +129,7 @@ function SingleRoster(props) {
                             const shiftDate = shift.startShift.split('T')[0];
                             return shiftDate === dateString;
                         });
-                        filteredShifts = generalSort(filteredShifts, 'startShift', 'endShift')
+                        filteredShifts = mySorterTwoAttributes(filteredShifts, 'startShift', 'endShift')
                         return (
                             <div key={dateString}>
                                 <DayColumn date={date}>
