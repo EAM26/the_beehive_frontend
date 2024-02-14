@@ -22,7 +22,7 @@ function SingleTeam(props) {
 
 
         const controller = new AbortController();
-        const fetchData = async (e) => {
+        const fetchData = async () => {
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
                 //
