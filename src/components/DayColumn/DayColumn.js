@@ -5,11 +5,7 @@ function DayColumn({ day, date, shifts, children, }) {
 
 
     const userLocale = useContext(LocaleContext)
-    // const formattedDate = date.toLocaleDateString(userLocale, {
-    //     year: 'numeric',
-    //     month: 'long',
-    //     day: 'numeric'
-    // });
+
 
     const formattedDayMonth = date.toLocaleDateString(userLocale, {
         day: '2-digit',

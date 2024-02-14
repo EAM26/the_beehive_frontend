@@ -6,7 +6,6 @@ import {errorHandler} from "../../helpers/errorHandler";
 import {useNavigate} from "react-router-dom";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {mySorterIgnoreCaseSingleAttr} from "../../helpers/mySorterFunctions";
-import {set} from "react-hook-form";
 
 
 function Teams(props) {
@@ -50,6 +49,7 @@ function Teams(props) {
         try {
             const response = await createTeam(token,  formData.teamName, formData.isActive)
             setTeamCreated(response)
+            setFormData({teamName: '', isActive: true});
             setError(false)
             setErrormessage("")
 
@@ -95,7 +95,7 @@ function Teams(props) {
                 <h2>Teams</h2>
                 <Button children="NEW TEAM" type="button" onClick={handleNewTeamClick}/>
                 {loading && <p>Loading...</p>}
-                <p>{error ? errorMessage: ""}</p>
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <table>
                     <thead>
                     <tr>

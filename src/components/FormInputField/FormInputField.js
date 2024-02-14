@@ -2,7 +2,7 @@ import React from 'react';
 import "./FormInputField.css"
 
 function FormInputField( {name, options, checked, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, className, disabled, children, onInput} ) {
-    // Inside your FormInputField component
+
     if (type === 'select') {
         return (
             <div>
@@ -16,7 +16,7 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
                 {errors[name] && <p>{errors[name].message}</p>}
             </div>
         );
-    } // continue with other input types handling
+    }
 
     return (
 
@@ -39,7 +39,7 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
             </label>
 
             {children}
-            <p className="form-error-message">{errors[name] && errors[name].message}</p>
+            <p className="error-message">{errors[name] && errors[name].message}</p>
         </div>
     );
 }

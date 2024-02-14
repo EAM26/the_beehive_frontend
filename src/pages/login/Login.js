@@ -60,7 +60,7 @@ function Login() {
                                 }
                             }}
                     />
-                    <p className="form-error-message">{error ? errorMessage : ""}</p>
+                    <p className="error-message">{error ? errorMessage : ""}</p>
                     <Button type="submit" children="Inloggen"/>
                 </form>
             </div>

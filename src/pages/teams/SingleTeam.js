@@ -4,7 +4,7 @@ import {getSingleTeam} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import "./SingleTeam.css"
-import {mySorterIgnoreCase, mySorterIgnoreCaseSingleAttr, mySorterTest} from "../../helpers/mySorterFunctions";
+import {mySorterIgnoreCase, mySorterTwoAttributes} from "../../helpers/mySorterFunctions";
 
 function SingleTeam(props) {
 
@@ -25,10 +25,13 @@ function SingleTeam(props) {
         const fetchData = async () => {
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
-                response.employeeNames = mySorterIgnoreCase(response.employeeNames)
+                //
+                mySorterIgnoreCase(response.employeesData)
+                mySorterTwoAttributes(response.rosterData, "week", "year")
                 setTeamData(response);
 
             } catch (e) {
+                console.error(e)
                 setError(true);
                 setErrormessage(errorHandler(e));
             } finally {
@@ -51,22 +54,40 @@ function SingleTeam(props) {
                 <h3>{teamName}</h3>
                 <div className="singleTeam-outer-container">
                     <div>
-                    <span>Employees</span>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Short Name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {teamData.employeeNames && teamData.employeeNames.map((name) => {
-                           return  <tr key={name}>
-                               <td>{name} </td>
-
+                        <span>Employees</span>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Short Name</th>
                             </tr>
-                        })}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {teamData.employeesData && teamData.employeesData.map((name) => {
+                                return <tr key={name}>
+                                    <td>{name} </td>
+
+                                </tr>
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <span>Rosters</span>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Roster Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {teamData.rosterData && teamData.rosterData.map((name) => {
+                                return <tr key={name}>
+                                    <td>{name} </td>
+
+                                </tr>
+                            })}
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>

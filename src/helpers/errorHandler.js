@@ -1,4 +1,8 @@
 export function errorHandler(e) {
+    if(!e.response) {
+        return "Unknown error"
+    }
+
     const {status, data} = e.response
     // try {
     //     switch (status) {
@@ -15,5 +19,5 @@ export function errorHandler(e) {
     // } catch (e) {
     //     return e.data
     // }
-        return data
+        return ("Failed attempt:  " + data)
 }

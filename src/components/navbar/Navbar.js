@@ -47,7 +47,7 @@ function Navbar() {
                 {location.pathname !== "/profile" &&
                     <li>
                         <NavLink to="/profile">
-                            Profiel
+                            Profile
                         </NavLink>
                     </li>}
                 <Button type="button" className="btn" children="Logout" onClick={logout}/>

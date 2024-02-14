@@ -22,7 +22,7 @@
 
 }
 
-.form-error-message {
+.error-message {
     color: red;
     font-style: italic;
     font-size: .75rem;
