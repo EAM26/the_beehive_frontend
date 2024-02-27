@@ -13,7 +13,7 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
-                {errors[name] && <p>{errors[name].message}</p>}
+                {errors[name] && <p className="error-message">{errors[name].message}</p>}
             </div>
         );
     }
@@ -34,6 +34,7 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
                     onInput={onInput}
                     checked={checked}
                     disabled={disabled}
+
 
                 />
             </label>
