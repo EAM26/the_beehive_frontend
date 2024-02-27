@@ -34,8 +34,6 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
                     onInput={onInput}
                     checked={checked}
                     disabled={disabled}
-
-
                 />
             </label>
 

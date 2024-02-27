@@ -6,6 +6,8 @@ import {errorHandler} from "../../helpers/errorHandler";
 import {useNavigate} from "react-router-dom";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {mySorterIgnoreCaseSingleAttr} from "../../helpers/mySorterFunctions";
+import {useForm} from "react-hook-form";
+import FormInputField from "../../components/FormInputField/FormInputField";
 
 
 function Teams(props) {
@@ -18,11 +20,16 @@ function Teams(props) {
     const [errorMessage, setErrormessage] = useState("")
     const {token} = useContext(AuthContext);
     const [showTeamModal, setShowTeamModal] = useState(false)
-    const [formData, setFormData] = useState({
-        teamName: '',
-        isActive: true,
-
-    });
+    // const [formData, setFormData] = useState({
+    //     teamName: '',
+    //     isActive: true,
+    //
+    // });
+    const {register, reset, handleSubmit, formState: {errors},} = useForm({
+        defaultValues: {
+            isActive: true
+        }
+    })
 
     const handleNewTeamClick = (e) => {
         setShowTeamModal(true)
@@ -36,24 +43,22 @@ function Teams(props) {
         navigate(`/teams/${teamName}`);
     }
 
-    const handleChange = (e) => {
-        const {name, value, type, checked} = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
+    // const handleChange = (e) => {
+    //     const {name, value, type, checked} = e.target;
+    //     setFormData(prev => ({
+    //         ...prev,
+    //         [name]: type === 'checkbox' ? checked : value
+    //     }));
+    // };
 
-    const handleSubmit = async (e)  => {
-        e.preventDefault()
+    const handleSubmitTeam = async (newTeam) => {
         setError(false)
         setErrormessage("")
         try {
-            const response = await createTeam(token,  formData.teamName, formData.isActive)
+            const response = await createTeam(token, newTeam.teamName, newTeam.isActive)
             setTeamCreated(response)
-            setFormData({teamName: '', isActive: true});
-            setError(false)
-            setErrormessage("")
+            reset()
+
 
         } catch (e) {
             setError(true)
@@ -94,11 +99,10 @@ function Teams(props) {
     return (
         <main className="outer-container">
             <div className="inner-container">
-                {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage: ""}</p>
                 <h2>Teams</h2>
                 <Button children="NEW TEAM" type="button" onClick={handleNewTeamClick}/>
-
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage : ""}</p>
                 <table>
                     <thead>
                     <tr>
@@ -120,39 +124,57 @@ function Teams(props) {
                     </tbody>
                 </table>
             </div>
-            <BaseModal
-                onClose={handleCloseModal}
-                isOpen={showTeamModal}>
-                <div className="modal">
-                    <div className="modal-content">
-                        <form onSubmit={handleSubmit}>
-                            <div>
-                                <label>Team Name:</label>
-                                <input
+            {showTeamModal && (
+                <BaseModal
+                    onClose={handleCloseModal}
+                    isOpen={showTeamModal}>
+                    <div className="modal">
+                        <div className="modal-content">
+                            <form onSubmit={handleSubmit(handleSubmitTeam)}>
+                                <FormInputField
+                                    label="Team Name"
                                     type="text"
                                     name="teamName"
-                                    value={formData.teamName}
-                                    onChange={handleChange}
+                                    id="teamName"
+                                    errors={errors}
+                                    register={register}
+                                    validation={{required: "Field is required"}}
                                 />
-                            </div>
-                            <div>
-                                <label>
-                                    Team Active:
-                                    <input
-                                        type="checkbox"
-                                        name="isActive"
-                                        checked={formData.isActive}
-                                        onChange={handleChange}
-                                        disabled={true}
-                                    />
-                                </label>
-                            </div>
-                            <Button type="submit">Create Team</Button>
-                            <Button type="button" onClick={handleCloseModal}>Cancel</Button>
-                        </form>
+                                {/*<div>*/}
+                                {/*    <label>Team Name:</label>*/}
+                                {/*    <input*/}
+                                {/*        type="text"*/}
+                                {/*        name="teamName"*/}
+                                {/*        value={formData.teamName}*/}
+                                {/*        onChange={handleChange}*/}
+                                {/*    />*/}
+                                {/*</div>*/}
+                                <FormInputField
+                                    label="Team Active"
+                                    name="isActive"
+                                    type="checkbox"
+                                    id="isActive"
+                                    register={register}
+                                    errors={errors}
+                                    disabled={true}
+                                />
+                                {/*<div>*/}
+                                {/*    <label>*/}
+                                {/*        Team Active:*/}
+                                {/*        <input*/}
+                                {/*            type="checkbox"*/}
+                                {/*            name="isActive"*/}
+                                {/*            checked={formData.isActive}*/}
+                                {/*            onChange={handleChange}*/}
+                                {/*        />*/}
+                                {/*    </label>*/}
+                                {/*</div>*/}
+                                <Button type="submit">Create Team</Button>
+                                <Button type="button" onClick={handleCloseModal}>Cancel</Button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            </BaseModal>
+                </BaseModal>)}
 
         </main>
     );

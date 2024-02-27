@@ -25,11 +25,7 @@ function Rosters(props) {
             isActive: true
         }
     })
-    const [newRoster, setNewRoster] = useState({
-        week: '',
-        year: '',
-        teamName: ''
-    });
+
     const teamOptions = teams.map(team => ({
         value: team.teamName,
         label: team.teamName
@@ -41,10 +37,6 @@ function Rosters(props) {
     const handleOnClose = () => {
         setShowModal(false)
     }
-
-    // const handleInputChange = (e) => {
-    //     setNewRoster({...newRoster, [e.target.name]: e.target.value});
-    // };
 
     const handleSubmitRoster = async (newRoster) => {
         setError(false)
