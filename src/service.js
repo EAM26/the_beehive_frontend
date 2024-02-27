@@ -309,6 +309,7 @@ export const updateShift = async (token, shift, shiftId, employeeId, ) => {
 }
 
 
+// Fake request to test calls to backend
 export const testRequest = async (selectedEmployeeId, shiftId) => {
     console.log("Test Request running")
     return[]

@@ -10,7 +10,7 @@ import {useForm} from "react-hook-form";
 import FormInputField from "../../components/FormInputField/FormInputField";
 
 
-function Teams(props) {
+function Teams() {
 
     const [teamCreated, setTeamCreated] = useState({})
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ function Teams(props) {
         }
     })
 
-    const handleNewTeamClick = (e) => {
+    const handleNewTeamClick = () => {
         setShowTeamModal(true)
     }
 

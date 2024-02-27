@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 
-function Rosters(props) {
+function Rosters() {
 
     const [rosterCreated, setRosterCreated] = useState({})
     const [rosters, setRosters] = useState([])

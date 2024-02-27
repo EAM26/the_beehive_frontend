@@ -6,7 +6,7 @@ import {errorHandler} from "../../helpers/errorHandler";
 import "./SingleTeam.css"
 import {mySorterIgnoreCase, mySorterTwoAttributes} from "../../helpers/mySorterFunctions";
 
-function SingleTeam(props) {
+function SingleTeam() {
 
     const {teamName} = useParams()
     const {token} = useContext(AuthContext);
@@ -16,9 +16,9 @@ function SingleTeam(props) {
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
 
-    const handleViewUser = ((username) =>  {
-        navigate(`/profile/${username}`);
-    })
+    // const handleViewUser = ((username) =>  {
+    //     navigate(`/profile/${username}`);
+    // })
     useEffect(() => {
 
 

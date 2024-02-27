@@ -38,7 +38,7 @@ function Profile() {
         }
     };
 
-    const handleOnInput = (fieldName) => (event) => {
+    const handleOnInput = (fieldName) => () => {
         setModifiedUserFields(prevState => ({...prevState, [fieldName]: true}));
 
     }

@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
-import {createShift, deleteShift, getRoster, testRequest, updateShift} from "../../service";
+import {createShift, deleteShift, getRoster, updateShift} from "../../service";
 import DayColumn from "../../components/DayColumn/DayColumn";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
@@ -13,7 +13,7 @@ import {generateTimeOptions} from "../../helpers/timeFunctions";
 import {mySorterTwoAttributes} from "../../helpers/mySorterFunctions";
 
 
-function SingleRoster(props) {
+function SingleRoster() {
 
     const {rosterId} = useParams()
     const {token} = useContext(AuthContext)
@@ -80,7 +80,7 @@ function SingleRoster(props) {
     const handleClose = () => {
         setShowShiftModal(false)
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
         setLoading(true)
         setError(false)
         setErrormessage("")

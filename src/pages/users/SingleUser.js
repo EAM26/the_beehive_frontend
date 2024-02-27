@@ -10,7 +10,7 @@ import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleUser_Profile.css"
 
 
-function SingleUser(props) {
+function SingleUser() {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm({
         mode: "onTouched",
         defaultValues: {
@@ -47,7 +47,7 @@ function SingleUser(props) {
 
     };
 
-    const handleUserOnInput = (fieldName) => (event) => {
+    const handleUserOnInput = (fieldName) => () => {
         setModifiedUserFields(prevState => ({...prevState, [fieldName]: true}));
 
     }
@@ -69,7 +69,7 @@ function SingleUser(props) {
 
     };
 
-    const handleEmployeeOnInput = (fieldName) => (event) => {
+    const handleEmployeeOnInput = (fieldName) => () => {
         setModifiedEmployeeFields(prevState => ({...prevState, [fieldName]: true}));
 
     }
