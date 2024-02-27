@@ -36,7 +36,7 @@ export const postLoginData = async (data) => {
         username: data.username,
         password: data.password,
     })
-    console.log(response)
+    console.log(response.data)
     return response.data;
 }
 
