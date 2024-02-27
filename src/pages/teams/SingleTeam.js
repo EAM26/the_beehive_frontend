@@ -12,6 +12,7 @@ function SingleTeam(props) {
     const {token} = useContext(AuthContext);
     const [teamData, setTeamData] = useState([]);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
 
@@ -23,9 +24,10 @@ function SingleTeam(props) {
 
         const controller = new AbortController();
         const fetchData = async () => {
+            setError(false)
+            setErrormessage("")
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
-                //
                 mySorterIgnoreCase(response.employeesData)
                 mySorterTwoAttributes(response.rosterData, "week", "year")
                 setTeamData(response);
@@ -51,6 +53,8 @@ function SingleTeam(props) {
     return (
         <main className="outer-container">
             <div className="inner-container">
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <h3>{teamName}</h3>
                 <div className="singleTeam-outer-container">
                     <div>

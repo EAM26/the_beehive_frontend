@@ -46,6 +46,8 @@ function Teams(props) {
 
     const handleSubmit = async (e)  => {
         e.preventDefault()
+        setError(false)
+        setErrormessage("")
         try {
             const response = await createTeam(token,  formData.teamName, formData.isActive)
             setTeamCreated(response)
@@ -92,10 +94,11 @@ function Teams(props) {
     return (
         <main className="outer-container">
             <div className="inner-container">
-                <h2>Teams</h2>
-                <Button children="NEW TEAM" type="button" onClick={handleNewTeamClick}/>
                 {loading && <p>Loading...</p>}
                 <p className="error-message">{error ? errorMessage: ""}</p>
+                <h2>Teams</h2>
+                <Button children="NEW TEAM" type="button" onClick={handleNewTeamClick}/>
+
                 <table>
                     <thead>
                     <tr>
@@ -140,6 +143,7 @@ function Teams(props) {
                                         name="isActive"
                                         checked={formData.isActive}
                                         onChange={handleChange}
+                                        disabled={true}
                                     />
                                 </label>
                             </div>

@@ -83,8 +83,8 @@ function Profile() {
     return (
         <main className="outer-container">
             <div className="inner-container">
-                {loading && <p>Loading page...</p>}
-                {error && <p className="error-message">{errorMessage}</p>}
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <div className="form-outer-container">
                     <div className="form-inner-container">
                         <form onSubmit={handleSubmit(handleFormSubmitUser)}>
