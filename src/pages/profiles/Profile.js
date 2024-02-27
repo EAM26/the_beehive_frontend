@@ -170,13 +170,10 @@ function Profile() {
                             id="isDeleted"
                             register={register}
                             errors={errors}
-                            disabled="disabled"
-
+                            disabled={true}
                         />
                         <Button type="submit" children="Save"/>
                     </form>
-
-                    {/*<form onSubmit={handleSubmit(handleFormSubmitEmployee)}>*/}
                     <form>
                         <h3>EMPLOYEE</h3>
                         <FormInputField
@@ -300,9 +297,8 @@ function Profile() {
                             id="isEmpActive"
                             register={register}
                             errors={errors}
-                            disabled="disabled"
+                            disabled={true}
                         />
-                        {/*<Button type="submit" children="Save"/>*/}
                     </form>
                     </div>
                     <div className="form-inner-container">

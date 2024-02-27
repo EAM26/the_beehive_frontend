@@ -1,7 +1,7 @@
 import React from 'react';
 import "./FormInputField.css"
 
-function FormInputField( {name, options, checked, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, className, children, onInput,  defaultName} ) {
+function FormInputField( {name, options, checked, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, className, children, onInput,  defaultName, disabled} ) {
 
     if (type === 'select') {
         return (
@@ -33,6 +33,7 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
                     {...register(name, validation)}
                     onInput={onInput}
                     checked={checked}
+                    disabled={disabled}
 
                 />
             </label>
