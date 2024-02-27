@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {getSelf, updateEmployee, updateUser, updateUserAsSelf} from "../../service";
+import {getSelf, updateUserAsSelf} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -25,6 +25,8 @@ function Profile() {
     const {token} = useContext(AuthContext);
 
     const handleFormSubmitUser = async (formData) => {
+        setError(false);
+        setErrormessage("");
         try {
             await updateUserAsSelf(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
             setModifiedUserFields({})
@@ -75,8 +77,6 @@ function Profile() {
             controller.abort();
         }
     }, []);
-    console.log(profileData)
-
     if (!profileData) {
         return <div>Loading...</div>;
     }
@@ -85,6 +85,8 @@ function Profile() {
         <main className="outer-container" >
             <div className="inner-container">
                 <div className="form-outer-container">
+                    {loading && <p>Loading page...</p>}
+                    {error && <p>{errorMessage}</p> }
                     <div className="form-inner-container">
                     <form onSubmit={handleSubmit(handleFormSubmitUser)}>
                         <h3>USER</h3>
