@@ -30,8 +30,8 @@ function Users() {
     })
 
     const teamOptions = teams.map(team => ({
-        value: team.teamName, // Assuming 'teamName' is the identifier in your teams data
-        label: team.teamName // The text to display for each option
+        value: team.teamName,
+        label: team.teamName
     }));
 
 
@@ -114,7 +114,6 @@ function Users() {
     };
 
     useEffect(() => {
-        console.log("useEffect team data")
         const fetchTeamsData = (async () => {
             setLoading(true)
             try {
@@ -379,6 +378,9 @@ function Users() {
                                 errors={errors}
                                 register={register}
                                 validation={{required: "Field is required"}}
+                                disabled="diabled"
+                                selected="selected"
+                                defaultName="team"
                             />
                             <FormInputField
                                 label="Active"

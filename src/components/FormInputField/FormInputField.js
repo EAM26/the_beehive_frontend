@@ -1,14 +1,14 @@
 import React from 'react';
 import "./FormInputField.css"
 
-function FormInputField( {name, options, checked, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, className, disabled, children, onInput} ) {
+function FormInputField( {name, options, checked, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, className, children, onInput,  defaultName} ) {
 
     if (type === 'select') {
         return (
             <div>
                 <label htmlFor={id}>{label}</label>
                 <select id={id} name={name} {...register(name, validation)}>
-                    <option value="" disabled selected>team</option>
+                    <option value="" disabled selected>{defaultName}</option>
                     {options.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
@@ -29,7 +29,6 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
                     defaultValue={defaultValue}
                     placeholder={placeholder}
                     readOnly={readOnly}
-                    disabled={disabled}
                     className={className}
                     {...register(name, validation)}
                     onInput={onInput}
