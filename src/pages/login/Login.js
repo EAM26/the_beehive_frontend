@@ -9,12 +9,13 @@ import {postLoginData} from "../../service";
 function Login() {
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
-    const {login, error, setError, errorMessage, setErrormessage} = useContext(AuthContext);
+    const {login, error, loading, setLoading, setError, errorMessage, setErrormessage} = useContext(AuthContext);
 
 
     async function handleFormSubmit(data) {
-        setError(false)
-        setErrormessage("")
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
             const loginData = await postLoginData(data)
             login(loginData.jwt, '/')
@@ -22,11 +23,16 @@ function Login() {
             setError(true)
             setErrormessage(errorHandler(e))
         }
+        finally {
+            setLoading(false);
+        }
     }
 
     return (
         <div className="outer-container">
             <div className="inner-container">
+                {loading && <p>Loading page...</p>}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <form
                       onSubmit={handleSubmit(handleFormSubmit)}>
                     <FormInputField
@@ -60,7 +66,7 @@ function Login() {
                                 }
                             }}
                     />
-                    <p className="error-message">{error ? errorMessage : ""}</p>
+
                     <Button type="submit" children="Inloggen"/>
                 </form>
             </div>

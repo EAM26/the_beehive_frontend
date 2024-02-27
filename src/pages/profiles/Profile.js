@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {getSelf, updateEmployee, updateUser, updateUserAsSelf} from "../../service";
+import {getSelf, updateUserAsSelf} from "../../service";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
@@ -25,6 +25,8 @@ function Profile() {
     const {token} = useContext(AuthContext);
 
     const handleFormSubmitUser = async (formData) => {
+        setError(false);
+        setErrormessage("");
         try {
             await updateUserAsSelf(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
             setModifiedUserFields({})
@@ -36,11 +38,10 @@ function Profile() {
         }
     };
 
-    const handleOnInput = (fieldName) => (event) => {
-        setModifiedUserFields(prevState => ({ ...prevState, [fieldName]: true }));
+    const handleOnInput = (fieldName) => () => {
+        setModifiedUserFields(prevState => ({...prevState, [fieldName]: true}));
 
     }
-
 
 
     useEffect(() => {
@@ -48,8 +49,10 @@ function Profile() {
         const controller = new AbortController();
         const fetchData = async () => {
             setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
-                const user =  await getSelf(token);
+                const user = await getSelf(token);
 
                 setValue('isEmpActive', user.employee?.isActive)
                 setValue('isDeleted', user.isDeleted)
@@ -75,235 +78,232 @@ function Profile() {
             controller.abort();
         }
     }, []);
-    console.log(profileData)
-
     if (!profileData) {
         return <div>Loading...</div>;
     }
 
     return (
-        <main className="outer-container" >
+        <main className="outer-container">
             <div className="inner-container">
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <div className="form-outer-container">
                     <div className="form-inner-container">
-                    <form onSubmit={handleSubmit(handleFormSubmitUser)}>
-                        <h3>USER</h3>
-                        <FormInputField
-                            label="User name"
-                            name="username"
-                            type="text"
-                            id="username"
-                            register={register}
-                            errors={errors}
-                            defaultValue={profileData ? profileData.username : ""}
-                            readOnly={true}
-                        />
-                        <FormInputField
-                            label="Email"
-                            name="email"
-                            type="email"
-                            id="email"
-                            register={register}
-                            onInput={handleOnInput('email')}
-                            className={modifiedUserFields.email ? 'modified': ''}
-                            errors={errors}
-                            defaultValue={profileData ? profileData.email : ""}
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Field is required",
-                                    }, pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: "Not a valid email address"
+                        <form onSubmit={handleSubmit(handleFormSubmitUser)}>
+
+                            <h3>USER</h3>
+                            <FormInputField
+                                label="User name"
+                                name="username"
+                                type="text"
+                                id="username"
+                                register={register}
+                                errors={errors}
+                                defaultValue={profileData ? profileData.username : ""}
+                                readOnly={true}
+                            />
+                            <FormInputField
+                                label="Email"
+                                name="email"
+                                type="email"
+                                id="email"
+                                register={register}
+                                onInput={handleOnInput('email')}
+                                className={modifiedUserFields.email ? 'modified' : ''}
+                                errors={errors}
+                                defaultValue={profileData ? profileData.email : ""}
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Field is required",
+                                        }, pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                        message: "Not a valid email address"
+                                    }
+
                                 }
-
-                            }
-                            }
-                        />
-                        <FormInputField
-                            label="Password"
-                            name="password"
-                            type="password"
-                            id="password"
-                            register={register}
-                            errors={errors}
-                            onInput={handleOnInput('password')}
-                            className={modifiedUserFields.password? 'modified': ''}
-                            validation={{
-                                required:
-                                    {
-                                        value: false,
-                                    }, pattern: {
-                                    value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
-                                    message: "1. Password must contain at least one digit [0-9]. " +
-                                        "2. Password must contain at least one lowercase Latin character [a-z]. " +
-                                        "3. Password must contain at least one uppercase Latin character [A-Z]." +
-                                        "4. Password must contain at least one special character." +
-                                        "5. Password must contain a length of at least 8 characters and a maximum of 20 characters."
                                 }
-                            }
-                            }
-                        />
-                        <FormInputField
-                            label="Authority"
-                            name="userRole"
-                            type="text"
-                            id="userRole"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Field is required",
+                            />
+                            <FormInputField
+                                label="Password"
+                                name="password"
+                                type="password"
+                                id="password"
+                                register={register}
+                                errors={errors}
+                                onInput={handleOnInput('password')}
+                                className={modifiedUserFields.password ? 'modified' : ''}
+                                validation={{
+                                    required:
+                                        {
+                                            value: false,
+                                        }, pattern: {
+                                        value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
+                                        message: "1. Password must contain at least one digit [0-9]. " +
+                                            "2. Password must contain at least one lowercase Latin character [a-z]. " +
+                                            "3. Password must contain at least one uppercase Latin character [A-Z]." +
+                                            "4. Password must contain at least one special character." +
+                                            "5. Password must contain a length of at least 8 characters and a maximum of 20 characters."
                                     }
-                            }
-                            }
-                        />
-                        <FormInputField
-                            label="Deleted"
-                            name="isDeleted"
-                            type="checkbox"
-                            id="isDeleted"
-                            register={register}
-                            errors={errors}
-                            disabled="disabled"
+                                }
+                                }
+                            />
+                            <FormInputField
+                                label="Authority"
+                                name="userRole"
+                                type="text"
+                                id="userRole"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData ? profileData.authorities[0].authority.replace('ROLE_', '') : ""}
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Field is required",
+                                        }
+                                }
+                                }
+                            />
+                            <FormInputField
+                                label="Deleted"
+                                name="isDeleted"
+                                type="checkbox"
+                                id="isDeleted"
+                                register={register}
+                                errors={errors}
+                                disabled={true}
+                            />
+                            <Button type="submit" children="Save"/>
+                        </form>
+                        <form>
+                            <h3>EMPLOYEE</h3>
+                            <FormInputField
+                                label="Employee id"
+                                name="id"
+                                type="number"
+                                id="id"
+                                register={register}
+                                errors={errors}
+                                defaultValue={profileData.employee ? profileData.employee.id : ""}
+                                readOnly={true}
+                            />
 
-                        />
-                        <Button type="submit" children="Save"/>
-                    </form>
 
-                    {/*<form onSubmit={handleSubmit(handleFormSubmitEmployee)}>*/}
-                    <form>
-                        <h3>EMPLOYEE</h3>
-                        <FormInputField
-                            label="Employee id"
-                            name="id"
-                            type="number"
-                            id="id"
-                            register={register}
-                            errors={errors}
-                            defaultValue={profileData.employee ? profileData.employee.id : ""}
-                            readOnly={true}
-                        />
-
-
-                        <FormInputField
-                            label="First Name"
-                            name="firstName"
-                            type="text"
-                            id="firstName"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData.employee ? profileData.employee.firstName : ""}
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Field is required",
-                                    }
-                            }
-                            }
-                        />
-                        <FormInputField
-                            label="Preposition"
-                            name="preposition"
-                            type="text"
-                            id="preposition"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData.employee ? profileData.employee.preposition : ""}
-                        />
-                        <FormInputField
-                            label="Last name"
-                            name="lastName"
-                            type="text"
-                            id="lastName"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData.employee ? profileData.employee.lastName : ""}
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Field is required",
-                                    }
-                            }
-                            }
-                        />
-                        <FormInputField
-                            label="Short name"
-                            name="shortName"
-                            type="text"
-                            id="shortName"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData.employee ? profileData.employee.shortName : ""}
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Field is required",
-                                    }
-                            }
-                            }
-                        />
-                        <FormInputField
-                            label="Date of Birth"
-                            name="dob"
-                            type="date"
-                            id="dob"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData.employee ? profileData.employee.dob : ""}
-                        />
-                        <FormInputField
-                            label="Phone number"
-                            name="phoneNumber"
-                            type="text"
-                            id="phoneNumber"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData.employee ? profileData.employee.phoneNumber : ""}
-                        />
-                        <FormInputField
-                            label="Team"
-                            name="teamName"
-                            type="text"
-                            id="teamName"
-                            register={register}
-                            errors={errors}
-                            readOnly={true}
-                            defaultValue={profileData.employee ? profileData.team.teamName : ""}
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Field is required",
-                                    }
-                            }
-                            }
-                        />
-                        <FormInputField
-                            label="Employee Active"
-                            name="isEmpActive"
-                            type="checkbox"
-                            id="isEmpActive"
-                            register={register}
-                            errors={errors}
-                            disabled="disabled"
-                        />
-                        {/*<Button type="submit" children="Save"/>*/}
-                    </form>
+                            <FormInputField
+                                label="First Name"
+                                name="firstName"
+                                type="text"
+                                id="firstName"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData.employee ? profileData.employee.firstName : ""}
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Field is required",
+                                        }
+                                }
+                                }
+                            />
+                            <FormInputField
+                                label="Preposition"
+                                name="preposition"
+                                type="text"
+                                id="preposition"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData.employee ? profileData.employee.preposition : ""}
+                            />
+                            <FormInputField
+                                label="Last name"
+                                name="lastName"
+                                type="text"
+                                id="lastName"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData.employee ? profileData.employee.lastName : ""}
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Field is required",
+                                        }
+                                }
+                                }
+                            />
+                            <FormInputField
+                                label="Short name"
+                                name="shortName"
+                                type="text"
+                                id="shortName"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData.employee ? profileData.employee.shortName : ""}
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Field is required",
+                                        }
+                                }
+                                }
+                            />
+                            <FormInputField
+                                label="Date of Birth"
+                                name="dob"
+                                type="date"
+                                id="dob"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData.employee ? profileData.employee.dob : ""}
+                            />
+                            <FormInputField
+                                label="Phone number"
+                                name="phoneNumber"
+                                type="text"
+                                id="phoneNumber"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData.employee ? profileData.employee.phoneNumber : ""}
+                            />
+                            <FormInputField
+                                label="Team"
+                                name="teamName"
+                                type="text"
+                                id="teamName"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                                defaultValue={profileData.employee ? profileData.team.teamName : ""}
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Field is required",
+                                        }
+                                }
+                                }
+                            />
+                            <FormInputField
+                                label="Employee Active"
+                                name="isEmpActive"
+                                type="checkbox"
+                                id="isEmpActive"
+                                register={register}
+                                errors={errors}
+                                disabled={true}
+                            />
+                        </form>
                     </div>
                     <div className="form-inner-container">
                         <div className="shifts-container">

@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {createShift, getAvailableEmployees, testRequest, updateShift} from "../../service";
+import { getAvailableEmployees,} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 
 
-function Shift({start, end, employeeShortName, children, shiftId, handleEmployeeChange }) {
+function Shift({start, end, employeeShortName, children, shiftId, handleEmployeeChange, newEmp }) {
     const formattedStart = start.substring(11, 16);
     const formattedEnd = end.substring(11, 16);
     const [availableEmployees, setAvailableEmployees] = useState([]);
@@ -19,14 +19,14 @@ function Shift({start, end, employeeShortName, children, shiftId, handleEmployee
             }
         }
         void fetchData();
-    }, []);
+    }, [newEmp]);
 
 
 
     if(!availableEmployees) {
         return <div>Loading....</div>
     }
-    console.log(availableEmployees)
+    // console.log(availableEmployees)
 
     return (
         <div>

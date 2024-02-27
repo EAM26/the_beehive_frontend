@@ -36,7 +36,7 @@ export const postLoginData = async (data) => {
         username: data.username,
         password: data.password,
     })
-    console.log(response)
+    console.log(response.data)
     return response.data;
 }
 
@@ -309,6 +309,7 @@ export const updateShift = async (token, shift, shiftId, employeeId, ) => {
 }
 
 
+// Fake request to test calls to backend
 export const testRequest = async (selectedEmployeeId, shiftId) => {
     console.log("Test Request running")
     return[]

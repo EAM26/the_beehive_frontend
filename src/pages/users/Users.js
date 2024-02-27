@@ -54,23 +54,25 @@ function Users() {
     };
 
     const handleSubmitUser = async (formDataUser) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
-
             const id = await createUser(token, formDataUser.username, formDataUser.password, formDataUser.userRole, formDataUser.email, formDataUser.isDeleted)
             const newUser = await getUser(token, id);
             setUsers(currentUsers => [...currentUsers, newUser]);
             const updatedUsers = [...users, newUser];
             setUsers(updatedUsers.sort((a, b) => a.username.localeCompare(b.username)));
             reset();
-            setError(false)
-            setErrormessage("")
+            setShowUserModal(false)
 
         } catch (e) {
             console.error(e)
             setError(true);
             setErrormessage(errorHandler(e));
+        } finally {
+            setLoading(false);
         }
-        setShowUserModal(false)
     };
 
 
@@ -81,6 +83,9 @@ function Users() {
     }
 
     const handleSubmitEmployee = async (formDataEmployee) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
             const newEmployee = await createEmployee(token, formDataEmployee.firstName, formDataEmployee.preposition, formDataEmployee.lastName, formDataEmployee.shortName, formDataEmployee.dob, formDataEmployee.isActive, formDataEmployee.phoneNumber, formDataEmployee.teamName, selectedUsername)
             setUsers(currentUsers => {
@@ -95,15 +100,16 @@ function Users() {
                 });
             });
             reset()
-            setError(false)
-            setErrormessage("")
+            setShowEmployeeModal(false);
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
+        } finally {
+            setLoading(false);
         }
 
-        setShowEmployeeModal(false);
+
     }
 
 
@@ -135,8 +141,10 @@ function Users() {
         const controller = new AbortController();
 
         const fetchData = async () => {
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
-                setLoading(true);
                 let usersData = await getUsers(token, controller.signal);
 
                 if (deletedFilter !== 'all') {
@@ -170,6 +178,8 @@ function Users() {
     return (
         <main className="outer-container">
             <div className="inner-container">
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <h2>Users</h2>
                 <Button children="NEW USER" type="button" onClick={handleNewUserClick}/>
                 <div>
@@ -187,8 +197,6 @@ function Users() {
                         <option value="userOnly">Non Employees</option>
                     </select>
                 </div>
-                {loading && <p>Loading...</p>}
-                <p>{error ? errorMessage: ""}</p> :
                     <table>
                         <thead>
                         <tr>
@@ -230,6 +238,7 @@ function Users() {
                 <div className="modal">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit(handleSubmitUser)}>
+                            <p className="error-message">{error ? errorMessage: ""}</p>
                             <FormInputField
                                 label="UserName"
                                 name="username"
@@ -312,6 +321,7 @@ function Users() {
                 <div className="modal">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit(handleSubmitEmployee)}>
+                            <p className="error-message">{error ? errorMessage: ""}</p>
                             <FormInputField
                                 label="First Name"
                                 name="firstName"

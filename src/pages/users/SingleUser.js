@@ -10,7 +10,7 @@ import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleUser_Profile.css"
 
 
-function SingleUser(props) {
+function SingleUser() {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm({
         mode: "onTouched",
         defaultValues: {
@@ -30,37 +30,46 @@ function SingleUser(props) {
 
 
     const handleFormSubmitUser = async (formData) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
-            // console.log(formData)
+
             await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
             setModifiedUserFields({})
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
+        } finally {
+            setLoading(false)
         }
 
     };
 
-    const handleUserOnInput = (fieldName) => (event) => {
+    const handleUserOnInput = (fieldName) => () => {
         setModifiedUserFields(prevState => ({...prevState, [fieldName]: true}));
 
     }
 
     const handleFormSubmitEmployee = async (formData) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
-
             await updateEmployee(token, formData.id, formData.firstName, formData.preposition, formData.lastName, formData.shortName, formData.dob, formData.isEmpActive, formData.phoneNumber, formData.teamName, formData.username)
             setModifiedEmployeeFields({})
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
+        } finally {
+            setLoading(false);
         }
 
     };
 
-    const handleEmployeeOnInput = (fieldName) => (event) => {
+    const handleEmployeeOnInput = (fieldName) => () => {
         setModifiedEmployeeFields(prevState => ({...prevState, [fieldName]: true}));
 
     }
@@ -68,6 +77,8 @@ function SingleUser(props) {
     useEffect(() => {
             const fetchData = async () => {
                 setLoading(true);
+                setError(false);
+                setErrormessage("");
                 try {
                     const user = await getUser(token, username);
                     if (user.shifts) {
@@ -84,9 +95,9 @@ function SingleUser(props) {
                     setError(true);
                     setErrormessage(errorHandler(e))
                 } finally {
-
+                    setLoading(false);
                 }
-                setLoading(false);
+
             };
 
             void fetchData();
@@ -101,6 +112,8 @@ function SingleUser(props) {
     return (
         <main className="outer-container">
             <div className="inner-container">
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <div className="form-outer-container">
                     <div className="form-inner-container">
                         <form onSubmit={handleSubmit(handleFormSubmitUser)}>
@@ -341,41 +354,41 @@ function SingleUser(props) {
                             : null}
                     </div>
                     <div className="form-inner-container">
-                            <div className="shifts-container">
-                                <h3>SHIFTS</h3>
-                                {userData.shifts ? userData.shifts.slice(0, 5).map((shift) => {
+                        <div className="shifts-container">
+                            <h3>SHIFTS</h3>
+                            {userData.shifts ? userData.shifts.slice(0, 5).map((shift) => {
 
-                                    const startShiftDate = new Date(shift.startShift);
-                                    const endShiftDate = new Date(shift.endShift);
+                                const startShiftDate = new Date(shift.startShift);
+                                const endShiftDate = new Date(shift.endShift);
 
 
-                                    const date = `${startShiftDate.getDate().toString().padStart(2, '0')}-${(startShiftDate.getMonth() + 1).toString().padStart(2, '0')}-${startShiftDate.getFullYear()}`;
-                                    const startTime = startShiftDate.toLocaleTimeString(userLocale, {
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    });
-                                    const endTime = endShiftDate.toLocaleTimeString(userLocale, {
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    });
-                                    return <p key={shift.id}>{date} {startTime} - {endTime}</p>
-                                }) : "No Shifts Available"}
-                            </div>
+                                const date = `${startShiftDate.getDate().toString().padStart(2, '0')}-${(startShiftDate.getMonth() + 1).toString().padStart(2, '0')}-${startShiftDate.getFullYear()}`;
+                                const startTime = startShiftDate.toLocaleTimeString(userLocale, {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                const endTime = endShiftDate.toLocaleTimeString(userLocale, {
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                return <p key={shift.id}>{date} {startTime} - {endTime}</p>
+                            }) : "No Shifts Available"}
+                        </div>
 
-                            <div className="absences-container">
-                                <h3>ABSENCES</h3>
-                                {userData.absences ? userData.absences.slice(0, 5).map((absence) => {
+                        <div className="absences-container">
+                            <h3>ABSENCES</h3>
+                            {userData.absences ? userData.absences.slice(0, 5).map((absence) => {
 
-                                    const startAbsenceDate = new Date(absence.startDate);
-                                    const endAbsenceDate = new Date(absence.endDate);
+                                const startAbsenceDate = new Date(absence.startDate);
+                                const endAbsenceDate = new Date(absence.endDate);
 
-                                    const startDate = `${startAbsenceDate.getDate().toString().padStart(2, '0')}-${(startAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${startAbsenceDate.getFullYear()}`;
-                                    const endDate = `${endAbsenceDate.getDate().toString().padStart(2, '0')}-${(endAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${endAbsenceDate.getFullYear()}`;
+                                const startDate = `${startAbsenceDate.getDate().toString().padStart(2, '0')}-${(startAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${startAbsenceDate.getFullYear()}`;
+                                const endDate = `${endAbsenceDate.getDate().toString().padStart(2, '0')}-${(endAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${endAbsenceDate.getFullYear()}`;
 
-                                    return <p key={absence.id}>{startDate} {endDate}</p>
-                                }) : "No Absences Available"
-                                }
-                            </div>
+                                return <p key={absence.id}>{startDate} {endDate}</p>
+                            }) : "No Absences Available"
+                            }
+                        </div>
 
                     </div>
                 </div>

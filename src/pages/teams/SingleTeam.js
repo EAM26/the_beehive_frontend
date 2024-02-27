@@ -6,26 +6,29 @@ import {errorHandler} from "../../helpers/errorHandler";
 import "./SingleTeam.css"
 import {mySorterIgnoreCase, mySorterTwoAttributes} from "../../helpers/mySorterFunctions";
 
-function SingleTeam(props) {
+function SingleTeam() {
 
     const {teamName} = useParams()
     const {token} = useContext(AuthContext);
     const [teamData, setTeamData] = useState([]);
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false);
     const [errorMessage, setErrormessage] = useState("")
 
-    const handleViewUser = ((username) =>  {
-        navigate(`/profile/${username}`);
-    })
+    // const handleViewUser = ((username) =>  {
+    //     navigate(`/profile/${username}`);
+    // })
     useEffect(() => {
 
 
         const controller = new AbortController();
         const fetchData = async () => {
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
-                //
                 mySorterIgnoreCase(response.employeesData)
                 mySorterTwoAttributes(response.rosterData, "week", "year")
                 setTeamData(response);
@@ -35,8 +38,7 @@ function SingleTeam(props) {
                 setError(true);
                 setErrormessage(errorHandler(e));
             } finally {
-
-
+                setLoading(false);
             }
         }
 
@@ -51,6 +53,8 @@ function SingleTeam(props) {
     return (
         <main className="outer-container">
             <div className="inner-container">
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <h3>{teamName}</h3>
                 <div className="singleTeam-outer-container">
                     <div>

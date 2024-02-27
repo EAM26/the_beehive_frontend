@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
 
-function Rosters(props) {
+function Rosters() {
 
     const [rosterCreated, setRosterCreated] = useState({})
     const [rosters, setRosters] = useState([])
@@ -25,11 +25,7 @@ function Rosters(props) {
             isActive: true
         }
     })
-    const [newRoster, setNewRoster] = useState({
-        week: '',
-        year: '',
-        teamName: ''
-    });
+
     const teamOptions = teams.map(team => ({
         value: team.teamName,
         label: team.teamName
@@ -42,26 +38,23 @@ function Rosters(props) {
         setShowModal(false)
     }
 
-    // const handleInputChange = (e) => {
-    //     setNewRoster({...newRoster, [e.target.name]: e.target.value});
-    // };
-
     const handleSubmitRoster = async (newRoster) => {
-        // e.preventDefault()
+        setLoading(true)
+        setError(false)
+        setErrormessage("")
         try {
-            console.log(newRoster)
             const response = await createRoster(token, newRoster.week, newRoster.year, newRoster.teamName);
             setRosterCreated(response)
-            setError(false)
-            setErrormessage("")
-
+            reset()
+            setShowModal(false);
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
         } finally {
+            setLoading(false)
         }
-        setShowModal(false);
+
     };
 
     const handleClickView = (rosterId) => {
@@ -89,7 +82,9 @@ function Rosters(props) {
         const controller = new AbortController();
 
         const fetchData = async () => {
-            setLoading(true)
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
                 const response = await getRosters(token, controller.signal);
                 sortRostersByYearAndWeek(response)
@@ -113,11 +108,10 @@ function Rosters(props) {
     return (
         <main className="outer-container">
             <div className="inner-container">
+                {loading && <p>Loading...</p>}
+                <p className="error-message">{error ? errorMessage: ""}</p>
                 <h2>Rosters</h2>
                 <Button children="NEW ROSTER" type="button" onClick={() => setShowModal(true)}/>
-
-                {loading && <p>Loading...</p>}
-                <p>{error ? errorMessage : ""}</p>
                 <table>
                     <thead>
                     <tr>
@@ -145,7 +139,7 @@ function Rosters(props) {
                         isOpen={showModal}
                         onClose={handleOnClose}>
                         <form onSubmit={handleSubmit(handleSubmitRoster)}>
-
+                            <p className="error-message">{error ? errorMessage: ""}</p>
                             <FormInputField
                                 label="Week"
                                 type="select"
@@ -158,7 +152,8 @@ function Rosters(props) {
                                 disabled="disabled"
                                 selected="selected"
                                 defaultName="week"
-                            /><FormInputField
+                            />
+                            <FormInputField
                                 label="Year"
                                 type="select"
                                 name="year"
@@ -184,28 +179,6 @@ function Rosters(props) {
                                 selected="selected"
                                 defaultName="team"
                             />
-
-                            {/*<div>*/}
-                            {/*    <label>*/}
-                            {/*        Week:*/}
-                            {/*    </label>*/}
-                            {/*    <input type="text" name="week" value={newRoster.week} onChange={handleInputChange}/>*/}
-
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <label>*/}
-                            {/*        Year:*/}
-                            {/*        <input type="text" name="year" value={newRoster.year} onChange={handleInputChange}/>*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-                            {/*<div>*/}
-                            {/*    <label>*/}
-                            {/*        Team Name:*/}
-                            {/*        <input type="text" name="teamName" value={newRoster.teamName}*/}
-                            {/*               onChange={handleInputChange}/>*/}
-                            {/*    </label>*/}
-                            {/*</div>*/}
-
                             <Button type="submit">Add Roster</Button>
                             <Button type="button" onClick={handleOnClose}>Cancel</Button>
                         </form>
