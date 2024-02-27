@@ -13,14 +13,18 @@ function Login() {
 
 
     async function handleFormSubmit(data) {
-        setError(false)
-        setErrormessage("")
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
             const loginData = await postLoginData(data)
             login(loginData.jwt, '/')
         } catch (e) {
             setError(true)
             setErrormessage(errorHandler(e))
+        }
+        finally {
+            setLoading(false);
         }
     }
 

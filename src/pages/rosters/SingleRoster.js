@@ -100,7 +100,9 @@ function SingleRoster(props) {
     };
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true)
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
                 const rosterData = await getRoster(token, rosterId);
                 setSingleRoster(rosterData)

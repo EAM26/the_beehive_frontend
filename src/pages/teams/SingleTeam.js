@@ -24,8 +24,9 @@ function SingleTeam(props) {
 
         const controller = new AbortController();
         const fetchData = async () => {
-            setError(false)
-            setErrormessage("")
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
                 mySorterIgnoreCase(response.employeesData)
@@ -37,8 +38,7 @@ function SingleTeam(props) {
                 setError(true);
                 setErrormessage(errorHandler(e));
             } finally {
-
-
+                setLoading(false);
             }
         }
 

@@ -39,20 +39,22 @@ function Rosters(props) {
     }
 
     const handleSubmitRoster = async (newRoster) => {
+        setLoading(true)
         setError(false)
         setErrormessage("")
         try {
-            console.log(newRoster)
             const response = await createRoster(token, newRoster.week, newRoster.year, newRoster.teamName);
             setRosterCreated(response)
             reset()
+            setShowModal(false);
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
         } finally {
+            setLoading(false)
         }
-        setShowModal(false);
+
     };
 
     const handleClickView = (rosterId) => {
@@ -80,7 +82,9 @@ function Rosters(props) {
         const controller = new AbortController();
 
         const fetchData = async () => {
-            setLoading(true)
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
                 const response = await getRosters(token, controller.signal);
                 sortRostersByYearAndWeek(response)
@@ -135,7 +139,7 @@ function Rosters(props) {
                         isOpen={showModal}
                         onClose={handleOnClose}>
                         <form onSubmit={handleSubmit(handleSubmitRoster)}>
-
+                            <p className="error-message">{error ? errorMessage: ""}</p>
                             <FormInputField
                                 label="Week"
                                 type="select"

@@ -49,6 +49,8 @@ function Profile() {
         const controller = new AbortController();
         const fetchData = async () => {
             setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
                 const user = await getSelf(token);
 

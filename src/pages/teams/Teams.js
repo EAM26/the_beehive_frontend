@@ -52,21 +52,24 @@ function Teams(props) {
     // };
 
     const handleSubmitTeam = async (newTeam) => {
+        setLoading(true);
         setError(false)
         setErrormessage("")
         try {
             const response = await createTeam(token, newTeam.teamName, newTeam.isActive)
             setTeamCreated(response)
             reset()
-
+            setShowTeamModal(false)
 
         } catch (e) {
             setError(true)
             setErrormessage(errorHandler(e))
             console.error(e)
+        } finally {
+            setLoading(false)
         }
 
-        setShowTeamModal(false)
+
     };
 
 
@@ -74,15 +77,17 @@ function Teams(props) {
         const controller = new AbortController();
 
         const fetchData = async () => {
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
             try {
-                setLoading(true);
                 const response = await getTeams(token, controller.signal);
                 setTeams(mySorterIgnoreCaseSingleAttr(response, "teamName"))
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e));
+                console.error(e)
             } finally {
-
                 setLoading(false);
             }
 
@@ -112,7 +117,6 @@ function Teams(props) {
                     </thead>
                     <tbody>
                     {teams.map((team) => {
-
                             return <tr key={team.teamName}>
                                 <td>{team.teamName}</td>
                                 <td>{team.isActive ? "Active" : "Inactive"}</td>
@@ -131,6 +135,7 @@ function Teams(props) {
                     <div className="modal">
                         <div className="modal-content">
                             <form onSubmit={handleSubmit(handleSubmitTeam)}>
+                                <p className="error-message">{error ? errorMessage : ""}</p>
                                 <FormInputField
                                     label="Team Name"
                                     type="text"
@@ -140,15 +145,6 @@ function Teams(props) {
                                     register={register}
                                     validation={{required: "Field is required"}}
                                 />
-                                {/*<div>*/}
-                                {/*    <label>Team Name:</label>*/}
-                                {/*    <input*/}
-                                {/*        type="text"*/}
-                                {/*        name="teamName"*/}
-                                {/*        value={formData.teamName}*/}
-                                {/*        onChange={handleChange}*/}
-                                {/*    />*/}
-                                {/*</div>*/}
                                 <FormInputField
                                     label="Team Active"
                                     name="isActive"
@@ -158,17 +154,6 @@ function Teams(props) {
                                     errors={errors}
                                     disabled={true}
                                 />
-                                {/*<div>*/}
-                                {/*    <label>*/}
-                                {/*        Team Active:*/}
-                                {/*        <input*/}
-                                {/*            type="checkbox"*/}
-                                {/*            name="isActive"*/}
-                                {/*            checked={formData.isActive}*/}
-                                {/*            onChange={handleChange}*/}
-                                {/*        />*/}
-                                {/*    </label>*/}
-                                {/*</div>*/}
                                 <Button type="submit">Create Team</Button>
                                 <Button type="button" onClick={handleCloseModal}>Cancel</Button>
                             </form>

@@ -54,6 +54,9 @@ function Users() {
     };
 
     const handleSubmitUser = async (formDataUser) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
             const id = await createUser(token, formDataUser.username, formDataUser.password, formDataUser.userRole, formDataUser.email, formDataUser.isDeleted)
             const newUser = await getUser(token, id);
@@ -61,16 +64,15 @@ function Users() {
             const updatedUsers = [...users, newUser];
             setUsers(updatedUsers.sort((a, b) => a.username.localeCompare(b.username)));
             reset();
-            setError(false)
-            setErrormessage("")
             setShowUserModal(false)
 
         } catch (e) {
             console.error(e)
             setError(true);
             setErrormessage(errorHandler(e));
+        } finally {
+            setLoading(false);
         }
-
     };
 
 
@@ -81,6 +83,9 @@ function Users() {
     }
 
     const handleSubmitEmployee = async (formDataEmployee) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
         try {
             const newEmployee = await createEmployee(token, formDataEmployee.firstName, formDataEmployee.preposition, formDataEmployee.lastName, formDataEmployee.shortName, formDataEmployee.dob, formDataEmployee.isActive, formDataEmployee.phoneNumber, formDataEmployee.teamName, selectedUsername)
             setUsers(currentUsers => {
@@ -95,13 +100,13 @@ function Users() {
                 });
             });
             reset()
-            setError(false)
-            setErrormessage("")
             setShowEmployeeModal(false);
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
+        } finally {
+            setLoading(false);
         }
 
 
