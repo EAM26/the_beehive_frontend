@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {deleteAbsence, getUser, updateEmployee, updateUser} from "../../service";
+import {createAbsence, deleteAbsence, getUser, updateEmployee, updateUser} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
@@ -29,6 +29,21 @@ function SingleUser() {
     const [modifiedEmployeeFields, setModifiedEmployeeFields] = useState({})
     const [toggleAbsence, setToggleAbsence] = useState(false)
 
+    const handleCreateAbsence = async (empId) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
+        try {
+            await createAbsence(token, empId)
+            setToggleAbsence(!toggleAbsence);
+        } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
+            console.error(e)
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const handleDeleteAbsence = async (absenceId) => {
         setLoading(true);
@@ -394,7 +409,7 @@ function SingleUser() {
                         </div>
 
                         <div className="absences-container">
-                            <h3>ABSENCES</h3>
+                            <h3>ABSENCES</h3> <Button type="button" children="+new"  onClick={() => handleCreateAbsence(userData.employee.id)}/>
                             {userData.absences && userData.absences.length > 0 ? userData.absences.slice(0, 5).map((absence) => {
 
                                 const startAbsenceDate = new Date(absence.startDate);

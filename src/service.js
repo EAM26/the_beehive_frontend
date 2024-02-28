@@ -265,6 +265,28 @@ export const createShift = async (token, start, end, date, teamName) => {
     return response.data
 }
 
+export const createAbsence = async (token, empId) => {
+    console.log("Create Absence in service for emp: " + empId)
+    // const startShift = formatShiftDateTime(date, start)
+    // let endShift = formatShiftDateTime(date, end)
+    // if(startShift >= endShift) {
+    //     endShift = formatShiftDateTime(date, end, true)
+    // }
+    //
+    // const response = await axios.post("http://localhost:8080/shifts", {
+    //     startShift: startShift,
+    //     endShift: endShift,
+    //     teamName
+    // },{
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`
+    //     },
+    // })
+    //
+    // return response.data
+}
+
 export const deleteShift = async (token, id) => {
     const response = await axios.delete(`http://localhost:8080/shifts/${id}` ,{
         headers: {
