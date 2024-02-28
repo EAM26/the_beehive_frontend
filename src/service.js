@@ -276,6 +276,18 @@ export const deleteShift = async (token, id) => {
     return response.data
 }
 
+export const deleteAbsence = async (token, id) => {
+    const response = await axios.delete(`http://localhost:8080/absences/${id}` ,{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+    })
+
+
+    return response.data
+}
+
 
 
 export const getAvailableEmployees = async (token, id) => {

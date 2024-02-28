@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {getUser, updateEmployee, updateUser} from "../../service";
+import {deleteAbsence, getUser, updateEmployee, updateUser} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
@@ -27,8 +27,26 @@ function SingleUser() {
     const userLocale = useContext(LocaleContext)
     const [modifiedUserFields, setModifiedUserFields] = useState({})
     const [modifiedEmployeeFields, setModifiedEmployeeFields] = useState({})
+    const [toggleAbsence, setToggleAbsence] = useState(false)
 
 
+    const handleDeleteAbsence = async (absenceId) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
+        try {
+            await deleteAbsence(token, absenceId)
+            setToggleAbsence(!toggleAbsence);
+        } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
+            console.error(e)
+        } finally {
+            setLoading(false);
+        }
+
+
+    }
     const handleFormSubmitUser = async (formData) => {
         setLoading(true);
         setError(false);
@@ -103,7 +121,7 @@ function SingleUser() {
             void fetchData();
 
         },
-        []);
+        [toggleAbsence]);
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -356,7 +374,7 @@ function SingleUser() {
                     <div className="form-inner-container">
                         <div className="shifts-container">
                             <h3>SHIFTS</h3>
-                            {userData.shifts ? userData.shifts.slice(0, 5).map((shift) => {
+                            {userData.shifts && userData.shifts.length > 0 ? userData.shifts.slice(0, 5).map((shift) => {
 
                                 const startShiftDate = new Date(shift.startShift);
                                 const endShiftDate = new Date(shift.endShift);
@@ -377,7 +395,7 @@ function SingleUser() {
 
                         <div className="absences-container">
                             <h3>ABSENCES</h3>
-                            {userData.absences ? userData.absences.slice(0, 5).map((absence) => {
+                            {userData.absences && userData.absences.length > 0 ? userData.absences.slice(0, 5).map((absence) => {
 
                                 const startAbsenceDate = new Date(absence.startDate);
                                 const endAbsenceDate = new Date(absence.endDate);
@@ -385,7 +403,7 @@ function SingleUser() {
                                 const startDate = `${startAbsenceDate.getDate().toString().padStart(2, '0')}-${(startAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${startAbsenceDate.getFullYear()}`;
                                 const endDate = `${endAbsenceDate.getDate().toString().padStart(2, '0')}-${(endAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${endAbsenceDate.getFullYear()}`;
 
-                                return <p key={absence.id}>{startDate} {endDate}</p>
+                                return <p key={absence.id}>{startDate} {endDate} <Button type="button" children="delete" onClick={() => handleDeleteAbsence(absence.id)}/></p>
                             }) : "No Absences Available"
                             }
                         </div>
