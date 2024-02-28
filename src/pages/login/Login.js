@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import './Login.css';
@@ -9,7 +9,8 @@ import {postLoginData} from "../../service";
 function Login() {
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
-    const {login, error, loading, setLoading, setError, errorMessage, setErrormessage} = useContext(AuthContext);
+    const {login, error, setError, errorMessage, setErrormessage} = useContext(AuthContext);
+    const [loading, setLoading] = useState(false)
 
 
     async function handleFormSubmit(data) {
