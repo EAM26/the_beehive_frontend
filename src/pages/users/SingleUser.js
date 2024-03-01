@@ -385,6 +385,29 @@ function SingleUser() {
                                     }
                                 />
                                 <FormInputField
+                                    label="Copy-id"
+                                    name="copyId"
+                                    type="text"
+                                    id="copyId"
+                                    register={register}
+                                    errors={errors}
+                                    defaultValue={userData.employee.imageData ? "Has Image" : "No id available"}
+                                    readOnly={true}
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "Field is required",
+                                            }
+                                    }
+                                    }
+
+
+                                >
+                                    <Button type="button" children="Upload" />
+                                    {userData.employee.imageData && <Button type="button" children="Download" />}
+                                </FormInputField>
+                                <FormInputField
                                     label="Employee Active"
                                     name="isEmpActive"
                                     type="checkbox"
