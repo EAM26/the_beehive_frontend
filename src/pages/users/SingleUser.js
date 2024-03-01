@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {createAbsence, deleteAbsence, getUser, updateEmployee, updateUser} from "../../service";
+import {createAbsence, deleteAbsence, getCopyId, getUser, updateEmployee, updateUser} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
@@ -31,6 +31,14 @@ function SingleUser() {
     const [toggleAbsence, setToggleAbsence] = useState(false)
     const [showAbsenceModal, setShowAbsenceModal] = useState(false);
 
+
+    const handleDownloadId =  async (id) => {
+       try {
+           await getCopyId(token, id)
+       } catch (e) {
+
+       }
+    }
     const handleClose = () => {
         setShowAbsenceModal(false)
     }
@@ -173,6 +181,7 @@ function SingleUser() {
                                 readOnly={true}
                             />
                             <FormInputField
+                                label="Email"
                                 label="Email"
                                 name="email"
                                 type="email"
@@ -405,7 +414,7 @@ function SingleUser() {
 
                                 >
                                     <Button type="button" children="Upload" />
-                                    {userData.employee.imageData && <Button type="button" children="Download" />}
+                                    {userData.employee.imageData && <Button type="button" children="Download" onClick={() => {void handleDownloadId(userData.employee.id)}} />}
                                 </FormInputField>
                                 <FormInputField
                                     label="Employee Active"
