@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {getUser, updateEmployee, updateUser} from "../../service";
+import {createAbsence, deleteAbsence, getUser, updateEmployee, updateUser} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
@@ -8,10 +8,11 @@ import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleUser_Profile.css"
+import BaseModal from "../../components/baseModal/BaseModal";
 
 
 function SingleUser() {
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm({
+    const {register, reset, handleSubmit, formState: {errors}, setValue} = useForm({
         mode: "onTouched",
         defaultValues: {
             isDeleted: false,
@@ -27,8 +28,51 @@ function SingleUser() {
     const userLocale = useContext(LocaleContext)
     const [modifiedUserFields, setModifiedUserFields] = useState({})
     const [modifiedEmployeeFields, setModifiedEmployeeFields] = useState({})
+    const [toggleAbsence, setToggleAbsence] = useState(false)
+    const [showAbsenceModal, setShowAbsenceModal] = useState(false);
+
+    const handleClose = () => {
+        setShowAbsenceModal(false)
+    }
+
+    const handleNewAbsenceClick = () => {
+        setShowAbsenceModal(true)
+    }
+    const handleSubmitAbsence = async (newAbsence) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
+        try {
+            await createAbsence(token, newAbsence.startDate, newAbsence.endDate, userData.employee.id)
+            setToggleAbsence(!toggleAbsence);
+            reset();
+            setShowAbsenceModal(false)
+        } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
+            console.error(e)
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleDeleteAbsence = async (absenceId) => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
+        try {
+            await deleteAbsence(token, absenceId)
+            setToggleAbsence(!toggleAbsence);
+        } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
+            console.error(e)
+        } finally {
+            setLoading(false);
+        }
 
 
+    }
     const handleFormSubmitUser = async (formData) => {
         setLoading(true);
         setError(false);
@@ -103,7 +147,7 @@ function SingleUser() {
             void fetchData();
 
         },
-        []);
+        [toggleAbsence]);
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -113,7 +157,7 @@ function SingleUser() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage: ""}</p>
+                <p className="error-message">{error ? errorMessage : ""}</p>
                 <div className="form-outer-container">
                     <div className="form-inner-container">
                         <form onSubmit={handleSubmit(handleFormSubmitUser)}>
@@ -356,7 +400,7 @@ function SingleUser() {
                     <div className="form-inner-container">
                         <div className="shifts-container">
                             <h3>SHIFTS</h3>
-                            {userData.shifts ? userData.shifts.slice(0, 5).map((shift) => {
+                            {userData.shifts && userData.shifts.length > 0 ? userData.shifts.slice(0, 5).map((shift) => {
 
                                 const startShiftDate = new Date(shift.startShift);
                                 const endShiftDate = new Date(shift.endShift);
@@ -376,8 +420,42 @@ function SingleUser() {
                         </div>
 
                         <div className="absences-container">
-                            <h3>ABSENCES</h3>
-                            {userData.absences ? userData.absences.slice(0, 5).map((absence) => {
+                            <h3>ABSENCES</h3> <Button type="button" children="+new"
+                                                      onClick={() => handleNewAbsenceClick(userData.employee.id)}/>
+                            {showAbsenceModal && (
+                                <BaseModal
+                                    onClose={handleClose}
+                                    isOpen={showAbsenceModal}>
+                                    <div className="modal">
+                                        <div className="modal-content">
+                                            <form onSubmit={handleSubmit(handleSubmitAbsence)}>
+                                                <p className="error-message">{error ? errorMessage : ""}</p>
+                                                <FormInputField
+                                                    label="Start date"
+                                                    type="date"
+                                                    name="startDate"
+                                                    id="startDate"
+                                                    errors={errors}
+                                                    register={register}
+                                                    validation={{required: "Field is required"}}
+                                                />
+                                                <FormInputField
+                                                    label="End date"
+                                                    type="date"
+                                                    name="endDate"
+                                                    id="endtDate"
+                                                    errors={errors}
+                                                    register={register}
+                                                    validation={{required: "Field is required"}}
+                                                />
+                                                <Button type="submit">Create Absence</Button>
+                                                <Button type="button" onClick={handleClose}>Cancel</Button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </BaseModal>)}
+
+                            {userData.absences && userData.absences.length > 0 ? userData.absences.map((absence) => {
 
                                 const startAbsenceDate = new Date(absence.startDate);
                                 const endAbsenceDate = new Date(absence.endDate);
@@ -385,7 +463,9 @@ function SingleUser() {
                                 const startDate = `${startAbsenceDate.getDate().toString().padStart(2, '0')}-${(startAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${startAbsenceDate.getFullYear()}`;
                                 const endDate = `${endAbsenceDate.getDate().toString().padStart(2, '0')}-${(endAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${endAbsenceDate.getFullYear()}`;
 
-                                return <p key={absence.id}>{startDate} {endDate}</p>
+                                return <p key={absence.id}>{startDate} {endDate} <Button type="button" children="delete"
+                                                                                         onClick={() => handleDeleteAbsence(absence.id)}/>
+                                </p>
                             }) : "No Absences Available"
                             }
                         </div>
