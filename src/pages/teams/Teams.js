@@ -20,11 +20,7 @@ function Teams() {
     const [errorMessage, setErrormessage] = useState("")
     const {token} = useContext(AuthContext);
     const [showTeamModal, setShowTeamModal] = useState(false)
-    // const [formData, setFormData] = useState({
-    //     teamName: '',
-    //     isActive: true,
-    //
-    // });
+
     const {register, reset, handleSubmit, formState: {errors},} = useForm({
         defaultValues: {
             isActive: true
@@ -43,13 +39,7 @@ function Teams() {
         navigate(`/teams/${teamName}`);
     }
 
-    // const handleChange = (e) => {
-    //     const {name, value, type, checked} = e.target;
-    //     setFormData(prev => ({
-    //         ...prev,
-    //         [name]: type === 'checkbox' ? checked : value
-    //     }));
-    // };
+
 
     const handleSubmitTeam = async (newTeam) => {
         setLoading(true);
