@@ -1,6 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {createAbsence, deleteAbsence, getUser, updateEmployee, updateUser} from "../../service";
+import {
+    createAbsence,
+    createCopyId,
+    deleteAbsence,
+    getCopyId,
+    getUser,
+    updateEmployee,
+    updateUser
+} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import FormInputField from "../../components/FormInputField/FormInputField";
@@ -28,8 +36,55 @@ function SingleUser() {
     const userLocale = useContext(LocaleContext)
     const [modifiedUserFields, setModifiedUserFields] = useState({})
     const [modifiedEmployeeFields, setModifiedEmployeeFields] = useState({})
-    const [toggleAbsence, setToggleAbsence] = useState(false)
+    const [toggleFetchData, setToggleFetchData] = useState(false)
     const [showAbsenceModal, setShowAbsenceModal] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+
+    const handleDownloadId = async () => {
+        setLoading(true);
+        setError(false);
+        setErrormessage("");
+        try {
+            await getCopyId(token, userData.employee.id)
+        } catch (e) {
+            setError(true);
+            setErrormessage(errorHandler(e));
+            console.error(e)
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handleUploadId = async (e) => {
+        e.preventDefault();
+        if (selectedFile.type !== "application/pdf") {
+            setError(true);
+            setErrormessage("Only pdf files allowed.");
+        } else {
+            setLoading(true);
+            setError(false);
+            setErrormessage("");
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('employeeId', userData.employee.id);
+            try {
+                await createCopyId(token, formData)
+                setToggleFetchData(!toggleFetchData)
+            } catch (e) {
+                setError(true);
+                setErrormessage(errorHandler(e));
+                console.error(e)
+            } finally {
+                setLoading(false);
+            }
+        }
+
+    }
 
     const handleClose = () => {
         setShowAbsenceModal(false)
@@ -44,7 +99,7 @@ function SingleUser() {
         setErrormessage("");
         try {
             await createAbsence(token, newAbsence.startDate, newAbsence.endDate, userData.employee.id)
-            setToggleAbsence(!toggleAbsence);
+            setToggleFetchData(!toggleFetchData);
             reset();
             setShowAbsenceModal(false)
         } catch (e) {
@@ -62,7 +117,7 @@ function SingleUser() {
         setErrormessage("");
         try {
             await deleteAbsence(token, absenceId)
-            setToggleAbsence(!toggleAbsence);
+            setToggleFetchData(!toggleFetchData);
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
@@ -73,6 +128,7 @@ function SingleUser() {
 
 
     }
+
     const handleFormSubmitUser = async (formData) => {
         setLoading(true);
         setError(false);
@@ -147,7 +203,7 @@ function SingleUser() {
             void fetchData();
 
         },
-        [toggleAbsence]);
+        [toggleFetchData]);
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -173,6 +229,7 @@ function SingleUser() {
                                 readOnly={true}
                             />
                             <FormInputField
+                                label="Email"
                                 label="Email"
                                 name="email"
                                 type="email"
@@ -248,6 +305,7 @@ function SingleUser() {
                             />
                             <Button type="submit" children="Save"/>
                         </form>
+
                         {userData.employee ?
                             <form onSubmit={handleSubmit(handleFormSubmitEmployee)}>
                                 <h3>EMPLOYEE</h3>
@@ -394,8 +452,20 @@ function SingleUser() {
                                 />
                                 <Button type="submit" children="Save"/>
                             </form>
-
                             : null}
+                        <form onSubmit={handleUploadId}>
+                            <label htmlFor="copyId">Copy id-card</label>
+
+                            <input
+                                id="copyId"
+                                type="file"
+                                accept=".pdf"
+                                onChange={handleFileChange}
+                            />
+                            {userData.employee.imageData &&
+                                <Button type="button" children="Download" onClick={handleDownloadId}/>}
+                            <Button type="submit" children="Upload"/>
+                        </form>
                     </div>
                     <div className="form-inner-container">
                         <div className="shifts-container">

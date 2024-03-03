@@ -191,6 +191,7 @@ export const getSingleTeam = async (token, signal, teamName) => {
     return response.data
 }
 
+
 export const createTeam = async (jwt, teamName, isActive) => {
     const response = await axios.post('http://localhost:8080/teams', {
         teamName,
@@ -336,6 +337,40 @@ export const updateShift = async (token, shift, shiftId, employeeId, ) => {
 
 }
 
+export const getCopyId = async (token, id) => {
+    console.log("Get copy id running with id: " + id)
+    const response = await axios.get(`http://localhost:8080/image/${id}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            responseType: 'blob'
+        })
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'file.pdf');
+    document.body.appendChild(link);
+    link.click();
+
+    window.URL.revokeObjectURL(url);
+    link.parentNode.removeChild(link);
+    console.log(response)
+    return response.data
+}
+
+export const createCopyId = async (token, formData) => {
+    console.log("createCopyId method in service running")
+    const response = await axios.post("http://localhost:8080/image", formData,{
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    })
+    console.log(response.data)
+    return response.data
+}
 
 // Fake request to test calls to backend
 export const testRequest = async (selectedEmployeeId, shiftId) => {
