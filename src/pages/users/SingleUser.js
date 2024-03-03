@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {
     createAbsence,
@@ -39,6 +39,7 @@ function SingleUser() {
     const [toggleFetchData, setToggleFetchData] = useState(false)
     const [showAbsenceModal, setShowAbsenceModal] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
+    const fileInputRef = useRef(null)
 
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
@@ -65,6 +66,8 @@ function SingleUser() {
             setError(true);
             setErrormessage("Only pdf files allowed.");
         } else {
+            if(fileInputRef.current) {
+                fileInputRef.current.value = '';}
             setLoading(true);
             setError(false);
             setErrormessage("");
@@ -461,10 +464,11 @@ function SingleUser() {
                                 type="file"
                                 accept=".pdf"
                                 onChange={handleFileChange}
+                                ref={fileInputRef}
                             />
                             {userData.employee.imageData &&
                                 <Button type="button" children="Download" onClick={handleDownloadId}/>}
-                            <Button type="submit" children="Upload"/>
+                            <Button type="submit" children="Upload" />
                         </form>
                     </div>
                     <div className="form-inner-container">
