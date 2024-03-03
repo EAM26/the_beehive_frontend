@@ -1,13 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
-import { getAvailableEmployees,} from "../../service";
+import {getAvailableEmployees, getShift, updateShift,} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
+import Button from "../button/Button";
 
 
-function Shift({start, end, employeeShortName, children, shiftId, handleEmployeeChange, newEmp }) {
+function Shift({start, end, employeeShortName, children, shiftId, handleEmployeeChange, fetch, }) {
     const formattedStart = start.substring(11, 16);
     const formattedEnd = end.substring(11, 16);
     const [availableEmployees, setAvailableEmployees] = useState([]);
     const { token } = useContext(AuthContext)
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,14 +22,13 @@ function Shift({start, end, employeeShortName, children, shiftId, handleEmployee
             }
         }
         void fetchData();
-    }, [newEmp]);
+    }, [fetch,]);
 
 
 
     if(!availableEmployees) {
         return <div>Loading....</div>
     }
-    // console.log(availableEmployees)
 
     return (
         <div>
@@ -37,6 +39,7 @@ function Shift({start, end, employeeShortName, children, shiftId, handleEmployee
                     <td>{formattedEnd}</td>
                     {employeeShortName ? (
                         <td>{employeeShortName}</td>
+
                     ) : (
                         <td>
                         <select onChange={handleEmployeeChange} defaultValue="">

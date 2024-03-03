@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
-import {createShift, deleteShift, getRoster, updateShift} from "../../service";
+import {createShift, deleteShift, getRoster, getShift, updateShift} from "../../service";
 import DayColumn from "../../components/DayColumn/DayColumn";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
@@ -30,8 +30,7 @@ function SingleRoster() {
         date: {},
         teamName: ''
     })
-    const [newEmp, setNewEmp] = useState(false)
-    const [isDelete, setIsDelete] = useState(false)
+    const [toggleFetch, setToggleFetch] = useState(false);
 
     const resetNewShift = () => {
         setNewShift({
@@ -41,6 +40,21 @@ function SingleRoster() {
             teamName: ''
         });
     };
+
+    const handleDeleteEmployee = async (shiftId) => {
+        console.log("This is the new emp delete method: ");
+        try {
+            const response = await getShift(token, shiftId)
+            await updateShift(token, response, response.id, null)
+            setToggleFetch(!toggleFetch);
+            console.log(response)
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
+
+
 
     const handleEmployeeChange = (shift, shiftId) => async (e) => {
         e.preventDefault();
@@ -52,8 +66,8 @@ function SingleRoster() {
 
             console.error(e)
         } finally {
-            setNewEmp(!newEmp)
-            console.log("new Emp: " + newEmp)
+            setToggleFetch(!toggleFetch)
+            console.log("new Emp: " + toggleFetch)
         }
 
     };
@@ -66,7 +80,7 @@ function SingleRoster() {
         } catch (e) {
             console.error(e)
         } finally {
-            setIsDelete(!isDelete);
+            setToggleFetch(!toggleFetch);
         }
     }
 
@@ -118,7 +132,7 @@ function SingleRoster() {
             }
         }
         void fetchData()
-    }, [newEmp, isDelete]);
+    }, [toggleFetch]);
 
     if (!singleRoster.weekDates) {
         return <div>Loading...</div>;
@@ -151,8 +165,12 @@ function SingleRoster() {
                                                 shiftId={shift.id}
                                                 shift = {shift}
                                                 handleEmployeeChange={handleEmployeeChange(shift, shift.id)}
-                                                newEmp={newEmp}
+                                                fetch={toggleFetch}
                                             >
+                                                {shift.employeeShortName &&
+                                                <Button children="testDel" onClick={() => {
+                                                    void handleDeleteEmployee(shift.id);
+                                                }}/>}
                                                 <Button children="Del" onClick={() => {
                                                     void handleShiftDelete(shift.id)
                                                 }}/>

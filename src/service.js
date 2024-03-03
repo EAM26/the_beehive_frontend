@@ -245,6 +245,17 @@ export const getRoster = async (jwt, id) => {
     return response.data
 }
 
+export const getShift = async (jwt, id) => {
+    const response = await axios.get(`http://localhost:8080/shifts/${id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    console.log(response)
+    return response.data
+}
+
 export const createShift = async (token, start, end, date, teamName) => {
     const startShift = formatShiftDateTime(date, start)
     let endShift = formatShiftDateTime(date, end)
