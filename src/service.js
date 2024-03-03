@@ -361,6 +361,17 @@ export const getCopyId = async (token, id) => {
     return response.data
 }
 
+export const createCopyId = async (token, formData) => {
+    console.log("createCopyId method in service running")
+    const response = await axios.post("http://localhost:8080/image", formData,{
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    })
+    console.log(response.data)
+    return response.data
+}
+
 // Fake request to test calls to backend
 export const testRequest = async (selectedEmployeeId, shiftId) => {
     console.log("Test Request running")
