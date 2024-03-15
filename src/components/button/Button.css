@@ -13,6 +13,6 @@ button:hover {
 
 .btn-blue {
     background-color: var(--color-blue-sec);
-    color: var(--color-yellow-sec);
+    color: var(--color-orange-main);
     border: 2px solid var(--color-yellow-sec);
 }

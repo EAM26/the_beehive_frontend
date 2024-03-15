@@ -2,10 +2,12 @@ import React, {useContext, useState} from 'react';
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import './Login.css';
+import singleBee from '../../assets/single_bee.png'
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import {postLoginData} from "../../service";
+
 function Login() {
 
     const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"})
@@ -23,8 +25,7 @@ function Login() {
         } catch (e) {
             setError(true)
             setErrormessage(errorHandler(e))
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     }
@@ -34,42 +35,49 @@ function Login() {
             <div className="inner-container">
                 {loading && <p>Loading page...</p>}
                 {error && <p className="error-message">{errorMessage}</p>}
-                <form
-                      onSubmit={handleSubmit(handleFormSubmit)}>
-                    <FormInputField
-                        label="Gebruikersnaam:"
-                        name="username"
-                        type="text"
-                        id="username"
-                        placeholder="Typ hier je gebruikersnaam"
-                        register={register}
-                        errors={errors}
-                        validation={{
-                            required: {
-                                value: true,
-                                message: "Gebruikersnaam is verplicht."
-                            }
-                        }}
+                <div className="login-page">
+                    <form className="login-form"
+                          onSubmit={handleSubmit(handleFormSubmit)}>
+                        <div className="form-head">
+                            <h2>Login</h2>
+                            <img src={singleBee} alt="singlebee-img"/>
+                        </div>
+                        <div className="form-field">
+                            <FormInputField
+                                name="username"
+                                type="text"
+                                id="username"
+                                placeholder="Username"
+                                register={register}
+                                errors={errors}
+                                validation={{
+                                    required: {
+                                        value: true,
+                                        message: "Username is required."
+                                    }
+                                }}
 
                             />
                             <FormInputField
-                            label="Wachtwoord:"
-                            name="password"
-                            type="password"
-                            id="password"
-                            placeholder="Typ hier je wachtwoord"
-                            register={register}
-                            errors={errors}
-                            validation={{
-                                required: {
-                                    value: true,
-                                    message: "Wachtwoord is verplicht."
-                                }
-                            }}
-                    />
+                                name="password"
+                                type="password"
+                                id="password"
+                                placeholder="Password"
+                                register={register}
+                                errors={errors}
+                                validation={{
+                                    required: {
+                                        value: true,
+                                        message: "Password is required."
+                                    }
+                                }}
+                            />
+                        </div>
+                        <a href="">Forgot password?</a>
+                        <Button className="btn-blue" type="submit" children="Login"/>
+                    </form>
+                </div>
 
-                    <Button type="submit" children="Inloggen"/>
-                </form>
             </div>
         </div>
     );

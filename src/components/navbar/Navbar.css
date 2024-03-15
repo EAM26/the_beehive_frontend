@@ -1,7 +1,7 @@
 .navbar-container {
     background-color: var(--color-yellow-prime);
-    /*height: 10em;*/
-    padding: 2em;
+
+    padding: 1.5em;
     border: 2px solid var(--color-yellow-sec);
 
 

@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1em;
+    padding: 1rem;
     background-color: var(--color-yellow-prime);
     border: 2px solid var(--color-yellow-sec);
     font-family: "Anton", sans-serif;

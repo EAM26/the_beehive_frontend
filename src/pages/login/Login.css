@@ -5,3 +5,63 @@
 /*    justify-content: left;*/
 /*}*/
 
+.login-page {
+    padding: 10em;
+}
+
+.form-head {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 450px;
+    width: 390px;
+    background-color: var(--color-yellow-prime);
+    padding: 2rem 2rem 0 2rem;
+    border-radius: 5px;
+    border: 2px solid var(--color-yellow-sec);
+}
+
+input {
+    padding: 1rem;
+    width: 35rem;
+    height: 3.5rem;
+    font-size: 1.6rem;
+    border-radius: 5px;
+    background-color: var(--color-yellow-trip);
+    border: 2px solid var(--color-yellow-sec);
+}
+
+.form-field {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+form button {
+    width: 100px;
+}
+
+.login-form a {
+    font-size: 1.6rem;
+    color: var(--color-orange-main);
+    text-decoration: underline;
+    align-self: flex-end;
+}
+
+input::placeholder {
+    color: var(--color-orange-main);
+}
+
+
