@@ -56,7 +56,6 @@ function Login() {
                                         message: "Username is required."
                                     }
                                 }}
-
                             />
                             <FormInputField
                                 name="password"
