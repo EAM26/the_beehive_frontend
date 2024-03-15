@@ -44,13 +44,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 7em;
+    font-size: 6em;
 }
 
 h2 {
-    font-size: 4em;
+    font-size: 3.6em;
 }
 
+h3 {
+    font-size: 2.2em;
+}
 
 
 p {
