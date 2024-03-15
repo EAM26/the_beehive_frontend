@@ -1,5 +1,6 @@
 import React, {useContext,} from 'react';
 import '../../App.css';
+import '../../index.css'
 import './Navbar.css';
 import Button from "../button/Button";
 import beehiveLogo from '../../assets/beehive.svg';
@@ -20,7 +21,7 @@ function Navbar() {
             <NavLink to="/">
                 <div className="logo-container">
                     <img className="nav-img" src={beehiveLogo} alt="beehive-logo"/>
-                    <h2>Beehive</h2>
+                    <h1>Beehive</h1>
                 </div>
             </NavLink>
 
@@ -29,28 +30,28 @@ function Navbar() {
                 {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/teams" &&
                     <li>
                         <NavLink to="/teams">
-                            Teams
+                            <h2>Teams</h2>
                         </NavLink>
                     </li>)}
                 {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/users" &&
                     <li>
                         <NavLink to="/users">
-                            Users
+                            <h2>Users</h2>
                         </NavLink>
                     </li>)}
                 {(authLevel === 'admin' || authLevel === 'manager') && (location.pathname !== "/rosters" &&
                     <li>
                         <NavLink to="/rosters">
-                            Rosters
+                            <h2>Rosters</h2>
                         </NavLink>
                     </li>)}
                 {location.pathname !== "/profile" &&
                     <li>
                         <NavLink to="/profile">
-                            Profile
+                            <h2>Profile</h2>
                         </NavLink>
                     </li>}
-                <Button type="button" className="btn" children="Logout" onClick={logout}/>
+                <Button type="button" className="btn-blue" children="Logout" onClick={logout}/>
             </ul>}
         </nav>
 
