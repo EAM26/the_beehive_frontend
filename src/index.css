@@ -1,23 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Poor+Story&family=Poppins&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poor+Story&family=Poppins&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 /* Global styling */
 
 /*CSS Reset*/
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    border: 1px solid indianred;
+    /*border: 1px solid indianred;*/
 }
 
 body {
     margin: 0;
-    font-size: 16px;
+    font-size: 62.5%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-blue-main);
 }
 
 code {
@@ -26,15 +28,33 @@ code {
 }
 
 :root {
-    --color-yellow: #FFBB0C;
+    --color-yellow-prime:#EDB72B;
+    --color-yellow-sec:#FFC93F;
+    --color-blue-main:#172D6D;
+    --color-blue-sec:#486DD7;
+    --color-orange-main:#EA7D18;
+    --color-grey-main:#8A8D8F;
+    --color-red-main: #C0392B;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: Poor, sans-serif;
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
+h1 {
+    font-size: 7em;
+}
+
+h2 {
+    font-size: 4em;
+}
+
+
+
 p {
-    font-size: 1rem;
+    font-size: 1.6em;
 }
 
 
