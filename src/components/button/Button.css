@@ -1,11 +1,23 @@
 button {
     border-radius: 5px;
     text-transform: uppercase;
-    padding: 5px 10px;
+    padding: 10px 10px;
+    font-family: Roboto, sans-serif;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 1.6em;
 }
 
 button:hover {
     cursor: pointer;
+}
+
+.btn-blue {
+    background-color: var(--color-blue-sec);
+    color: var(--color-orange-main);
+    border: 2px solid var(--color-yellow-sec);
+}
+
+.btn-new {
+    display: flex;
+    align-items: center;
 }

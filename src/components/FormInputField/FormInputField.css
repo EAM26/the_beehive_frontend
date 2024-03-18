@@ -1,6 +1,42 @@
 /**/
 
+.text-input-field {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+/*.text-input-field label {*/
+/*    font-size: 1.6rem;*/
+/*    font-weight: bolder;*/
+/*}*/
+
+
 .modified{
     font-style: italic;
     background-color: orange;
 }
+
+/*.check-input-field {*/
+/*    display: flex;*/
+/*    justify-content: flex-start;*/
+/*    padding-bottom: 20px;*/
+/*    align-items: center;*/
+/*    font-size: 1.6rem;*/
+/*    font-weight: bolder;*/
+/*}*/
+
+/*.check-input-field label{*/
+/*    padding-right: 10px;*/
+/*}*/
+
+
+/*.select-field {*/
+/*    color: red;*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    padding-bottom: 20px;*/
+/*    align-items: center;*/
+/*    font-size: 1.6rem;*/
+/*    font-weight: bolder;*/
+/*}*/

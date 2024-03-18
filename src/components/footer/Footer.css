@@ -2,10 +2,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 3rem;
-    background-color: orange;
+    position: sticky;
+    bottom: 0;
+    padding: 1rem;
+    background-color: var(--color-yellow-prime);
+    border: 2px solid var(--color-yellow-sec);
+    font-family: "Anton", sans-serif;
 }
 
-/*p {*/
-/*    color: black;*/
-/*}*/
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
