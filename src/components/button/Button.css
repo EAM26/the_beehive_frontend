@@ -16,3 +16,8 @@ button:hover {
     color: var(--color-orange-main);
     border: 2px solid var(--color-yellow-sec);
 }
+
+.btn-new {
+    display: flex;
+    align-items: center;
+}

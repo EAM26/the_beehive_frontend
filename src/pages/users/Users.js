@@ -179,6 +179,7 @@ function Users() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
+                <div></div>
                 <p className="error-message">{error ? errorMessage: ""}</p>
                 <h2>Users</h2>
                 <Button children="NEW USER" type="button" onClick={handleNewUserClick}/>
