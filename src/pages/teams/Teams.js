@@ -8,6 +8,11 @@ import BaseModal from "../../components/baseModal/BaseModal";
 import {mySorterIgnoreCaseSingleAttr} from "../../helpers/mySorterFunctions";
 import {useForm} from "react-hook-form";
 import FormInputField from "../../components/FormInputField/FormInputField";
+import '../../index.css'
+import '../../App.css'
+import './Teams.css'
+import '../../components/FormInputField/FormInputField.css'
+import {PlusCircle} from "@phosphor-icons/react";
 
 
 function Teams() {
@@ -38,7 +43,6 @@ function Teams() {
     const handleViewTeam = (teamName) => {
         navigate(`/teams/${teamName}`);
     }
-
 
 
     const handleSubmitTeam = async (newTeam) => {
@@ -94,15 +98,20 @@ function Teams() {
     return (
         <main className="outer-container">
             <div className="inner-container">
-                <h2>Teams</h2>
-                <Button children="NEW TEAM" type="button" onClick={handleNewTeamClick}/>
                 {loading && <p>Loading...</p>}
                 <p className="error-message">{error ? errorMessage : ""}</p>
-                <table>
+                <div className="teams-head">
+                    <h2>Teams</h2>
+                    <Button className="btn-new btn-blue" type="button" onClick={handleNewTeamClick}>
+                        <p>New</p>
+                        <PlusCircle size={20}/>
+                    </Button></div>
+                <table className="teams-table">
                     <thead>
                     <tr>
                         <th>Team Name</th>
                         <th>Status</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -110,7 +119,8 @@ function Teams() {
                             return <tr key={team.teamName}>
                                 <td>{team.teamName}</td>
                                 <td>{team.isActive ? "Active" : "Inactive"}</td>
-                                <td>{<Button children="view" onClick={() => handleViewTeam(team.teamName)}/>}</td>
+                                <td className="td-button" >{<Button className="btn-blue" children="view"
+                                             onClick={() => handleViewTeam(team.teamName)}/>}</td>
                             </tr>
 
                         }
@@ -118,6 +128,7 @@ function Teams() {
                     </tbody>
                 </table>
             </div>
+
             {showTeamModal && (
                 <BaseModal
                     onClose={handleCloseModal}
@@ -125,17 +136,24 @@ function Teams() {
                     <div className="modal">
                         <div className="modal-content">
                             <form onSubmit={handleSubmit(handleSubmitTeam)}>
-                                <p className="error-message">{error ? errorMessage : ""}</p>
-                                <FormInputField
+                            <p className="error-message">{error ? errorMessage : ""}</p>
+
+                                <FormInputField className="text-input-field"
                                     label="Team Name"
                                     type="text"
                                     name="teamName"
                                     id="teamName"
                                     errors={errors}
                                     register={register}
-                                    validation={{required: "Field is required"}}
+                                    validation={{
+                                        required: "Field is required",
+                                        maxLength:  {
+                                            value:20,
+                                            message: "Not more than 20 characters"
+                                        }
+                                        }}
                                 />
-                                <FormInputField
+                                <FormInputField className="check-input-field"
                                     label="Team Active"
                                     name="isActive"
                                     type="checkbox"
@@ -144,8 +162,10 @@ function Teams() {
                                     errors={errors}
                                     disabled={true}
                                 />
+                                <div className="modal-button-row">
                                 <Button type="submit">Create Team</Button>
                                 <Button type="button" onClick={handleCloseModal}>Cancel</Button>
+                                </div>
                             </form>
                         </div>
                     </div>

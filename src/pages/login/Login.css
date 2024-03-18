@@ -32,7 +32,7 @@
     border: 2px solid var(--color-yellow-sec);
 }
 
-input {
+.form-field input {
     padding: 1rem;
     width: 35rem;
     height: 3.5rem;
