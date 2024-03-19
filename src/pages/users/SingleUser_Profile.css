@@ -1,3 +1,41 @@
+.single-user-page {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-yellow-prime);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.single-user-page h3 {
+    color: var(--color-blue-main);
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+}
+
+.user-emp {
+    display: flex;
+}
+
+.user-data {
+    padding-right: 2rem;
+}
+
+.image-item {
+    background-color: var(--color-yellow-trip);
+    font-size: 1.3rem;
+    padding: 5px;
+    margin: 1.6rem 0;
+    border-radius: 5px;
+}
+
+.image-item label {
+    padding-right: 5px;
+}
+
+.shifts-absences {
+    display: flex;
+    justify-content: space-between;
+}
 .shifts-container {
     display: flex;
     flex-direction: column;
@@ -8,7 +46,19 @@
     border: 1px solid #ccc;
     margin-top: 10px;
     padding: 5px;
+    background-color: var(--color-yellow-trip);
+    border-radius: 5px;
 }
+
+.shifts-head {
+    padding: 3px 2px;
+}
+
+.shift-item {
+    padding: .35rem 0;
+
+}
+
 
 .absences-container {
     display: flex;
@@ -20,6 +70,29 @@
     border: 1px solid #ccc;
     margin-top: 10px;
     padding: 5px;
+    background-color: var(--color-yellow-trip);
+    border-radius: 5px;
+}
+
+.absence-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.absence-head h3 {
+    padding-right: .5rem;
+}
+
+.absence-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: .5rem;
+}
+
+.absence-item p {
+    padding-right: .5rem;
 }
 
 /*.profile-container {*/
@@ -27,18 +100,18 @@
 /*    flex-direction: column;*/
 /*}*/
 
-.form-outer-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+/*.form-outer-container {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    width: 100%;*/
 
-}
+/*}*/
 
-.form-inner-container {
-    display: flex;
-    justify-content: space-evenly;
-}
+/*.form-inner-container {*/
+/*    display: flex;*/
+/*    justify-content: space-evenly;*/
+/*}*/
 
-.screen-container {
-    display: flex;
-}
+/*.screen-container {*/
+/*    display: flex;*/
+/*}*/

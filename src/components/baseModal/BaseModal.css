@@ -33,6 +33,7 @@
     border-radius: 5px;
     height: 3rem;
     padding-left: .5rem;
+    max-width: 50%;
 }
 
 .modal-content form {

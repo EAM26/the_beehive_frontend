@@ -2,8 +2,27 @@ import React from 'react';
 import "./FormInputField.css"
 
 
-function FormInputField( {name, options, checked, type, id, label, defaultValue ,placeholder, register, errors, validation, readOnly, className, children, onInput,  defaultName, disabled} ) {
+function FormInputField({
+                            name,
+                            options,
+                            checked,
+                            type,
+                            id,
+                            label,
+                            defaultValue,
+                            placeholder,
+                            register,
+                            errors,
+                            validation,
+                            readOnly,
+                            className,
+                            children,
+                            onInput,
+                            defaultName,
+                            disabled
+                        }) {
 
+    const combinedClassName = `text-form-field ${className || ''}`;
     if (type === 'select') {
         return (
             <div className={className}>
@@ -21,22 +40,22 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
 
     return (
 
-        <div className={className}>
+        <div className={combinedClassName}>
             <label htmlFor={id}>
                 {label}
             </label>
-                <input
-                    type={type}
-                    id={id}
-                    defaultValue={defaultValue}
-                    placeholder={placeholder}
-                    readOnly={readOnly}
-                    className={className}
-                    {...register(name, validation)}
-                    onInput={onInput}
-                    checked={checked}
-                    disabled={disabled}
-                />
+            <input
+                type={type}
+                id={id}
+                defaultValue={defaultValue}
+                placeholder={placeholder}
+                readOnly={readOnly}
+                className={className}
+                {...register(name, validation)}
+                onInput={onInput}
+                checked={checked}
+                disabled={disabled}
+            />
 
 
             {children}

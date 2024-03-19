@@ -1,11 +1,18 @@
 /**/
 
-/*.text-form-field {*/
-/*    display: flex;*/
-/*    justify-content: flex-start;*/
+.text-form-field {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /*background-color: red;*/
+    margin: 1rem 0;
+}
 
-/*}*/
-
+.text-form-field label {
+    font-family: Roboto, sans-serif;
+    padding-right: .5rem;
+    font-size: 1.3rem;
+}
 
 
 /*}*/
