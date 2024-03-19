@@ -13,7 +13,7 @@ import '../../App.css'
 import './Teams.css'
 import '../../components/FormInputField/FormInputField.css'
 import '../../components/baseModal/BaseModal.css'
-import {PlusCircle} from "@phosphor-icons/react";
+import {Eye, PlusCircle} from "@phosphor-icons/react";
 
 
 function Teams() {
@@ -104,7 +104,7 @@ function Teams() {
                 <div className="teams-head">
                     <h2>Teams</h2>
                     <Button className="btn-new btn-blue" type="button" onClick={handleNewTeamClick}>
-                        <p>New</p>
+                        <p>new</p>
                         <PlusCircle size={20}/>
                     </Button></div>
                 <table className="teams-table">
@@ -120,8 +120,13 @@ function Teams() {
                             return <tr key={team.teamName}>
                                 <td>{team.teamName}</td>
                                 <td>{team.isActive ? "Active" : "Inactive"}</td>
-                                <td className="td-button" >{<Button className="btn-blue" children="view"
-                                             onClick={() => handleViewTeam(team.teamName)}/>}</td>
+                                <td className="td-button">
+                                    {<Button
+                                    className="btn-view"
+                                    children={<Eye size={20}/>}
+                                    onClick={() => handleViewTeam(team.teamName)}/>
+                                    }
+                                </td>
                             </tr>
 
                         }
@@ -137,11 +142,10 @@ function Teams() {
                     <div className="modal">
                         <div className="modal-content">
                             <form onSubmit={handleSubmit(handleSubmitTeam)}>
-                            <p className="error-message">{error ? errorMessage : ""}</p>
+                                <p className="error-message">{error ? errorMessage : ""}</p>
 
                                 <FormInputField
                                     className="modal-item"
-                                    // className="text-input-field modal-item"
                                     label="Team Name"
                                     type="text"
                                     name="teamName"
@@ -150,11 +154,11 @@ function Teams() {
                                     register={register}
                                     validation={{
                                         required: "Field is required",
-                                        maxLength:  {
-                                            value:20,
+                                        maxLength: {
+                                            value: 20,
                                             message: "Not more than 20 characters"
                                         }
-                                        }}
+                                    }}
                                 />
                                 <FormInputField
                                     className="modal-item"
@@ -170,8 +174,9 @@ function Teams() {
                                 <div
                                     className="modal-button-row"
                                 >
-                                <Button className="btn-blue" type="submit">Create Team</Button>
-                                <Button className="btn-blue" type="button" onClick={handleCloseModal}>Cancel</Button>
+                                    <Button className="btn-blue" type="submit">Create</Button>
+                                    <Button className="btn-blue" type="button"
+                                            onClick={handleCloseModal}>Cancel</Button>
                                 </div>
                             </form>
                         </div>
