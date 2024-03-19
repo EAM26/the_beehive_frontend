@@ -29,50 +29,8 @@
 
 
 
-.teams-page {
-    background-color: var(--color-blue-main);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 450px;
-    width: 390px;
 
-}
 
-/*.teams-page table {*/
-/*    background-color: var(--color-yellow-prime);*/
 
-/*}*/
-
-/*.teams-head h2 {*/
-/*    color: var(--color-yellow-prime);*/
-/*}*/
-/*.teams-head {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    align-items: center;*/
-/*    width: 100%;*/
-
-/*}*/
-
-/*!*.users-table-outer {*!*/
-/*!*    background-color: var(--color-yellow-prime);*!*/
-/*!*    width: 100%;*!*/
-/*!*    border-radius: 5px;*!*/
-/*!*    display: flex;*!*/
-/*!*}*!*/
-
-/*!*.users-table-inner {*!*/
-/*!*    display: flex;*!*/
-/*!*    flex-direction: column;*!*/
-/*!*}*!*/
-
-/*!*.table-data-row {*!*/
-/*!*    display: flex;*!*/
-/*!*    flex-direction: row;*!*/
-/*!*    justify-content: space-between;*!*/
-/*!*    width: 100%;*!*/
-/*!*}*!*/
 
 

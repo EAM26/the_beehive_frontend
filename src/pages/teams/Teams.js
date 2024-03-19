@@ -106,7 +106,8 @@ function Teams() {
                     <Button className="btn-new btn-blue" type="button" onClick={handleNewTeamClick}>
                         <p>new</p>
                         <PlusCircle size={20}/>
-                    </Button></div>
+                    </Button>
+                </div>
                 <table className="teams-table">
                     <thead>
                     <tr>
@@ -122,7 +123,7 @@ function Teams() {
                                 <td>{team.isActive ? "Active" : "Inactive"}</td>
                                 <td className="td-button">
                                     {<Button
-                                    className="btn-view"
+                                    className="btn-logo btn-view"
                                     children={<Eye size={20}/>}
                                     onClick={() => handleViewTeam(team.teamName)}/>
                                     }
@@ -155,8 +156,8 @@ function Teams() {
                                     validation={{
                                         required: "Field is required",
                                         maxLength: {
-                                            value: 20,
-                                            message: "Not more than 20 characters"
+                                            value: 10,
+                                            message: "Not more than 10 characters"
                                         }
                                     }}
                                 />
