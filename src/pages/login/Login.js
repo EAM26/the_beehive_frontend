@@ -38,11 +38,13 @@ function Login() {
                 <div className="login-page">
                     <form className="login-form"
                           onSubmit={handleSubmit(handleFormSubmit)}>
-                        <div className="form-head">
+                        <div className="log-form-head">
                             <h2>Login</h2>
                             <img src={singleBee} alt="singlebee-img"/>
                         </div>
-                        <div className="form-field">
+                        <div
+                            className="log-form-field"
+                        >
                             <FormInputField
                                 name="username"
                                 type="text"
