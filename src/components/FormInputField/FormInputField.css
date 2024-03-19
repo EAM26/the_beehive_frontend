@@ -1,10 +1,14 @@
 /**/
 
-.text-input-field {
-    display: flex;
-    justify-content: space-between;
+/*.text-form-field {*/
+/*    display: flex;*/
+/*    justify-content: flex-start;*/
 
-}
+/*}*/
+
+
+
+/*}*/
 
 /*.text-input-field label {*/
 /*    font-size: 1.6rem;*/
@@ -12,10 +16,16 @@
 /*}*/
 
 
-.modified{
+.modified {
     font-style: italic;
     background-color: orange;
 }
+
+/*.check-input-field input[type="checkbox"] {*/
+/*    !* Your checkbox styling rules here *!*/
+/*    background-color: lightblue; !* Example color change *!*/
+/*    border-color: lightblue; !* Match background color *!*/
+/*}*/
 
 /*.check-input-field {*/
 /*    display: flex;*/

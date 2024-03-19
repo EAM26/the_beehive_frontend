@@ -12,6 +12,7 @@ import '../../index.css'
 import '../../App.css'
 import './Teams.css'
 import '../../components/FormInputField/FormInputField.css'
+import '../../components/baseModal/BaseModal.css'
 import {PlusCircle} from "@phosphor-icons/react";
 
 
@@ -138,7 +139,9 @@ function Teams() {
                             <form onSubmit={handleSubmit(handleSubmitTeam)}>
                             <p className="error-message">{error ? errorMessage : ""}</p>
 
-                                <FormInputField className="text-input-field"
+                                <FormInputField
+                                    className="modal-item"
+                                    // className="text-input-field modal-item"
                                     label="Team Name"
                                     type="text"
                                     name="teamName"
@@ -153,7 +156,9 @@ function Teams() {
                                         }
                                         }}
                                 />
-                                <FormInputField className="check-input-field"
+                                <FormInputField
+                                    className="modal-item"
+                                    // className="check-input-field"
                                     label="Team Active"
                                     name="isActive"
                                     type="checkbox"
@@ -162,9 +167,11 @@ function Teams() {
                                     errors={errors}
                                     disabled={true}
                                 />
-                                <div className="modal-button-row">
-                                <Button type="submit">Create Team</Button>
-                                <Button type="button" onClick={handleCloseModal}>Cancel</Button>
+                                <div
+                                    className="modal-button-row"
+                                >
+                                <Button className="btn-blue" type="submit">Create Team</Button>
+                                <Button className="btn-blue" type="button" onClick={handleCloseModal}>Cancel</Button>
                                 </div>
                             </form>
                         </div>

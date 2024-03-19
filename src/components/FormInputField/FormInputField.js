@@ -6,7 +6,7 @@ function FormInputField( {name, options, checked, type, id, label, defaultValue 
 
     if (type === 'select') {
         return (
-            <div>
+            <div className={className}>
                 <label htmlFor={id}>{label}</label>
                 <select id={id} name={name} {...register(name, validation)}>
                     <option value="" disabled selected>{defaultName}</option>
