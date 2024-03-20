@@ -12,6 +12,7 @@ import '../../index.css'
 import '../../App.css'
 import './Teams.css'
 import '../../components/FormInputField/FormInputField.css'
+import '../../components/FormInputField/FormInputField.css'
 import '../../components/baseModal/BaseModal.css'
 import {Eye, PlusCircle} from "@phosphor-icons/react";
 
@@ -162,8 +163,7 @@ function Teams() {
                                     }}
                                 />
                                 <FormInputField
-                                    className="modal-item"
-                                    // className="check-input-field"
+                                    className="modal-checkbox"
                                     label="Team Active"
                                     name="isActive"
                                     type="checkbox"
@@ -173,8 +173,7 @@ function Teams() {
                                     disabled={true}
                                 />
                                 <div
-                                    className="modal-button-row"
-                                >
+                                    className="modal-button-row">
                                     <Button className="btn-blue" type="submit">Create</Button>
                                     <Button className="btn-blue" type="button"
                                             onClick={handleCloseModal}>Cancel</Button>

@@ -183,7 +183,6 @@ function SingleRoster() {
                                     {showShiftModal && (
                                         <BaseModal isOpen={showShiftModal} onClose={handleClose}>
                                             <form onSubmit={handleSubmit}>
-
                                                 <div>
                                                     <label>
                                                         Start:

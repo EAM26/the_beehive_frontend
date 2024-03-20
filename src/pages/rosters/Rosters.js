@@ -7,6 +7,8 @@ import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {useNavigate} from "react-router-dom";
 import FormInputField from "../../components/FormInputField/FormInputField";
+import '../../components/FormInputField/FormInputField.css'
+import '../../components/baseModal/BaseModal.css'
 import {useForm} from "react-hook-form";
 import './Rosters.css';
 import {Eye, PlusCircle} from "@phosphor-icons/react";
@@ -153,6 +155,7 @@ function Rosters() {
                         <form onSubmit={handleSubmit(handleSubmitRoster)}>
                             <p className="error-message">{error ? errorMessage: ""}</p>
                             <FormInputField
+                                className="modal-item"
                                 label="Week"
                                 type="select"
                                 name="week"
@@ -166,6 +169,7 @@ function Rosters() {
                                 defaultName="week"
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Year"
                                 type="select"
                                 name="year"
@@ -179,6 +183,7 @@ function Rosters() {
                                 defaultName="year"
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Team"
                                 type="select"
                                 name="teamName"
@@ -191,8 +196,10 @@ function Rosters() {
                                 selected="selected"
                                 defaultName="team"
                             />
-                            <Button type="submit">Add Roster</Button>
-                            <Button type="button" onClick={handleOnClose}>Cancel</Button>
+                            <div className="modal-button-row">
+                                <Button className="btn-blue" type="submit">Create</Button>
+                            <Button className="btn-blue" type="button" onClick={handleOnClose}>Cancel</Button>
+                            </div>
                         </form>
                     </BaseModal>
                 )}

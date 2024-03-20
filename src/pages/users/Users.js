@@ -258,6 +258,7 @@ function Users() {
                         <form onSubmit={handleSubmit(handleSubmitUser)}>
                             <p className="error-message">{error ? errorMessage : ""}</p>
                             <FormInputField
+                                className="modal-item"
                                 label="UserName"
                                 name="username"
                                 type="text"
@@ -273,6 +274,7 @@ function Users() {
                                 }}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Password"
                                 name="password"
                                 type="password"
@@ -293,6 +295,7 @@ function Users() {
                             />
 
                             <FormInputField
+                                className="modal-item"
                                 label="Email"
                                 name="email"
                                 type="email"
@@ -313,6 +316,7 @@ function Users() {
                                 }
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Authority"
                                 name="userRole"
                                 type="text"
@@ -323,6 +327,7 @@ function Users() {
                             />
 
                             <FormInputField
+                                className="modal-checkbox"
                                 label="Deleted"
                                 name="isDeleted"
                                 type="checkbox"
@@ -330,9 +335,10 @@ function Users() {
                                 errors={errors}
                                 register={register}
                             />
-
-                            <button type="submit">Create User</button>
-                            <button type="button" onClick={handleCloseModal}>Cancel</button>
+                            <div className="modal-button-row">
+                            <Button className="btn-blue" type="submit">Create</Button>
+                            <Button className="btn-blue" type="button" onClick={handleCloseModal}>Cancel</Button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -347,6 +353,7 @@ function Users() {
                         <form onSubmit={handleSubmit(handleSubmitEmployee)}>
                             <p className="error-message">{error ? errorMessage : ""}</p>
                             <FormInputField
+                                className="modal-item"
                                 label="First Name"
                                 name="firstName"
                                 type="text"
@@ -356,6 +363,7 @@ function Users() {
                                 validation={{required: "Field is required"}}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Preposition"
                                 name="preposition"
                                 type="text"
@@ -364,6 +372,7 @@ function Users() {
                                 register={register}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Last Name"
                                 name="lastName"
                                 type="text"
@@ -373,6 +382,7 @@ function Users() {
                                 validation={{required: "Field is required"}}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Short Name"
                                 name="shortName"
                                 type="text"
@@ -382,6 +392,7 @@ function Users() {
                                 validation={{required: "Field is required"}}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Date of Birth"
                                 name="dob"
                                 type="date"
@@ -390,6 +401,7 @@ function Users() {
                                 register={register}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Phone Number"
                                 name="phoneNumber"
                                 type="text"
@@ -404,6 +416,7 @@ function Users() {
                                 }}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Team"
                                 type="select"
                                 name="teamName"
@@ -417,6 +430,7 @@ function Users() {
                                 defaultName="team"
                             />
                             <FormInputField
+                                className="modal-checkbox"
                                 label="Active"
                                 name="isActive"
                                 type="checkbox"
@@ -425,8 +439,10 @@ function Users() {
                                 register={register}
                                 defaultValue={true}
                             />
-                            <Button type="submit">Create Employee</Button>
-                            <Button type="button" onClick={handleCloseModal}>Cancel</Button>
+                            <div className="modal-button-row">
+                            <Button className="btn-blue" type="submit">Create</Button>
+                            <Button className="btn-blue" type="button" onClick={handleCloseModal}>Cancel</Button>
+                            </div>
                         </form>
                     </div>
                 </div>

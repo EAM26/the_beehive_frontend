@@ -524,6 +524,7 @@ function SingleUser() {
                                                 <form onSubmit={handleSubmit(handleSubmitAbsence)}>
                                                     <p className="error-message">{error ? errorMessage : ""}</p>
                                                     <FormInputField
+                                                        className="modal-item"
                                                         label="Start date"
                                                         type="date"
                                                         name="startDate"
@@ -533,6 +534,7 @@ function SingleUser() {
                                                         validation={{required: "Field is required"}}
                                                     />
                                                     <FormInputField
+                                                        className="modal-item"
                                                         label="End date"
                                                         type="date"
                                                         name="endDate"
@@ -541,8 +543,10 @@ function SingleUser() {
                                                         register={register}
                                                         validation={{required: "Field is required"}}
                                                     />
-                                                    <Button type="submit">Create Absence</Button>
-                                                    <Button type="button" onClick={handleClose}>Cancel</Button>
+                                                    <div className="modal-button-row">
+                                                    <Button className="btn-blue" type="submit">Create</Button>
+                                                    <Button className="btn-blue" type="button" onClick={handleClose}>Cancel</Button>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
