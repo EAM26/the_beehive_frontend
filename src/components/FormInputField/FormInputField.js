@@ -39,27 +39,27 @@ function FormInputField({
     }
 
     return (
+        <div>
+            <div className={combinedClassName}>
+                <label htmlFor={id}>
+                    {label}
+                </label>
+                <input
+                    type={type}
+                    id={id}
+                    defaultValue={defaultValue}
+                    placeholder={placeholder}
+                    readOnly={readOnly}
+                    className={className}
+                    {...register(name, validation)}
+                    onInput={onInput}
+                    checked={checked}
+                    disabled={disabled}
+                />
+                {children}
+            </div>
+            {errors ? <p className="error-message">{errors[name] && errors[name].message}</p>: null}
 
-        <div className={combinedClassName}>
-            <label htmlFor={id}>
-                {label}
-            </label>
-            <input
-                type={type}
-                id={id}
-                defaultValue={defaultValue}
-                placeholder={placeholder}
-                readOnly={readOnly}
-                className={className}
-                {...register(name, validation)}
-                onInput={onInput}
-                checked={checked}
-                disabled={disabled}
-            />
-
-
-            {children}
-            <p className="error-message">{errors[name] && errors[name].message}</p>
         </div>
     );
 }
