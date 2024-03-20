@@ -22,25 +22,29 @@ function FormInputField({
                             disabled
                         }) {
 
-    const combinedClassName = `text-form-field ${className || ''}`;
+    const combinedClassNameText = `text-form-field ${className || ''}`;
+    const combinedClassNameSelect = `select-form-field ${className || ''}`;
     if (type === 'select') {
         return (
-            <div className={className}>
+            <div>
+            <div className={combinedClassNameSelect}>
                 <label htmlFor={id}>{label}</label>
-                <select id={id} name={name} {...register(name, validation)}>
-                    <option value="" disabled selected>{defaultName}</option>
+                <select id={id} name={name} {...register(name, validation)} defaultValue="">
+                    <option value="" disabled>{defaultName}</option>
                     {options.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
-                {errors[name] && <p className="error-message">{errors[name].message}</p>}
+
+            </div>
+        {errors[name] && <p className="error-message">{errors[name].message}</p>}
             </div>
         );
     }
 
     return (
         <div>
-            <div className={combinedClassName}>
+            <div className={combinedClassNameText}>
                 <label htmlFor={id}>
                     {label}
                 </label>
@@ -58,7 +62,7 @@ function FormInputField({
                 />
                 {children}
             </div>
-            {errors ? <p className="error-message">{errors[name] && errors[name].message}</p>: null}
+            {errors[name] && <p className="error-message">{errors[name].message}</p>}
 
         </div>
     );

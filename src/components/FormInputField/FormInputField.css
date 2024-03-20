@@ -4,23 +4,35 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /*background-color: red;*/
+    margin: .5rem 0;
+}
+
+.select-form-field {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     margin: .5rem 0;
 }
 
 .text-form-field label {
     font-family: Roboto, sans-serif;
+    font-weight: bold;
+    padding-right: .5rem;
+    font-size: 1.3rem;
+}
+.select-form-field label {
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
     padding-right: .5rem;
     font-size: 1.3rem;
 }
 
-
-/*}*/
-
-/*.text-input-field label {*/
-/*    font-size: 1.6rem;*/
-/*    font-weight: bolder;*/
-/*}*/
+.text-form-field input {
+    background-color: var(--color-yellow-trip);
+    border: 1px solid var(--color-yellow-sec);
+    border-radius: 5px;
+    padding-left: 5px;
+}
 
 
 .error-message {
