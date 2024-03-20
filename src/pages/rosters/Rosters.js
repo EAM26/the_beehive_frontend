@@ -7,8 +7,11 @@ import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {useNavigate} from "react-router-dom";
 import FormInputField from "../../components/FormInputField/FormInputField";
+import '../../components/FormInputField/FormInputField.css'
+import '../../components/baseModal/BaseModal.css'
 import {useForm} from "react-hook-form";
-
+import './Rosters.css';
+import {Eye, PlusCircle} from "@phosphor-icons/react";
 function Rosters() {
 
     const [rosterCreated, setRosterCreated] = useState({})
@@ -110,9 +113,15 @@ function Rosters() {
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
                 <p className="error-message">{error ? errorMessage: ""}</p>
+                <div className="rosters-head">
                 <h2>Rosters</h2>
-                <Button children="NEW ROSTER" type="button" onClick={() => setShowModal(true)}/>
-                <table>
+                    <Button className="btn-new btn-blue" type="button" onClick={() => setShowModal(true)}>
+                        <p>new</p>
+                        <PlusCircle size={20}/>
+                    </Button>
+
+                </div>
+                    <table className="rosters-table">
                     <thead>
                     <tr>
                         <th>Week</th>
@@ -128,7 +137,12 @@ function Rosters() {
                             <td>{week}</td>
                             <td>{year}</td>
                             <td>{team}</td>
-                            <td><Button onClick={() => handleClickView(roster.id)} children="view"/></td>
+                            <td className="rosters-td-button">
+                                {<Button
+                                    className="btn-logo btn-view"
+                                    children={<Eye size={20}/>}
+                                    onClick={() => handleClickView(roster.id)}/>}
+                            </td>
                         </tr>
                     })}
 
@@ -141,6 +155,7 @@ function Rosters() {
                         <form onSubmit={handleSubmit(handleSubmitRoster)}>
                             <p className="error-message">{error ? errorMessage: ""}</p>
                             <FormInputField
+                                className="modal-item"
                                 label="Week"
                                 type="select"
                                 name="week"
@@ -154,6 +169,7 @@ function Rosters() {
                                 defaultName="week"
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Year"
                                 type="select"
                                 name="year"
@@ -167,6 +183,7 @@ function Rosters() {
                                 defaultName="year"
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Team"
                                 type="select"
                                 name="teamName"
@@ -179,8 +196,10 @@ function Rosters() {
                                 selected="selected"
                                 defaultName="team"
                             />
-                            <Button type="submit">Add Roster</Button>
-                            <Button type="button" onClick={handleOnClose}>Cancel</Button>
+                            <div className="modal-button-row">
+                                <Button className="btn-blue" type="submit">Create</Button>
+                            <Button className="btn-blue" type="button" onClick={handleOnClose}>Cancel</Button>
+                            </div>
                         </form>
                     </BaseModal>
                 )}

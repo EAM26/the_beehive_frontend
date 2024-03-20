@@ -4,15 +4,16 @@
 
 /*CSS Reset*/
 
-html {
-    font-size: 62.5%;
-}
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     border: 1px solid indianred;
+}
+
+html {
+    font-size: 62.5%;
 }
 
 body {

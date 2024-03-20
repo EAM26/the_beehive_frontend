@@ -7,6 +7,8 @@ import {AuthContext} from "../../context/AuthContext";
 import BaseModal from "../../components/baseModal/BaseModal";
 import FormInputField from "../../components/FormInputField/FormInputField";
 import {useForm} from "react-hook-form";
+import './Users.css';
+import {Eye, PlusCircle, UserCirclePlus} from "@phosphor-icons/react";
 
 
 function Users() {
@@ -179,29 +181,34 @@ function Users() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <div></div>
-                <p className="error-message">{error ? errorMessage: ""}</p>
-                <h2>Users</h2>
-                <Button children="NEW USER" type="button" onClick={handleNewUserClick}/>
-                <div>
-                    <span>User Status</span>
-                    <select value={deletedFilter} onChange={handleDeletedFilterChange}>
-                        <option value="all">All</option>
-                        <option value="active">Not Deleted</option>
-                        <option value="deleted">Deleted</option>
-                    </select>
+                <p className="error-message">{error ? errorMessage : ""}</p>
+                <div className="users-page">
+                    <div className="users-head">
+                        <h2>Users</h2>
+                        <Button className="btn-new btn-blue" type="button" onClick={handleNewUserClick}>
+                            <p>new</p>
+                            <PlusCircle size={20}/>
+                        </Button>
+                    </div>
+                    <div className="users-select">
+                        <span>User Status</span>
+                        <select value={deletedFilter} onChange={handleDeletedFilterChange}>
+                            <option value="all">All</option>
+                            <option value="active">Not Deleted</option>
+                            <option value="deleted">Deleted</option>
+                        </select>
 
-                    <span>Employee</span>
-                    <select value={employeeFilter} onChange={handleEmployeeFilterChange}>
-                        <option value="all">All</option>
-                        <option value="isEmployee">Employees</option>
-                        <option value="userOnly">Non Employees</option>
-                    </select>
-                </div>
-                    <table>
+                        <span>Employee</span>
+                        <select value={employeeFilter} onChange={handleEmployeeFilterChange}>
+                            <option value="all">All</option>
+                            <option value="isEmployee">Employees</option>
+                            <option value="userOnly">Non Employees</option>
+                        </select>
+                    </div>
+                    <table className="users-table">
                         <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>Username</th>
                             <th>Full Name</th>
                             <th>Status</th>
                             <th>Email</th>
@@ -219,18 +226,28 @@ function Users() {
                                     <td>{user.isDeleted ? "Not Active" : "Active"}</td>
                                     <td>{user.email} </td>
                                     <td>{authoritiesDisplay}</td>
-                                    <td>{user.employee ? user.employee.id :
-                                        <Button children="+Employee"
-                                                onClick={() => handleNewEmployeeClick(user.username)}/>}
+                                    <td className="td-emp-id">{user.employee ? user.employee.id :
+                                        <Button className="btn-logo btn-emp"
+                                                children={<UserCirclePlus size={20}/>}
+                                                onClick={() => handleNewEmployeeClick(user.username)}
+                                        >
+                                        </Button>}
                                     </td>
-                                    <td>
-                                        {<Button children="view" onClick={() => handleViewUser(user.username)}/>}
+                                    <td className="teams-td-button">
+                                        {<Button
+                                            className="btn-logo btn-view"
+                                            children={<Eye size={20}/>}
+                                            onClick={() => handleViewUser(user.username)}>
+
+                                        </Button>
+                                        }
                                     </td>
                                 </tr>
                             }
                         )}
                         </tbody>
                     </table>
+                </div>
             </div>
             {/* User Modal */}
             <BaseModal
@@ -239,17 +256,25 @@ function Users() {
                 <div className="modal">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit(handleSubmitUser)}>
-                            <p className="error-message">{error ? errorMessage: ""}</p>
+                            <p className="error-message">{error ? errorMessage : ""}</p>
                             <FormInputField
+                                className="modal-item"
                                 label="UserName"
                                 name="username"
                                 type="text"
                                 id="username"
                                 errors={errors}
                                 register={register}
-                                validation={{required: "Field is required"}}
+                                validation={{
+                                    required: "Field is required",
+                                    maxLength: {
+                                        value: 20,
+                                        message: "Not more than 20 characters"
+                                    }
+                                }}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Password"
                                 name="password"
                                 type="password"
@@ -270,6 +295,7 @@ function Users() {
                             />
 
                             <FormInputField
+                                className="modal-item"
                                 label="Email"
                                 name="email"
                                 type="email"
@@ -290,6 +316,7 @@ function Users() {
                                 }
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Authority"
                                 name="userRole"
                                 type="text"
@@ -300,6 +327,7 @@ function Users() {
                             />
 
                             <FormInputField
+                                className="modal-checkbox"
                                 label="Deleted"
                                 name="isDeleted"
                                 type="checkbox"
@@ -307,9 +335,10 @@ function Users() {
                                 errors={errors}
                                 register={register}
                             />
-
-                            <button type="submit">Create User</button>
-                            <button type="button" onClick={handleCloseModal}>Cancel</button>
+                            <div className="modal-button-row">
+                            <Button className="btn-blue" type="submit">Create</Button>
+                            <Button className="btn-blue" type="button" onClick={handleCloseModal}>Cancel</Button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -322,8 +351,9 @@ function Users() {
                 <div className="modal">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit(handleSubmitEmployee)}>
-                            <p className="error-message">{error ? errorMessage: ""}</p>
+                            <p className="error-message">{error ? errorMessage : ""}</p>
                             <FormInputField
+                                className="modal-item"
                                 label="First Name"
                                 name="firstName"
                                 type="text"
@@ -333,6 +363,7 @@ function Users() {
                                 validation={{required: "Field is required"}}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Preposition"
                                 name="preposition"
                                 type="text"
@@ -341,6 +372,7 @@ function Users() {
                                 register={register}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Last Name"
                                 name="lastName"
                                 type="text"
@@ -350,6 +382,7 @@ function Users() {
                                 validation={{required: "Field is required"}}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Short Name"
                                 name="shortName"
                                 type="text"
@@ -359,6 +392,7 @@ function Users() {
                                 validation={{required: "Field is required"}}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Date of Birth"
                                 name="dob"
                                 type="date"
@@ -367,6 +401,7 @@ function Users() {
                                 register={register}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Phone Number"
                                 name="phoneNumber"
                                 type="text"
@@ -381,6 +416,7 @@ function Users() {
                                 }}
                             />
                             <FormInputField
+                                className="modal-item"
                                 label="Team"
                                 type="select"
                                 name="teamName"
@@ -394,6 +430,7 @@ function Users() {
                                 defaultName="team"
                             />
                             <FormInputField
+                                className="modal-checkbox"
                                 label="Active"
                                 name="isActive"
                                 type="checkbox"
@@ -402,8 +439,10 @@ function Users() {
                                 register={register}
                                 defaultValue={true}
                             />
-                            <Button type="submit">Create Employee</Button>
-                            <Button type="button" onClick={handleCloseModal}>Cancel</Button>
+                            <div className="modal-button-row">
+                            <Button className="btn-blue" type="submit">Create</Button>
+                            <Button className="btn-blue" type="button" onClick={handleCloseModal}>Cancel</Button>
+                            </div>
                         </form>
                     </div>
                 </div>

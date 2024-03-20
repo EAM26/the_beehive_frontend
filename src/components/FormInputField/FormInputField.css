@@ -1,21 +1,54 @@
 /**/
 
-.text-input-field {
+.text-form-field {
     display: flex;
-    justify-content: space-between;
-
+    justify-content: flex-end;
+    align-items: center;
+    margin: .5rem 0;
 }
 
-/*.text-input-field label {*/
-/*    font-size: 1.6rem;*/
-/*    font-weight: bolder;*/
-/*}*/
+.select-form-field {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: .5rem 0;
+}
+
+.text-form-field label {
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+    padding-right: .5rem;
+    font-size: 1.3rem;
+}
+.select-form-field label {
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+    padding-right: .5rem;
+    font-size: 1.3rem;
+}
+
+.text-form-field input {
+    background-color: var(--color-yellow-trip);
+    border: 1px solid var(--color-yellow-sec);
+    border-radius: 5px;
+    padding-left: 5px;
+}
 
 
-.modified{
+.error-message {
+    white-space: pre-wrap;
+}
+
+.modified {
     font-style: italic;
     background-color: orange;
 }
+
+/*.check-input-field input[type="checkbox"] {*/
+/*    !* Your checkbox styling rules here *!*/
+/*    background-color: lightblue; !* Example color change *!*/
+/*    border-color: lightblue; !* Match background color *!*/
+/*}*/
 
 /*.check-input-field {*/
 /*    display: flex;*/
