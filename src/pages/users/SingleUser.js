@@ -17,7 +17,7 @@ import Button from "../../components/button/Button";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleUser_Profile.css"
 import BaseModal from "../../components/baseModal/BaseModal";
-import {PlusCircle, Trash, TrashSimple} from "@phosphor-icons/react";
+import {PlusCircle, Trash} from "@phosphor-icons/react";
 
 
 function SingleUser() {
@@ -315,7 +315,7 @@ function SingleUser() {
                         {userData.employee ?
 
                             <form
-                                className="employee-data"
+                                // className="employee-data"
                                 onSubmit={handleSubmit(handleFormSubmitEmployee)}>
                                 <h3>EMPLOYEE</h3>
                                 <FormInputField

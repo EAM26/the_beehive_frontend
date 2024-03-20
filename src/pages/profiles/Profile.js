@@ -7,6 +7,7 @@ import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
 import "../users/SingleUser_Profile.css"
 import {AuthContext} from "../../context/AuthContext";
+import '../teams/SingleTeam.css'
 
 function Profile() {
     const {register, handleSubmit, formState: {errors}, setValue} = useForm({
@@ -87,10 +88,11 @@ function Profile() {
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
                 <p className="error-message">{error ? errorMessage: ""}</p>
-                <div className="form-outer-container">
-                    <div className="form-inner-container">
-                        <form onSubmit={handleSubmit(handleFormSubmitUser)}>
-
+                <div className="single-user-page">
+                    <div className="user-emp">
+                        <form
+                            className="user-data"
+                            onSubmit={handleSubmit(handleFormSubmitUser)}>
                             <h3>USER</h3>
                             <FormInputField
                                 label="User name"
@@ -176,7 +178,7 @@ function Profile() {
                                 errors={errors}
                                 disabled={true}
                             />
-                            <Button type="submit" children="Save"/>
+                            <Button className="btn-blue" type="submit" children="Save"/>
                         </form>
                         <form>
                             <h3>EMPLOYEE</h3>
@@ -305,7 +307,7 @@ function Profile() {
                             />
                         </form>
                     </div>
-                    <div className="form-inner-container">
+                    <div className="shifts-absences">
                         <div className="shifts-container">
                             <h3>SHIFTS</h3>
                             {profileData.shifts ? profileData.shifts.slice(0, 5).map((shift) => {
