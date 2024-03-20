@@ -233,7 +233,7 @@ function Users() {
                                         >
                                         </Button>}
                                     </td>
-                                    <td className="td-button">
+                                    <td className="teams-td-button">
                                         {<Button
                                             className="btn-logo btn-view"
                                             children={<Eye size={20}/>}

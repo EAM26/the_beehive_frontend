@@ -1,4 +1,4 @@
-.teams-head {
+.rosters-head {
     display: flex;
     justify-content: space-between;
     color: var(--color-yellow-prime);
@@ -6,7 +6,7 @@
     padding: 20px 0;
 }
 
-.teams-table {
+.rosters-table {
     width: 450px;
     background-color: var(--color-yellow-prime);
     font-size: 2rem;
@@ -17,20 +17,12 @@
 }
 
 
-.teams-table th {
+.rosters-table th {
     text-align: left;
 }
 
-.teams-td-button {
+.rosters-td-button {
     display: flex;
     justify-content: flex-end;
     font-size: 1rem;
 }
-
-
-
-
-
-
-
-

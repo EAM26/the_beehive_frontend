@@ -121,7 +121,7 @@ function Teams() {
                             return <tr key={team.teamName}>
                                 <td>{team.teamName}</td>
                                 <td>{team.isActive ? "Active" : "Inactive"}</td>
-                                <td className="td-button">
+                                <td className="teams-td-button">
                                     {<Button
                                     className="btn-logo btn-view"
                                     children={<Eye size={20}/>}
