@@ -40,8 +40,8 @@ function Shift({start, end, employeeShortName, children, shiftId, handleEmployee
 
                     ) : (
                         <td>
-                            <select onChange={handleEmployeeChange} defaultValue="">
-                                <option value="" disabled>no emp</option>
+                            <select className="emp-picker" onChange={handleEmployeeChange} defaultValue="">
+                                <option  value="" disabled>no emp.</option>
                                 {availableEmployees.map((emp) => (
                                     <option key={emp.id} value={emp.id}>{emp.id} {emp.shortName}</option>
                                 ))}

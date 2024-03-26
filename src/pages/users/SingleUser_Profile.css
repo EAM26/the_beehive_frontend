@@ -4,6 +4,7 @@
     background-color: var(--color-yellow-prime);
     padding: 20px;
     border-radius: 5px;
+    margin-top: 30px;
 }
 
 .single-user-page h3 {

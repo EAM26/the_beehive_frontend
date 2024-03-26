@@ -1,3 +1,4 @@
-select {
-    max-width: 100px;
+.emp-picker {
+    width: 100px;
+    font-size: 1.3rem;
 }
