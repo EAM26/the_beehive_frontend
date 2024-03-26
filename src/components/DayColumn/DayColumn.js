@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {LocaleContext} from "../../context/LocaleContext";
-
-function DayColumn({ day, date, shifts, children, }) {
+import './DayColumn.css'
+function DayColumn({ day, date, shifts, children, className}) {
 
 
     const userLocale = useContext(LocaleContext)
@@ -12,13 +12,16 @@ function DayColumn({ day, date, shifts, children, }) {
         month: '2-digit',
     });
 
-    const dayName = date.toLocaleDateString(userLocale, { weekday: 'long' });
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
     return (
-        <div>
+        <div className="column">
+            <div>
             <h3>{dayName.substring(0, 3)}</h3>
-            <h3>{day}<span className="date">{formattedDayMonth}</span></h3>
+            <h3>{formattedDayMonth}</h3>
+            </div>
 
             {children}
+
         </div>
     );
 }
