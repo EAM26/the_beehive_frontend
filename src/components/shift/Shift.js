@@ -1,15 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {getAvailableEmployees, getShift, updateShift,} from "../../service";
+import {getAvailableEmployees,} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
-import Button from "../button/Button";
+import './Shift.css'
 
 
-function Shift({start, end, employeeShortName, children, shiftId, handleEmployeeChange, fetch, }) {
+function Shift({start, end, employeeShortName, children, shiftId, handleEmployeeChange, fetch, classname}) {
     const formattedStart = start.substring(11, 16);
     const formattedEnd = end.substring(11, 16);
     const [availableEmployees, setAvailableEmployees] = useState([]);
-    const { token } = useContext(AuthContext)
-
+    const {token} = useContext(AuthContext)
 
 
     useEffect(() => {
@@ -25,13 +24,12 @@ function Shift({start, end, employeeShortName, children, shiftId, handleEmployee
     }, [fetch,]);
 
 
-
-    if(!availableEmployees) {
+    if (!availableEmployees) {
         return <div>Loading....</div>
     }
 
     return (
-        <div>
+        <div className={classname}>
             <table>
                 <tbody>
                 <tr>
@@ -42,12 +40,12 @@ function Shift({start, end, employeeShortName, children, shiftId, handleEmployee
 
                     ) : (
                         <td>
-                        <select onChange={handleEmployeeChange} defaultValue="">
-                            <option value="" disabled>no emp</option>
-                            {availableEmployees.map((emp) => (
-                                <option key={emp.id} value={emp.id}>{emp.id} {emp.shortName}</option>
-                            ))}
-                        </select>
+                            <select onChange={handleEmployeeChange} defaultValue="">
+                                <option value="" disabled>no emp</option>
+                                {availableEmployees.map((emp) => (
+                                    <option key={emp.id} value={emp.id}>{emp.id} {emp.shortName}</option>
+                                ))}
+                            </select>
                         </td>
                     )}
                 </tr>
