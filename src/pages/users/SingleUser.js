@@ -478,8 +478,9 @@ function SingleUser() {
                                 ref={fileInputRef}
                             />
                             {userData.employee.imageData &&
-                                <Button className="btn-blue" type="button" children="Download"
-                                        onClick={handleDownloadId}/>}
+                                <Button
+                                    className="btn-blue" type="button" children="Download"
+                                    onClick={handleDownloadId}/>}
                             <Button className="btn-blue" type="submit" children="Upload"/>
                         </form>
                         : null}
@@ -538,14 +539,15 @@ function SingleUser() {
                                                         label="End date"
                                                         type="date"
                                                         name="endDate"
-                                                        id="endtDate"
+                                                        id="endDate"
                                                         errors={errors}
                                                         register={register}
                                                         validation={{required: "Field is required"}}
                                                     />
                                                     <div className="modal-button-row">
-                                                    <Button className="btn-blue" type="submit">Create</Button>
-                                                    <Button className="btn-blue" type="button" onClick={handleClose}>Cancel</Button>
+                                                        <Button className="btn-blue" type="submit">Create</Button>
+                                                        <Button className="btn-blue" type="button"
+                                                                onClick={handleClose}>Cancel</Button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -565,7 +567,7 @@ function SingleUser() {
                                         <Button
                                             className="btn-logo"
                                             type="button"
-                                            children={<Trash size={20} />}
+                                            children={<Trash size={20}/>}
                                             onClick={() => handleDeleteAbsence(absence.id)}/>
 
                                     </div>
