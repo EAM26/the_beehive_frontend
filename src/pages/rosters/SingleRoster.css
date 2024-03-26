@@ -4,28 +4,38 @@
     align-items: center;
 }
 
-.single-roster-page h2, h3 {
+.single-roster-page h2 {
+    color: var(--color-yellow-prime);
+    margin: auto;
+}
+
+.single-roster-page h3 {
     color: var(--color-blue-main);
     margin: auto;
 }
 
 .week-outer {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     background-color: var(--color-yellow-prime);
     border-radius: 5px;
     border: 2px solid var(--color-yellow-sec);
+    /*align-items: center;*/
 
 }
 
 .day-shifts {
-    background-color: var(--color-yellow-trip);
-    border-radius: 5px;
     padding: 2px 5px;
+    width: 200px;
 }
 
 .shift-outer {
     display: flex;
     justify-content: space-between;
+    border-radius: 5px;
+    border: 1px solid var(--color-yellow-sec);
+    margin: 2px 0;
 
 }
 
