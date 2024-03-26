@@ -91,12 +91,6 @@ function SingleRoster() {
         setShowShiftModal(true)
     }
 
-    const handleMyNewShiftClick = (date) => {
-        console.log("handlemynewShiftClick")
-        console.log("date: " + date)
-        setShowShiftModal(true)
-    }
-
     const handleClose = () => {
         setShowShiftModal(false)
     }
@@ -118,24 +112,6 @@ function SingleRoster() {
         }
 
     };
-
-    const handleSubmitShift = async (myNewShift) => {
-        setLoading(true);
-        setError(false);
-        setErrormessage("");
-        console.log("handleSubmitShift running")
-        console.log("handleSubmitShift running")
-        console.log("handleSubmitShift running")
-
-        try {
-            console.log(myNewShift);
-        } catch (e) {
-
-        } finally {
-            setLoading(false);
-        }
-
-    }
 
 
     useEffect(() => {
@@ -180,147 +156,54 @@ function SingleRoster() {
                             });
                             filteredShifts = mySorterTwoAttributes(filteredShifts, 'startShift', 'endShift')
                             return (
-                                    <DayColumn key={dateString} date={date}>
-                                        <div className="day-shifts">
+                                <DayColumn key={dateString} date={date}>
+                                    <div className="day-shifts">
                                         {filteredShifts ? filteredShifts.map((shift) => {
                                             return (
-                                                    <Shift
-                                                        key={shift.id}
-                                                        classname="shift-outer"
-                                                        start={shift.startShift}
-                                                        end={shift.endShift}
-                                                        employeeShortName={shift.employeeShortName}
-                                                        shiftId={shift.id}
-                                                        shift={shift}
-                                                        handleEmployeeChange={handleEmployeeChange(shift, shift.id)}
-                                                        fetch={toggleFetch}
-                                                    >
-                                                        <div className="shift-buttons">
-                                                            {shift.employeeShortName &&
-                                                                <Button
-                                                                    className="btn-logo"
-                                                                    type="button"
-                                                                    children={<UserCircleMinus size={20}/>}
-                                                                    onClick={() => {
-                                                                        void handleDeleteEmployee(shift.id);
-                                                                    }}/>}
+                                                <Shift
+                                                    key={shift.id}
+                                                    classname="shift-outer"
+                                                    start={shift.startShift}
+                                                    end={shift.endShift}
+                                                    employeeShortName={shift.employeeShortName}
+                                                    shiftId={shift.id}
+                                                    shift={shift}
+                                                    handleEmployeeChange={handleEmployeeChange(shift, shift.id)}
+                                                    fetch={toggleFetch}
+                                                >
+                                                    <div className="shift-buttons">
+                                                        {shift.employeeShortName &&
                                                             <Button
                                                                 className="btn-logo"
                                                                 type="button"
-                                                                children={<Trash size={20}/>}
+                                                                children={<UserCircleMinus size={20}/>}
                                                                 onClick={() => {
-                                                                    void handleShiftDelete(shift.id)
-                                                                }}/>
-                                                        </div>
-                                                    </Shift>
-                                                );
+                                                                    void handleDeleteEmployee(shift.id);
+                                                                }}/>}
+                                                        <Button
+                                                            className="btn-logo"
+                                                            type="button"
+                                                            children={<Trash size={20}/>}
+                                                            onClick={() => {
+                                                                void handleShiftDelete(shift.id)
+                                                            }}/>
+                                                    </div>
+                                                </Shift>
+                                            );
                                         }) : ""}
-                                            <Button className="btn-blue btn-shift"
-                                                    type="button"
-                                                    onClick={() => {
-                                                        handleNewShiftClick(date)
-                                                        // handleMyNewShiftClick(date)
-                                                    }}
-                                            >
-                                                <PlusCircle size={20}/>
-                                                <p>Shift</p>
-                                            </Button>
-                                        </div>
+                                        <Button className="btn-blue btn-shift"
+                                                type="button"
+                                                onClick={() => {
+                                                    handleNewShiftClick(date)
+                                                    // handleMyNewShiftClick(date)
+                                                }}
+                                        >
+                                            <PlusCircle size={20}/>
+                                            <p>Shift</p>
+                                        </Button>
+                                    </div>
 
-
-                                        {/*<Button*/}
-                                        {/*    className="btn-new btn-blue btn-shift"*/}
-                                        {/*    type="button"*/}
-                                        {/*    onClick={() => {*/}
-                                        {/*        handleNewShiftClick(date)*/}
-                                        {/*        // handleMyNewShiftClick(date)*/}
-                                        {/*    }}>*/}
-                                        {/*    <PlusCircle size={20}/>*/}
-                                        {/*    <p>Shift</p>*/}
-                                        {/*</Button>*/}
-                                        {showShiftModal && (
-                                            <BaseModal isOpen={showShiftModal} onClose={handleClose}>
-                                                <form onSubmit={handleSubmit}>
-                                                    <div>
-                                                        <label>
-                                                            Start:
-                                                            <select
-                                                                name="start"
-                                                                value={newShift.start}
-                                                                onChange={e => setNewShift({
-                                                                    ...newShift,
-                                                                    start: e.target.value
-                                                                })}>
-                                                                {generateTimeOptions().map((time) => (
-                                                                    <option key={time} value={time}>{time}</option>
-                                                                ))}
-                                                            </select>
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                        <label>
-                                                            End:
-                                                            <select
-                                                                name="end"
-                                                                value={newShift.end}
-                                                                onChange={e => setNewShift({
-                                                                    ...newShift,
-                                                                    end: e.target.value
-                                                                })}>
-                                                                {generateTimeOptions().map((time) => (
-                                                                    <option key={time} value={time}>{time}</option>
-                                                                ))}
-                                                            </select>
-                                                        </label>
-                                                    </div>
-
-                                                    <Button type="submit">Create</Button>
-                                                    <Button type="button" onClick={handleClose}>Cancel</Button>
-                                                </form>
-                                            </BaseModal>
-                                        )}
-                                        {/*{showShiftModal && (*/}
-                                        {/*    <BaseModal isOpen={showShiftModal} onClose={handleClose}>*/}
-                                        {/*        <form onSubmit={handleSubmit}>*/}
-                                        {/*            <div>*/}
-                                        {/*                <label>*/}
-                                        {/*                    Start:*/}
-                                        {/*                    <select*/}
-                                        {/*                        name="start"*/}
-                                        {/*                        value={newShift.start}*/}
-                                        {/*                        onChange={e => setNewShift({*/}
-                                        {/*                            ...newShift,*/}
-                                        {/*                            start: e.target.value*/}
-                                        {/*                        })}>*/}
-                                        {/*                        {generateTimeOptions().map((time) => (*/}
-                                        {/*                            <option key={time} value={time}>{time}</option>*/}
-                                        {/*                        ))}*/}
-                                        {/*                    </select>*/}
-                                        {/*                </label>*/}
-                                        {/*            </div>*/}
-                                        {/*            <div>*/}
-                                        {/*                <label>*/}
-                                        {/*                    End:*/}
-                                        {/*                    <select*/}
-                                        {/*                        name="end"*/}
-                                        {/*                        value={newShift.end}*/}
-                                        {/*                        onChange={e => setNewShift({*/}
-                                        {/*                            ...newShift,*/}
-                                        {/*                            end: e.target.value*/}
-                                        {/*                        })}>*/}
-                                        {/*                        {generateTimeOptions().map((time) => (*/}
-                                        {/*                            <option key={time} value={time}>{time}</option>*/}
-                                        {/*                        ))}*/}
-                                        {/*                    </select>*/}
-                                        {/*                </label>*/}
-                                        {/*            </div>*/}
-
-                                        {/*            <Button type="submit">Create</Button>*/}
-                                        {/*            <Button type="button" onClick={handleClose}>Cancel</Button>*/}
-                                        {/*        </form>*/}
-                                        {/*    </BaseModal>*/}
-                                        {/*)}*/}
-                                    </DayColumn>
+                                </DayColumn>
 
 
                             );
@@ -328,6 +211,59 @@ function SingleRoster() {
                     </div>
                 </div>
             </div>
+            {showShiftModal && (
+                <BaseModal
+                    isOpen={showShiftModal}
+                    onClose={handleClose}>
+                    <div className="modal">
+                        <div className="modal-content">
+                            <form onSubmit={handleSubmit}>
+
+                                <div className="modal-item">
+                                    <label>
+                                        Start:
+                                    </label>
+                                    <select
+                                        name="start"
+                                        value={newShift.start}
+                                        onChange={e => setNewShift({
+                                            ...newShift,
+                                            start: e.target.value
+                                        })}>
+                                        {generateTimeOptions().map((time) => (
+                                            <option key={time} value={time}>{time}</option>
+                                        ))}
+                                    </select>
+
+                                </div>
+                                <div className="modal-item">
+                                    <label>
+                                        End:
+                                    </label>
+                                    <select
+                                        name="end"
+                                        value={newShift.end}
+                                        onChange={e => setNewShift({
+                                            ...newShift,
+                                            end: e.target.value
+                                        })}>
+                                        {generateTimeOptions().map((time) => (
+                                            <option key={time} value={time}>{time}</option>
+                                        ))}
+                                    </select>
+
+                                </div>
+
+                                <div className="modal-button-row">
+                                    <Button className="btn-blue" type="submit">Create</Button>
+                                    <Button className="btn-blue" type="button"
+                                            onClick={handleClose}>Cancel</Button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </BaseModal>
+            )}
         </main>
     );
 }
