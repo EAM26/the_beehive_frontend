@@ -55,10 +55,12 @@ function SingleTeam() {
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
                 <p className="error-message">{error ? errorMessage: ""}</p>
-                <h3>{teamName}</h3>
-                <div className="singleTeam-outer-container">
-                    <div>
-                        <span>Employees</span>
+
+                <div className="singleTeam-page">
+                    <h2>{teamName}</h2>
+                    <div className="singleTeam-content">
+                    <div className="team-content-items">
+                        <h3>Employees</h3>
                         <table>
                             <thead>
                             <tr>
@@ -75,8 +77,8 @@ function SingleTeam() {
                             </tbody>
                         </table>
                     </div>
-                    <div>
-                        <span>Rosters</span>
+                    <div className="team-content-items">
+                        <h3>Rosters</h3>
                         <table>
                             <thead>
                             <tr>
@@ -92,6 +94,7 @@ function SingleTeam() {
                             })}
                             </tbody>
                         </table>
+                    </div>
                     </div>
 
                 </div>
