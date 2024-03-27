@@ -2,15 +2,15 @@ import React from 'react';
 import './Hexagon.css';
 import button from "../button/Button";
 
-function Hexagon({type, text, onClick, className}) {
+function Hexagon({type, children, onClick, className}) {
     return (
 
-        // <button className={`${hexagonButton} ${className}`} type={type} onClick={onClick}>
-        //     {text}
-        // </button>
-
-        <button className="hexagonButton" type="button">
-            HexHex
+        <button
+            className={className}
+            type={type}
+            onClick={onClick}
+        >
+            {children}
         </button>
     );
 }

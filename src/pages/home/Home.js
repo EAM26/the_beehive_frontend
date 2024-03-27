@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Hexagon from "../../components/hexagon/Hexagon";
-// import Hexagon from "../../components/hexagon/Hexagon";
-// import styles from './Home.module.css';
+import './Home.css';
 
 function Home() {
 
@@ -42,8 +41,33 @@ function Home() {
 
     return (
         <div>
-            <h1>Homepage</h1>
-            <Hexagon/>
+            <div className="hexagon-upper-row">
+                <Hexagon
+                    className="hexagonButton"
+                    type="button"
+                    children="TestName"
+                    onClick={handleClick}
+                /><Hexagon
+                    className="hexagonButton"
+                    type="button"
+                    children="TestName2"
+                    onClick={handleClick}
+                />
+            </div>
+            <div className="hexagon-lower-row">
+                <Hexagon
+                    className="hexagonButton"
+                    type="button"
+                    children="TestName"
+                    onClick={handleClick}
+                /><Hexagon
+                    className="hexagonButton"
+                    type="button"
+                    children="TestName2"
+                    onClick={handleClick}
+                />
+            </div>
+
         </div>
         // <div className={"outer-container"}>
         //     <div className={"inner-container"}>
