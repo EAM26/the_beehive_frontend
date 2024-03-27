@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Hexagon from "../../components/hexagon/Hexagon";
 // import Hexagon from "../../components/hexagon/Hexagon";
 // import styles from './Home.module.css';
 
@@ -42,6 +43,7 @@ function Home() {
     return (
         <div>
             <h1>Homepage</h1>
+            <Hexagon/>
         </div>
         // <div className={"outer-container"}>
         //     <div className={"inner-container"}>

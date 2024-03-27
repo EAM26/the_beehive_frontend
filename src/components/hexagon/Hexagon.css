@@ -1,0 +1,26 @@
+.hexagonButton {
+    position: relative;
+    width: 250px;
+    height: 292px; margin: 2px;
+    overflow: hidden;
+    background-color: var(--color-yellow-prime);
+    color: var(--color-blue-main);
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    clip-path: polygon(
+            50% 0%,
+            100% 25%,
+            100% 75%,
+            50% 100%,
+            0% 75%,
+            0% 25%
+    );
+}
+
+.hexagonButton:hover {
+    background-color: #b36d0a;
+    font-style: italic;
+}
