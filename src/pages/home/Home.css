@@ -3,21 +3,26 @@
     display: flex;
     justify-content: center;
     margin: 150px auto 50px -254px;
+    gap: 2px;
 
 }
 
 .hexagon-lower-row {
     display: flex;
     justify-content: center;
-    margin-top: -123px;
+    margin-top: -120px;
+    gap: 2px;
 
 }
 
-
-
+.single-hex {
+    display: flex;
+    justify-content: center;
+    margin-top: 200px;
+}
 .text-container {
     position: relative;
-    color: var(--primary-yellow);
+    color: var(--color-yellow-prime);
     text-align: center;
 }
 
