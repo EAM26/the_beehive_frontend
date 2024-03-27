@@ -4,7 +4,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import Login from "./pages/login/Login";
 import {useContext,} from "react";
 import {AuthContext} from "./context/AuthContext";
-import TempHome from "./pages/tempPages/TempHome";
+import Home from "./pages/home/Home";
 import Profile from "./pages/profiles/Profile";
 import Users from "./pages/users/Users";
 import Teams from "./pages/teams/Teams";
@@ -22,8 +22,8 @@ function App() {
                 <Navbar/>
                 <div className="app-content">
                     <Routes>
-                        <Route path="/" element={isAuth ? <TempHome/> : <Login/>}/>
-                        <Route path="/login" element={!isAuth ? <Login/> : <TempHome/>}/>
+                        <Route path="/" element={isAuth ? <Home/> : <Login/>}/>
+                        <Route path="/login" element={!isAuth ? <Login/> : <Home/>}/>
                         <Route path="/profile" element={isAuth ? <Profile/> : <Navigate to="/login"/>}/>
                         <Route path="/users/:username"
                                element={isAuth && (authLevel !== 'user') ? <SingleUser/> : <Navigate to="/login"/>}/>
