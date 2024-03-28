@@ -69,6 +69,12 @@
     rotate: 90deg;
 }
 
+.text-bottom {
+    top: 730px;
+    right: 0;
+    rotate: 180deg;
+}
+
 .profile-text-bottom {
     top: 600px;
     right: 0;
