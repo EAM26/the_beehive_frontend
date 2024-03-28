@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {AuthContext} from "../../context/AuthContext";
 import Hexagon from "../../components/hexagon/Hexagon";
 import './Home.css';
-import {NavLink} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 function Home() {
 
@@ -26,8 +26,10 @@ function Home() {
     ];
     const [sentences, setSentences] = useState(initialSentences);
     const {isAuth, authLevel,} = useContext(AuthContext)
-    function handleClick() {
-        console.log("click");
+    const navigate = useNavigate();
+
+    function handleClick(page) {
+        navigate(page);
     }
 
     useEffect(() => {
@@ -43,81 +45,75 @@ function Home() {
     }, [sentences]);
 
     return (
-        <div>
-            {isAuth && (authLevel === 'admin' || authLevel === 'manager') && (
-                <>
-            <div className="hexagon-upper-row">
-                <Hexagon
-                    className="hexagonButton"
-                    type="button"
-                    onClick={handleClick}
-                >
-                    <NavLink to="/teams">
-                        <h2>Teams</h2>
-                    </NavLink>
-                </Hexagon>
-                <Hexagon
-                    className="hexagonButton"
-                    type="button"
-                    onClick={handleClick}
-                >
-                    <NavLink to="/users">
-                        <h2>Users</h2>
-                    </NavLink>
-                </Hexagon>
-            </div>
-            <div className="hexagon-lower-row">
-                <Hexagon
-                    className="hexagonButton"
-                    type="button"
-                    onClick={handleClick}
-                >
-                    <NavLink to="/rosters">
-                        <h2>Rosters</h2>
-                    </NavLink>
-                </Hexagon>
-                <Hexagon
-                    className="hexagonButton"
-                    type="button"
-                    onClick={handleClick}
-                >
-                    <NavLink to="/profile">
-                        <h2>Profile</h2>
-                    </NavLink>
-                </Hexagon>
-            </div>
-                </>
-            )}
-            {isAuth && authLevel === 'user' && (
-                <div className="single-hex">
-                    <Hexagon
-                        className="hexagonButton"
-                        type="button"
-                        onClick={handleClick}
-                    >
-                        <NavLink to="/profile">
-                            <h2>Profile</h2>
-                        </NavLink>
-                    </Hexagon>
+        <div className="outer-container">
+            <div className="inner-container">
+                <div className="home-page">
+                    <p className={`text-poem ${authLevel === 'admin' || authLevel === 'manager' ? 'text-up' : 'profile-text-up'}`}>{sentences[0]}</p>
+                    <p className={`text-poem ${authLevel === 'admin' || authLevel === 'manager' ? 'text-left' : 'profile-text-left'}`}>{sentences[3]}</p>
+                    <p className={`text-poem ${authLevel === 'admin' || authLevel === 'manager' ? 'text-right' : 'profile-text-right'}`}>{sentences[1]}</p>
+                    {isAuth && (authLevel === 'admin' || authLevel === 'manager') && (
+                        <>
+                            <div className="hexagon-upper-row">
+                                <Hexagon
+                                    className="hexagonButton"
+                                    type="button"
+                                    onClick={() => {
+                                        handleClick('/teams')
+                                    }}
+
+                                >
+                                    <h2>Teams</h2>
+                                </Hexagon>
+                                <Hexagon
+                                    className="hexagonButton"
+                                    type="button"
+                                    onClick={() => {
+                                        handleClick('/users')
+                                    }}
+                                >
+                                    <h2>Users</h2>
+                                </Hexagon>
+                            </div>
+                            <div className="hexagon-lower-row">
+                                <Hexagon
+                                    className="hexagonButton"
+                                    type="button"
+                                    onClick={() => {
+                                        handleClick('/rosters')
+                                    }}
+                                >
+                                    <h2>Rosters</h2>
+                                </Hexagon>
+                                <Hexagon
+                                    className="hexagonButton"
+                                    type="button"
+                                    onClick={() => {
+                                        handleClick('/profile')
+                                    }}
+                                >
+                                    <h2>Profile</h2>
+                                </Hexagon>
+                            </div>
+                        </>
+                    )}
+                    <p className={`text-poem ${authLevel === 'admin' || authLevel === 'manager' ? 'text-bottom' : 'profile-text-bottom'}`}>{sentences[2]}</p>
+                    {isAuth && authLevel === 'user' && (
+                        <div className="single-hex">
+                            <Hexagon
+                                className="hexagonButton"
+                                type="button"
+                                onClick={() => {
+                                    handleClick('/profile')
+                                }}
+                            >
+                                <h2>Profile</h2>
+                            </Hexagon>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
-        // <div className={"outer-container"}>
-        //     <div className={"inner-container"}>
-        //         <div className={styles["text-container"]}>
-        //             <p className={`${styles["text-poem"]} ${styles["text-up"]}`}>{sentences[0]}</p>
-        //             <p className={`${styles["text-poem"]} ${styles["text-left"]}`}>{sentences[3]}</p>
-        //             <p className={`${styles["text-poem"]} ${styles["text-right"]}`}>{sentences[1]}</p>
-        //             <div className={styles["hexagon-row"]}>
-        //                 <Hexagon text="Rooster" onClick={handleClick}/>
-        //                 <Hexagon text="Kaart" onClick={handleClick}/>
-        //             </div>
-        //             <Hexagon text="Kantoor" onClick={handleClick} className={styles["third-hexagon"]}/>
-        //             <p className={`${styles["text-poem"]} ${styles["text-bottom"]}`}>{sentences[2]}
-        //             </p>
-        //         </div>
-        //     </div>
-        // </div>
+
     );
 }
 
