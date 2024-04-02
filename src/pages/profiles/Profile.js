@@ -10,7 +10,7 @@ import {AuthContext} from "../../context/AuthContext";
 import '../teams/SingleTeam.css'
 
 function Profile() {
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm({
+    const {register, reset, handleSubmit, formState: {errors}, setValue} = useForm({
         mode: "onTouched",
         defaultValues: {
             isDeleted: false,
@@ -35,7 +35,9 @@ function Profile() {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
-
+        } finally {
+            reset({ password: "" });
+            setLoading(false)
         }
     };
 

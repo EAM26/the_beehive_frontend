@@ -142,11 +142,13 @@ function SingleUser() {
 
             await updateUser(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
             setModifiedUserFields({})
+
         } catch (e) {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
         } finally {
+            reset({ password: "" });
             setLoading(false)
         }
 
