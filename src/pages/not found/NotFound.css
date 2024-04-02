@@ -1,0 +1,18 @@
+.not-found-page {
+    display: flex;
+    flex-direction: column;
+    /*justify-content: space-between;*/
+    align-items: center;
+}
+
+.not-found-page span {
+    color: var(--color-yellow-prime);
+    font-family: Roboto, sans-serif;
+    font-size: 20rem;
+    font-weight: bold;
+}
+
+.not-found-page img {
+    width: 895px;
+    height: 529px;
+}

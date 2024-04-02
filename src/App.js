@@ -13,6 +13,7 @@ import SingleUser from "./pages/users/SingleUser";
 import Rosters from "./pages/rosters/Rosters";
 import SingleRoster from "./pages/rosters/SingleRoster";
 import Footer from "./components/footer/Footer";
+import NotFound from "./pages/not found/NotFound";
 
 function App() {
     const {isAuth, authLevel} = useContext(AuthContext)
@@ -37,6 +38,8 @@ function App() {
                                element={isAuth && (authLevel !== 'user') ? <Rosters/> : <Navigate to={'/'}/>}/>
                         <Route path="/rosters/:rosterId"
                                element={isAuth && (authLevel !== 'user') ? <SingleRoster/> : <Navigate to={'/'}/>}/>
+                        <Route path="*" element={ <NotFound/> }/>
+
                     </Routes>
                 </div>
                 <Footer/>
