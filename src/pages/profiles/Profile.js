@@ -10,7 +10,7 @@ import {AuthContext} from "../../context/AuthContext";
 import '../teams/SingleTeam.css'
 
 function Profile() {
-    const {register, handleSubmit, formState: {errors}, setValue} = useForm({
+    const {register, reset, handleSubmit, formState: {errors}, setValue} = useForm({
         mode: "onTouched",
         defaultValues: {
             isDeleted: false,
@@ -28,6 +28,7 @@ function Profile() {
     const handleFormSubmitUser = async (formData) => {
         setError(false);
         setErrormessage("");
+        formData.isDeleted = profileData.isDeleted;
         try {
             await updateUserAsSelf(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
             setModifiedUserFields({})
@@ -35,7 +36,9 @@ function Profile() {
             setError(true);
             setErrormessage(errorHandler(e));
             console.error(e)
-
+        } finally {
+            reset({ password: "" });
+            setLoading(false)
         }
     };
 
@@ -87,7 +90,8 @@ function Profile() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage: ""}</p>
+                {/*<p className="error-message">{error ? errorMessage: ""}</p>*/}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <div className="single-user-page">
                     <div className="user-emp">
                         <form
@@ -136,20 +140,6 @@ function Profile() {
                                 errors={errors}
                                 onInput={handleOnInput('password')}
                                 className={modifiedUserFields.password ? 'modified' : ''}
-                                validation={{
-                                    required:
-                                        {
-                                            value: false,
-                                        }, pattern: {
-                                        value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
-                                        message: "1. Password must contain at least one digit [0-9]. " +
-                                            "2. Password must contain at least one lowercase Latin character [a-z]. " +
-                                            "3. Password must contain at least one uppercase Latin character [A-Z]." +
-                                            "4. Password must contain at least one special character." +
-                                            "5. Password must contain a length of at least 8 characters and a maximum of 20 characters."
-                                    }
-                                }
-                                }
                             />
                             <FormInputField
                                 label="Authority"

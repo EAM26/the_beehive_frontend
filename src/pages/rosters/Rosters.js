@@ -112,7 +112,8 @@ function Rosters() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage: ""}</p>
+                {/*<p className="error-message">{error ? errorMessage: ""}</p>*/}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <div className="rosters-head">
                 <h2>Rosters</h2>
                     <Button className="btn-new btn-blue" type="button" onClick={() => setShowModal(true)}>
@@ -153,7 +154,8 @@ function Rosters() {
                         isOpen={showModal}
                         onClose={handleOnClose}>
                         <form onSubmit={handleSubmit(handleSubmitRoster)}>
-                            <p className="error-message">{error ? errorMessage: ""}</p>
+                            {/*<p className="error-message">{error ? errorMessage: ""}</p>*/}
+                            {error && <p className="error-message">{errorMessage}</p>}
                             <FormInputField
                                 className="modal-item"
                                 label="Week"

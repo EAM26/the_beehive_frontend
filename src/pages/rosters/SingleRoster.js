@@ -144,7 +144,8 @@ function SingleRoster() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage : ""}</p>
+                {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <div className="single-roster-page">
                     <h2>{singleRoster.name}</h2>
                     <div className="week-outer">

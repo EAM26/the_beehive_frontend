@@ -36,7 +36,7 @@ function Shift({start, end, employeeShortName, children, shiftId, handleEmployee
                     <td>{formattedStart}</td>
                     <td>{formattedEnd}</td>
                     {employeeShortName ? (
-                        <td>{employeeShortName}</td>
+                        <td className="td-element-shortname">{employeeShortName}</td>
 
                     ) : (
                         <td>

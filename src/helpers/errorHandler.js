@@ -4,6 +4,8 @@ export function errorHandler(e) {
     }
 
     const {status, data} = e.response
-
+    console.log("The length of the message is "+data.length)
+    console.log("The length of the message is "+data.length)
+    console.log("The length of the message is "+data.length)
         return ("Failed attempt:  " + data)
 }

@@ -181,7 +181,8 @@ function Users() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage : ""}</p>
+                {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <div className="users-page">
                     <div className="users-head">
                         <h2>Users</h2>
@@ -256,7 +257,8 @@ function Users() {
                 <div className="modal">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit(handleSubmitUser)}>
-                            <p className="error-message">{error ? errorMessage : ""}</p>
+                            {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                            {error && <p className="error-message">{errorMessage}</p>}
                             <FormInputField
                                 className="modal-item"
                                 label="UserName"
@@ -351,7 +353,8 @@ function Users() {
                 <div className="modal">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit(handleSubmitEmployee)}>
-                            <p className="error-message">{error ? errorMessage : ""}</p>
+                            {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                            {error && <p className="error-message">{errorMessage}</p>}
                             <FormInputField
                                 className="modal-item"
                                 label="First Name"
