@@ -488,7 +488,7 @@ function SingleUser() {
                         <div className="shifts-absences">
                             <div className="shifts-container">
                                 <h3 className="shifts-head">SHIFTS</h3>
-                                <p className="shift-item">
+                                <div className="shift-item">
                                 {userData.shifts && userData.shifts.length > 0 ? userData.shifts.slice(0, 5).map((shift) => {
 
                                     const startShiftDate = new Date(shift.startShift);
@@ -506,7 +506,7 @@ function SingleUser() {
                                     });
                                     return <p key={shift.id}>{date} {startTime} - {endTime}</p>
                                 }) : "No Shifts Available"}
-                                </p>
+                                </div>
                             </div>
 
                             <div className="absences-container">
@@ -562,8 +562,8 @@ function SingleUser() {
                                     const startDate = `${startAbsenceDate.getDate().toString().padStart(2, '0')}-${(startAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${startAbsenceDate.getFullYear()}`;
                                     const endDate = `${endAbsenceDate.getDate().toString().padStart(2, '0')}-${(endAbsenceDate.getMonth() + 1).toString().padStart(2, '0')}-${endAbsenceDate.getFullYear()}`;
 
-                                    return <div className="absence-item">
-                                        <p key={absence.id}>{startDate} {endDate} </p>
+                                    return <div className="absence-item"  key={absence.id}>
+                                        <p>{startDate} {endDate} </p>
                                         <Button
                                             className="btn-logo"
                                             type="button"
