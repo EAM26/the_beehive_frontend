@@ -28,6 +28,7 @@ function Profile() {
     const handleFormSubmitUser = async (formData) => {
         setError(false);
         setErrormessage("");
+        formData.isDeleted = profileData.isDeleted;
         try {
             await updateUserAsSelf(token, formData.username, formData.password, formData.userRole, formData.email, formData.isDeleted)
             setModifiedUserFields({})
