@@ -87,7 +87,8 @@ function Profile() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage: ""}</p>
+                {/*<p className="error-message">{error ? errorMessage: ""}</p>*/}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <div className="single-user-page">
                     <div className="user-emp">
                         <form

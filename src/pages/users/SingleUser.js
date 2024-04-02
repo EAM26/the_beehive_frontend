@@ -218,7 +218,8 @@ function SingleUser() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage : ""}</p>
+                {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <div className="single-user-page">
                     <div className="user-emp">
                         <form
@@ -267,21 +268,21 @@ function SingleUser() {
                                 onInput={handleUserOnInput('password')}
                                 className={modifiedUserFields.password ? 'modified' : ''}
                                 errors={errors}
-                                validation={{
-                                    required:
-                                        {
-                                            value: false,
-                                        }, pattern: {
-                                        value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
-                                        message: "Password must meet the following criteria:\n" +
-                                            "1. At least one digit [0-9].\n" +
-                                            "2. At least one lowercase Latin character [a-z].\n" +
-                                            "3. At least one uppercase Latin character [A-Z].\n" +
-                                            "4. At least one special character like !@#&()[]{}:;',?/*~$^+=<>.\n" +
-                                            "5. A length of at least 8 characters and a maximum of 20 characters."
-                                    }
-                                }
-                                }
+                                // validation={{
+                                //     required:
+                                //         {
+                                //             value: false,
+                                //         }, pattern: {
+                                //         value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
+                                //         message: "Password must meet the following criteria:\n" +
+                                //             "1. At least one digit [0-9].\n" +
+                                //             "2. At least one lowercase Latin character [a-z].\n" +
+                                //             "3. At least one uppercase Latin character [A-Z].\n" +
+                                //             "4. At least one special character like !@#&()[]{}:;',?/*~$^+=<>.\n" +
+                                //             "5. A length of at least 8 characters and a maximum of 20 characters."
+                                //     }
+                                // }
+                                // }
                             />
                             <FormInputField
                                 label="Authority"
@@ -523,7 +524,8 @@ function SingleUser() {
                                         <div className="modal">
                                             <div className="modal-content">
                                                 <form onSubmit={handleSubmit(handleSubmitAbsence)}>
-                                                    <p className="error-message">{error ? errorMessage : ""}</p>
+                                                    {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                                                    {error && <p className="error-message">{errorMessage}</p>}
                                                     <FormInputField
                                                         className="modal-item"
                                                         label="Start date"

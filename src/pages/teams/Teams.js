@@ -101,7 +101,8 @@ function Teams() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                <p className="error-message">{error ? errorMessage : ""}</p>
+                {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                {error && <p className="error-message">{errorMessage}</p>}
                 <div className="teams-head">
                     <h2>Teams</h2>
                     <Button className="btn-new btn-blue" type="button" onClick={handleNewTeamClick}>
@@ -144,8 +145,8 @@ function Teams() {
                     <div className="modal">
                         <div className="modal-content">
                             <form onSubmit={handleSubmit(handleSubmitTeam)}>
-                                <p className="error-message">{error ? errorMessage : ""}</p>
-
+                                {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
+                                {error && <p className="error-message">{errorMessage}</p>}
                                 <FormInputField
                                     className="modal-item"
                                     label="Team Name"
