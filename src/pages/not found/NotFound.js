@@ -8,7 +8,7 @@ function NotFound(props) {
     const navigate = useNavigate();
 
     setTimeout(() => {
-        navigate('/');
+        navigate(-1);
     }, 3000);
 
     const [counter, setCounter] = useState(3);

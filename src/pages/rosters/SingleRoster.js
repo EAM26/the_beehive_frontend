@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import {createShift, deleteShift, getRoster, getShift, updateShift} from "../../service";
@@ -32,6 +32,7 @@ function SingleRoster() {
         teamName: ''
     })
     const [toggleFetch, setToggleFetch] = useState(false);
+    const navigate = useNavigate();
 
     const resetNewShift = () => {
         setNewShift({
@@ -43,12 +44,10 @@ function SingleRoster() {
     };
 
     const handleDeleteEmployee = async (shiftId) => {
-        console.log("This is the new emp delete method: ");
         try {
             const response = await getShift(token, shiftId)
             await updateShift(token, response, response.id, null)
             setToggleFetch(!toggleFetch);
-            console.log(response)
         } catch (e) {
             console.error(e)
         }
@@ -59,15 +58,12 @@ function SingleRoster() {
     const handleEmployeeChange = (shift, shiftId) => async (e) => {
         e.preventDefault();
         const selectedEmployeeId = e.target.value;
-        console.log("handleEmployeeChange running")
         try {
             await updateShift(token, shift, shiftId, selectedEmployeeId);
         } catch (e) {
-
             console.error(e)
         } finally {
             setToggleFetch(!toggleFetch)
-            console.log("new Emp: " + toggleFetch)
         }
 
     };
@@ -87,7 +83,6 @@ function SingleRoster() {
 
     const handleNewShiftClick = (date) => {
         setNewShift({...newShift, date: date, teamName: singleRoster.teamName})
-        console.log("handleNewShiftClick")
         setShowShiftModal(true)
     }
 
@@ -128,7 +123,7 @@ function SingleRoster() {
             } catch (e) {
                 setError(true);
                 setErrormessage(errorHandler(e))
-                console.error(e)
+                navigate('/404')
             } finally {
                 setLoading(false)
             }
@@ -144,7 +139,6 @@ function SingleRoster() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
                 {error && <p className="error-message">{errorMessage}</p>}
                 <div className="single-roster-page">
                     <h2>{singleRoster.name}</h2>
