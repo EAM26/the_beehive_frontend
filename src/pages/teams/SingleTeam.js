@@ -37,24 +37,25 @@ function SingleTeam() {
                 console.error(e)
                 setError(true);
                 setErrormessage(errorHandler(e));
+
             } finally {
                 setLoading(false);
+
             }
         }
 
         void fetchData();
         return function cleanup() {
+
             controller.abort();
         }
 
     }, []);
 
-    console.log(teamData)
     return (
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                {/*<p className="error-message">{error ? errorMessage: ""}</p>*/}
                 {error && <p className="error-message">{errorMessage}</p>}
                 <div className="singleTeam-page">
                     <h2>{teamName}</h2>

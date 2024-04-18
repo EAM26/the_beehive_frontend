@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {
     createAbsence,
     createCopyId,
@@ -42,6 +42,7 @@ function SingleUser() {
     const [selectedFile, setSelectedFile] = useState(null);
     const fileInputRef = useRef(null)
 
+    const navigate = useNavigate();
     const handleFileChange = (e) => {
         setSelectedFile(e.target.files[0]);
     };
@@ -201,6 +202,7 @@ function SingleUser() {
                 } catch (e) {
                     setError(true);
                     setErrormessage(errorHandler(e))
+                    navigate('/404')
                 } finally {
                     setLoading(false);
                 }
@@ -220,7 +222,6 @@ function SingleUser() {
         <main className="outer-container">
             <div className="inner-container">
                 {loading && <p>Loading...</p>}
-                {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
                 {error && <p className="error-message">{errorMessage}</p>}
                 <div className="single-user-page">
                     <div className="user-emp">
@@ -270,21 +271,6 @@ function SingleUser() {
                                 onInput={handleUserOnInput('password')}
                                 className={modifiedUserFields.password ? 'modified' : ''}
                                 errors={errors}
-                                // validation={{
-                                //     required:
-                                //         {
-                                //             value: false,
-                                //         }, pattern: {
-                                //         value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()[\]{}:;',?/*~$^+=<>]).{8,20}$/,
-                                //         message: "Password must meet the following criteria:\n" +
-                                //             "1. At least one digit [0-9].\n" +
-                                //             "2. At least one lowercase Latin character [a-z].\n" +
-                                //             "3. At least one uppercase Latin character [A-Z].\n" +
-                                //             "4. At least one special character like !@#&()[]{}:;',?/*~$^+=<>.\n" +
-                                //             "5. A length of at least 8 characters and a maximum of 20 characters."
-                                //     }
-                                // }
-                                // }
                             />
                             <FormInputField
                                 label="Authority"
@@ -318,7 +304,6 @@ function SingleUser() {
                         {userData.employee ?
 
                             <form
-                                // className="employee-data"
                                 onSubmit={handleSubmit(handleFormSubmitEmployee)}>
                                 <h3>EMPLOYEE</h3>
                                 <FormInputField
@@ -526,7 +511,6 @@ function SingleUser() {
                                         <div className="modal">
                                             <div className="modal-content">
                                                 <form onSubmit={handleSubmit(handleSubmitAbsence)}>
-                                                    {/*<p className="error-message">{error ? errorMessage : ""}</p>*/}
                                                     {error && <p className="error-message">{errorMessage}</p>}
                                                     <FormInputField
                                                         className="modal-item"
