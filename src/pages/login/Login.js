@@ -33,7 +33,7 @@ function Login() {
     return (
         <div className="outer-container">
             <div className="inner-container">
-                {loading && <p>Loading page...</p>}
+                {loading && <p className="loading-text">Loading page...</p>}
                 {error && <p className="error-message">{errorMessage}</p>}
                 <div className="login-page">
                     <form className="login-form"

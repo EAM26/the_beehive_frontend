@@ -8,10 +8,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 450px;
+    min-height: 450px;
+    height: fit-content;
     width: 390px;
     background-color: var(--color-yellow-prime);
-    padding: 2rem 2rem 0 2rem;
+    padding: 2rem 2rem 1rem 2rem;
     border-radius: 5px;
     border: 2px solid var(--color-yellow-sec);
 }
@@ -22,16 +23,8 @@
     align-items: center;
 }
 
-.login-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 450px;
-    width: 390px;
-    background-color: var(--color-yellow-prime);
-    padding: 2rem 2rem 0 2rem;
-    border-radius: 5px;
-    border: 2px solid var(--color-yellow-sec);
+.loading-text {
+    color: var(--color-red-main);
 }
 
 .log-form-field {
