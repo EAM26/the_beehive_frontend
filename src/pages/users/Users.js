@@ -116,6 +116,7 @@ function Users() {
 
 
     const handleCloseModal = () => {
+        reset();
         setShowUserModal(false);
         setShowEmployeeModal(false);
         setError(false);
