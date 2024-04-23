@@ -34,7 +34,6 @@ function SingleTeam() {
             setErrormessage("");
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
-                console.log(response.rosterData)
                 mySorterIgnoreCase(response.employeesData)
                 sortRostersAsString(response.rosterData)
 

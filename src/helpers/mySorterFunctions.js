@@ -2,9 +2,7 @@ export function sortRostersByYearAndWeek(rosters) {
     return rosters.sort((a, b) => {
         // Split the name into parts: [week, year, teamName]
         const partsA = a.name.split('-');
-        console.log("a: " + partsA)
         const partsB = b.name.split('-');
-        console.log("b: " + partsB)
 
         // Parse integers from the year and week parts
         const yearA = parseInt(partsA[1], 10);
