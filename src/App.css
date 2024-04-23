@@ -33,8 +33,9 @@
     color: red;
     font-style: italic;
     font-size: 1.3rem;
-    height: 1.5rem;
+    min-height: 1.5rem;
+    height: fit-content;
     padding-left: 1rem;
-    padding-bottom: 1rem;
     white-space: pre-line;
+
 }
