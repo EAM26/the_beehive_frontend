@@ -4,7 +4,12 @@ import {getSingleTeam} from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import "./SingleTeam.css"
-import {mySorterIgnoreCase, mySorterTwoAttributes} from "../../helpers/mySorterFunctions";
+import {
+    mySorterIgnoreCase,
+    mySorterTwoAttributes,
+    sortRostersAsString,
+    sortRostersByYearAndWeek
+} from "../../helpers/mySorterFunctions";
 
 function SingleTeam() {
 
@@ -30,7 +35,8 @@ function SingleTeam() {
             try {
                 const response = await getSingleTeam(token, controller.signal, teamName);
                 mySorterIgnoreCase(response.employeesData)
-                mySorterTwoAttributes(response.rosterData, "week", "year")
+                sortRostersAsString(response.rosterData)
+
                 setTeamData(response);
 
             } catch (e) {

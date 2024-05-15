@@ -116,8 +116,10 @@ function Users() {
 
 
     const handleCloseModal = () => {
+        reset();
         setShowUserModal(false);
         setShowEmployeeModal(false);
+        setError(false);
         setSelectedUsername('')
     };
 
@@ -269,6 +271,10 @@ function Users() {
                                 register={register}
                                 validation={{
                                     required: "Field is required",
+                                    minLength: {
+                                        value: 2,
+                                        message: "Minimum of 2 characters required"
+                                    },
                                     maxLength: {
                                         value: 20,
                                         message: "Not more than 20 characters"
@@ -363,7 +369,15 @@ function Users() {
                                 id="firstName"
                                 errors={errors}
                                 register={register}
-                                validation={{required: "Field is required"}}
+                                validation={{required: "Field is required",
+                                    minLength: {
+                                        value: 2,
+                                        message: "Minimum of 2 characters required"
+                                    },
+                                    maxLength: {
+                                        value: 20,
+                                        message: "Not more than 20 characters"
+                                    }}}
                             />
                             <FormInputField
                                 className="modal-item"
@@ -382,7 +396,15 @@ function Users() {
                                 id="lastName"
                                 errors={errors}
                                 register={register}
-                                validation={{required: "Field is required"}}
+                                validation={{required: "Field is required",
+                                    minLength: {
+                                        value: 2,
+                                        message: "Minimum of 2 characters required"
+                                    },
+                                    maxLength: {
+                                        value: 20,
+                                        message: "Not more than 20 characters"
+                                    }}}
                             />
                             <FormInputField
                                 className="modal-item"
@@ -392,7 +414,15 @@ function Users() {
                                 id="shortName"
                                 errors={errors}
                                 register={register}
-                                validation={{required: "Field is required"}}
+                                validation={{required: "Field is required",
+                                    minLength: {
+                                        value: 4,
+                                        message: "Minimum of 4 characters required"
+                                    },
+                                    maxLength: {
+                                        value: 20,
+                                        message: "Not more than 20 characters"
+                                    }}}
                             />
                             <FormInputField
                                 className="modal-item"

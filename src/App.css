@@ -24,8 +24,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*flex: 0 1 1600px;*/
-    max-width: 1600px;
     width: 100%;
 
 
@@ -35,8 +33,9 @@
     color: red;
     font-style: italic;
     font-size: 1.3rem;
-    height: 1.5rem;
+    min-height: 1.5rem;
+    height: fit-content;
     padding-left: 1rem;
-    padding-bottom: 70px;
     white-space: pre-line;
+
 }
