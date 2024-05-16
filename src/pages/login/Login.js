@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import './Login.css';
 import singleBee from '../../assets/single_bee.png'
-import FormInputField from "../../components/FormInputField/FormInputField";
+import FormInputField from "../../components/formInputField/FormInputField";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import {postLoginData} from "../../service";

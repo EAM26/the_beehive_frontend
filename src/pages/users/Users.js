@@ -5,7 +5,7 @@ import Button from "../../components/button/Button";
 import {useNavigate} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import BaseModal from "../../components/baseModal/BaseModal";
-import FormInputField from "../../components/FormInputField/FormInputField";
+import FormInputField from "../../components/formInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import './Users.css';
 import {Eye, PlusCircle, UserCirclePlus} from "@phosphor-icons/react";
@@ -141,7 +141,6 @@ function Users() {
 
 
     useEffect(() => {
-        console.log("use effect userData")
         const controller = new AbortController();
 
         const fetchData = async () => {

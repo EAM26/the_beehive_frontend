@@ -11,7 +11,6 @@ export const getUsers = async (token, signal) => {
             },
             signal: signal
         })
-    console.log(response)
     return response.data
 
 }
@@ -25,7 +24,6 @@ export const getSelf = async (jwt, signal) => {
             },
             signal: signal
         })
-    console.log(response)
     return response.data
 
 }
@@ -36,7 +34,7 @@ export const postLoginData = async (data) => {
         username: data.username,
         password: data.password,
     })
-    console.log(response.data)
+
     return response.data;
 }
 
@@ -48,7 +46,7 @@ export const getAuthData = async (jwt) => {
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -60,7 +58,7 @@ export const getUser = async (jwt, username) => {
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -78,7 +76,7 @@ export const createUser = async (jwt, username, password, userRole, email, isDel
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -96,7 +94,7 @@ export const updateUser = async (jwt, username, password, userRole, email, isDel
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -114,7 +112,7 @@ export const updateUserAsSelf = async (jwt, username, password, userRole, email,
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -136,11 +134,11 @@ export const createEmployee = async (jwt, firstName, preposition, lastName, shor
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 export const updateEmployee = async (jwt, id, firstName, preposition, lastName, shortName, dob, isActive, phoneNumber, teamName, username) => {
-    console.log("service update Emp")
+
 
     const response = await axios.put(`http://localhost:8080/employees/${id}`, {
         firstName,
@@ -160,7 +158,7 @@ export const updateEmployee = async (jwt, id, firstName, preposition, lastName, 
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -174,7 +172,7 @@ export const getTeams = async (token, signal) => {
             },
             signal: signal
         })
-    console.log(response)
+
     return response.data
 }
 
@@ -187,7 +185,7 @@ export const getSingleTeam = async (token, signal, teamName) => {
             },
             signal: signal
         })
-    console.log(response)
+
     return response.data
 }
 
@@ -203,7 +201,7 @@ export const createTeam = async (jwt, teamName, isActive) => {
         },
 
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -215,7 +213,7 @@ export const getRosters = async (token, signal) => {
         },
         signal: signal
     })
-    console.log(response.data)
+
     return response.data
 }
 
@@ -241,7 +239,7 @@ export const getRoster = async (jwt, id) => {
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -252,7 +250,7 @@ export const getShift = async (jwt, id) => {
             Authorization: `Bearer ${jwt}`
         }
     })
-    console.log(response)
+
     return response.data
 }
 
@@ -289,7 +287,7 @@ export const createAbsence = async (token, startDate, endDate, employeeId) => {
             Authorization: `Bearer ${token}`
         },
     })
-    console.log(response.data)
+
     return response.data
 }
 
@@ -344,12 +342,11 @@ export const updateShift = async (token, shift, shiftId, employeeId, ) => {
             Authorization: `Bearer ${token}`
         }
     })
-    console.log(response)
+
 
 }
 
 export const getCopyId = async (token, id) => {
-    console.log("Get copy id running with id: " + id)
     const response = await axios.get(`http://localhost:8080/image/${id}`,
         {
             headers: {
@@ -368,24 +365,23 @@ export const getCopyId = async (token, id) => {
 
     window.URL.revokeObjectURL(url);
     link.parentNode.removeChild(link);
-    console.log(response)
+
     return response.data
 }
 
 export const createCopyId = async (token, formData) => {
-    console.log("createCopyId method in service running")
     const response = await axios.post("http://localhost:8080/image", formData,{
         headers: {
             Authorization: `Bearer ${token}`
         },
     })
-    console.log(response.data)
+
     return response.data
 }
 
 // Fake request to test calls to backend
 export const testRequest = async (selectedEmployeeId, shiftId) => {
-    console.log("Test Request running")
+
     return[]
 }
 

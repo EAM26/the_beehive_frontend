@@ -23,7 +23,7 @@ function AuthContextProvider({children}) {
 
 
     useEffect(() => {
-        // const storedToken = localStorage.getItem('token')
+
         if (token && checkTokenValidity(token)) {
             login(token)
         } else {

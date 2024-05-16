@@ -7,12 +7,12 @@ import {useNavigate} from "react-router-dom";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {mySorterIgnoreCaseSingleAttr} from "../../helpers/mySorterFunctions";
 import {useForm} from "react-hook-form";
-import FormInputField from "../../components/FormInputField/FormInputField";
+import FormInputField from "../../components/formInputField/FormInputField";
 import '../../index.css'
 import '../../App.css'
 import './Teams.css'
-import '../../components/FormInputField/FormInputField.css'
-import '../../components/FormInputField/FormInputField.css'
+import '../../components/formInputField/FormInputField.css'
+import '../../components/formInputField/FormInputField.css'
 import '../../components/baseModal/BaseModal.css'
 import {Eye, PlusCircle} from "@phosphor-icons/react";
 

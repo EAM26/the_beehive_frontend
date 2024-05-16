@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {getSelf, updateUserAsSelf} from "../../service";
-import FormInputField from "../../components/FormInputField/FormInputField";
+import FormInputField from "../../components/formInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import {errorHandler} from "../../helpers/errorHandler";
 import {LocaleContext} from "../../context/LocaleContext";
-import "../users/SingleUser_Profile.css"
+import "../singleUser/SingleUser_Profile.css"
 import {AuthContext} from "../../context/AuthContext";
-import '../teams/SingleTeam.css'
+import '../singleTeam/SingleTeam.css'
 
 function Profile() {
     const {register, reset, handleSubmit, formState: {errors}, setValue} = useForm({

@@ -11,7 +11,7 @@ import {
 } from "../../service";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
-import FormInputField from "../../components/FormInputField/FormInputField";
+import FormInputField from "../../components/formInputField/FormInputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/button/Button";
 import {LocaleContext} from "../../context/LocaleContext";
