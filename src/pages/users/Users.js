@@ -458,7 +458,7 @@ function Users() {
                                 errors={errors}
                                 register={register}
                                 validation={{required: "Field is required"}}
-                                disabled="diabled"
+                                disabled="disabled"
                                 selected="selected"
                                 defaultName="team"
                             />
