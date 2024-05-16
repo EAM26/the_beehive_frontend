@@ -3,7 +3,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {errorHandler} from "../../helpers/errorHandler";
 import {createShift, deleteShift, getRoster, getShift, updateShift} from "../../service";
-import DayColumn from "../../components/DayColumn/DayColumn";
+import DayColumn from "../../components/dayColumn/DayColumn";
 import {LocaleContext} from "../../context/LocaleContext";
 import "./SingleRoster.css"
 import Shift from "../../components/shift/Shift";

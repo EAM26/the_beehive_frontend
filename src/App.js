@@ -8,10 +8,10 @@ import Home from "./pages/home/Home";
 import Profile from "./pages/profiles/Profile";
 import Users from "./pages/users/Users";
 import Teams from "./pages/teams/Teams";
-import SingleTeam from "./pages/teams/SingleTeam";
-import SingleUser from "./pages/users/SingleUser";
+import SingleTeam from "./pages/singleTeam/SingleTeam";
+import SingleUser from "./pages/singleUser/SingleUser";
 import Rosters from "./pages/rosters/Rosters";
-import SingleRoster from "./pages/rosters/SingleRoster";
+import SingleRoster from "./pages/singleRoster/SingleRoster";
 import Footer from "./components/footer/Footer";
 import NotFound from "./pages/not found/NotFound";
 

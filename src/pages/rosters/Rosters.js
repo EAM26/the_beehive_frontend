@@ -6,8 +6,8 @@ import Button from "../../components/button/Button";
 import {sortRostersByYearAndWeek} from "../../helpers/mySorterFunctions";
 import BaseModal from "../../components/baseModal/BaseModal";
 import {useNavigate} from "react-router-dom";
-import FormInputField from "../../components/FormInputField/FormInputField";
-import '../../components/FormInputField/FormInputField.css'
+import FormInputField from "../../components/formInputField/FormInputField";
+import '../../components/formInputField/FormInputField.css'
 import '../../components/baseModal/BaseModal.css'
 import {useForm} from "react-hook-form";
 import './Rosters.css';
